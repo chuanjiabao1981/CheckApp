@@ -8,4 +8,11 @@ FactoryGirl.define do
     contact                     "王先生（科长）"
     phone                       "15910666434"
   end
+
+  factory :user do
+    name                        "TestName"
+    password                    "foobar"
+    password_confirmation       "foobar"
+    des                         "来自于山西"
+  end
 end

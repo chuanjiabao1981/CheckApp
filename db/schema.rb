@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120402051112) do
+ActiveRecord::Schema.define(:version => 20120403080600) do
 
   create_table "admins", :force => true do |t|
     t.string   "name"
@@ -21,6 +21,21 @@ ActiveRecord::Schema.define(:version => 20120402051112) do
     t.datetime "updated_at",      :null => false
     t.string   "contact"
     t.string   "phone"
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "name"
+    t.string   "password_digest"
+    t.string   "des"
+    t.boolean  "site_admin",                                                               :default => false
+    t.boolean  "admin",                                                                    :default => false
+    t.boolean  "supervisor",                                                               :default => false
+    t.boolean  "worker",                                                                   :default => false
+    t.boolean  "checker",                                                                  :default => false
+    t.datetime "created_at",                                                                                  :null => false
+    t.datetime "updated_at",                                                                                  :null => false
+    t.integer  "admin_id"
+    t.integer  "#<ActiveRecord::ConnectionAdapters::TableDefinition:0x007fa8e3659ee0>_id"
   end
 
 end
