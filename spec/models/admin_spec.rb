@@ -39,7 +39,7 @@ describe Admin do
 
    describe "when name has expected format" do
     it "should be valide" do
-      un_valid_name = ["1abb","sdddd","av1"]
+      un_valid_name = ["1abb","sdddd","av1","a_b"]
       un_valid_name.each do |u_n|
         @admin.name = u_n
         @admin.should be_valid

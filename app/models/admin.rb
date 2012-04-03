@@ -1,5 +1,5 @@
 class Admin < ActiveRecord::Base
-  VALID_NAME_REGEX = /\A[a-z\d]+\z/i
+  VALID_NAME_REGEX = /\A[a-z\d_]+\z/i
   attr_accessible :name,:des,:contact,:phone,:password,:password_confirmation
   has_secure_password
   validates :name,  presence: true, length:{ maximum:12 },  format:{with:VALID_NAME_REGEX} ,uniqueness: { case_sensitive: false }
