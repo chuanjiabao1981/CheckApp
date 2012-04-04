@@ -14,5 +14,8 @@ FactoryGirl.define do
     password                    "foobar"
     password_confirmation       "foobar"
     des                         "来自于山西"
+    factory :zone_admin do
+      zone_admin                true
+    end
   end
 end

@@ -14,7 +14,7 @@ describe User do
   it { should respond_to(:password_confirmation)  }
   it { should respond_to(:authenticate)           }
   it { should respond_to(:site_admin)             }
-  it { should respond_to(:admin)                  }
+  it { should respond_to(:zone_admin)             }
   it { should respond_to(:supervisor)             }
   it { should respond_to(:worker)                 }
   it { should respond_to(:checker)                }
@@ -22,7 +22,7 @@ describe User do
 
   it { should be_valid}
   it { should_not be_site_admin                   }
-  it { should_not be_admin                        }
+  it { should_not be_zone_admin                   }
   it { should_not be_supervisor                   }
   it { should_not be_worker                       }
   it { should_not be_checker                      }
@@ -82,5 +82,36 @@ describe User do
         it {should_not be_valid }
       end
     end
+  end
+  describe "supervisor 测试" do
+    before do 
+      @admin = FactoryGirl.create(:zone_admin,name:"test_admin")
+      @user  = @admin.supervisors.build(name:"sp1",password:"foobar",password_confirmation:"foobar")
+      @user.supervisor = true
+    end
+
+    it {should be_supervisor}
+    it {should be_valid}
+    specify {
+        @user.errors.each do |n|
+          puts @user.errors[n]
+        end
+       }
+
+    describe "没有admin_id 的是不合法的" do
+      before { @user.admin_id = nil}
+      it {should_not be_valid }
+    end
+
+    describe "对应的admin_id的用户必须是zone_admin" do
+        let(:admin_of_user) { @user.admin }
+        specify {admin_of_user.should be_zone_admin}
+    end
+
+    describe "非zone_admin创建的supervisor不合法" do
+      before {@admin.zone_admin = false} 
+      it { should_not be_valid }
+    end
+
   end
 end
