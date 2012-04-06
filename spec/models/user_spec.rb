@@ -12,6 +12,7 @@ describe User do
   it { should respond_to(:password)               }
   it { should respond_to(:password_digest)        }
   it { should respond_to(:password_confirmation)  }
+  it { should respond_to(:remember_token)         }
   it { should respond_to(:authenticate)           }
   it { should respond_to(:site_admin)             }
   it { should respond_to(:zone_admin)             }
@@ -81,6 +82,10 @@ describe User do
         before {@user.password_confirmation = nil }
         it {should_not be_valid }
       end
+    end
+    describe "remember me token" do
+      before {@user.save}
+      its(:remember_token) { should_not be_blank }
     end
   end
   describe "supervisor 测试" do

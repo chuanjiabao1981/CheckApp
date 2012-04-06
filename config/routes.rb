@@ -1,9 +1,11 @@
 CheckApp::Application.routes.draw do
 
+
   match '/site_admin',to:'site_admin#home'
   match '/zone_admin',to:'zone_admin#home'
   match '/supervisor',to:'supervisor#home'
   match '/checker'   ,to:'checker#home'
+
 
   resources :admins
 
@@ -11,6 +13,8 @@ CheckApp::Application.routes.draw do
 
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
+
+  root  to:'main#home'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

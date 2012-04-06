@@ -1,1 +1,5 @@
 <%= link_to '机构管理','#'%>
+<%= link_to '设置','#' %>
+<% if signed_in? %>
+<%= link_to '退出',signout_path,method: "delete" %>
+<% end %>

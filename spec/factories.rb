@@ -17,5 +17,18 @@ FactoryGirl.define do
     factory :zone_admin do
       zone_admin                true
     end
+    factory :site_admin do
+      site_admin                true
+    end
+    factory :supervisor do
+      supervisor                true
+      admin 
+    end
+    factory :checker    do
+      checker                   true
+    end
+    factory :worker     do
+      worker                    true
+    end
   end
 end
