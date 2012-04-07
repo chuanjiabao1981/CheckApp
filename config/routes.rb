@@ -1,15 +1,9 @@
 CheckApp::Application.routes.draw do
 
-
-  match '/site_admin',to:'site_admin#home'
-  match '/zone_admin',to:'zone_admin#home'
-  match '/supervisor',to:'supervisor#home'
-  match '/checker'   ,to:'checker#home'
-
-
   resources :admins
 
   resources :sessions, only: [:new, :create, :destroy]
+  resource  :zone_admins
 
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete

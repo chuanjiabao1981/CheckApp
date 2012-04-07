@@ -1,0 +1,23 @@
+<% provide(:title, "新增zone管理员") %>
+<%= render 'shared/site_admin_left' %>
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@user,url:zone_admins_path) do |f| %>
+
+      <%= f.label :name,"账号" %>
+      <%= f.text_field :name %>
+
+      <%= f.label :password ,"密码"%>
+      <%= f.password_field :password %>
+
+      <%= f.label :password_confirmation, "确认密码" %>
+      <%= f.password_field :password_confirmation %>
+
+      <%= f.label :des,"备注" %>
+      <%= f.text_field :des %>
+
+      <%= f.submit "确定", class: "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>
+

@@ -20,6 +20,7 @@ describe User do
   it { should respond_to(:org_worker)                 }
   it { should respond_to(:org_checker)                }
   it { should respond_to(:admin_id)               }
+  it { should respond_to(:supervisors)           }
 
   it { should be_valid}
   it { should_not be_site_admin                   }
@@ -88,6 +89,16 @@ describe User do
       its(:remember_token) { should_not be_blank }
     end
   end
+  describe "zone admin 测试" do
+    let(:adm) {FactoryGirl.create(:zone_admin,name:'test_adm') }
+    let(:sup) {FactoryGirl.create(:supervisor,admin:adm,name:'test_sup')}
+    specify { sup.should be_valid}
+    specify { sup.should be_zone_supervisor}
+    specify { sup.admin.should ==  adm }
+    specify { adm.should be_valid}
+    specify { adm.should be_zone_admin}
+     
+  end
   describe "supervisor 测试" do
     before do 
       @admin = FactoryGirl.create(:zone_admin,name:"test_admin")
@@ -117,6 +128,5 @@ describe User do
       before {@admin.zone_admin = false} 
       it { should_not be_valid }
     end
-
   end
 end
