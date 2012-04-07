@@ -3,7 +3,7 @@
 <div class="row">
   <div class="span6 offset3">
     <%= form_for(@user,url:zone_admins_path) do |f| %>
-
+      <%= render 'shared/error_messages' ,:object => f.object%>
       <%= f.label :name,"账号" %>
       <%= f.text_field :name %>
 

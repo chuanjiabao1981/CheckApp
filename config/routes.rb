@@ -3,7 +3,7 @@ CheckApp::Application.routes.draw do
   resources :admins
 
   resources :sessions, only: [:new, :create, :destroy]
-  resource  :zone_admins
+  resources :zone_admins
 
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete

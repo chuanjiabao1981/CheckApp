@@ -1,0 +1,27 @@
+<% provide(:title, "编辑 "+@user.name) %> 
+<%= render 'shared/site_admin_left' %>
+<h1>更新</h1>
+<div class="row">
+  <div class="span6 offset3">
+  <%= form_for(@user,url: zone_admin_path(@user)) do |f| %>
+      <%= render 'shared/error_messages', :object => f.object %>
+
+      <%= f.label :name ,'账号'%>
+      <%= f.text_field :name %>
+
+
+      <%= f.label :password ,'密码'%>
+      <%= f.password_field :password %>
+
+      <%= f.label :password_confirmation, "确认密码" %>
+      <%= f.password_field :password_confirmation %>
+        
+      <%= f.label :des ,'备注'%>
+      <%= f.text_field :des %>
+
+
+
+      <%= f.submit "保存", :class => "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>
