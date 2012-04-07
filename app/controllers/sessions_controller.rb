@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by_name(params[:session][:name])
     if user && user.authenticate(params[:session][:password])
-      if user.site_admin?  or user.zone_admin? or user.supervisor? or user.checker?
+      if user.site_admin?  or user.zone_admin? or user.zone_supervisor? or user.org_checker?
         sign_in user
         redirect_to root_path
       else

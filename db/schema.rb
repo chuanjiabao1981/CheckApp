@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120406004922) do
+ActiveRecord::Schema.define(:version => 20120407023808) do
 
   create_table "admins", :force => true do |t|
     t.string   "name"
@@ -29,9 +29,9 @@ ActiveRecord::Schema.define(:version => 20120406004922) do
     t.string   "des"
     t.boolean  "site_admin",                                                               :default => false
     t.boolean  "zone_admin",                                                               :default => false
-    t.boolean  "supervisor",                                                               :default => false
-    t.boolean  "worker",                                                                   :default => false
-    t.boolean  "checker",                                                                  :default => false
+    t.boolean  "zone_supervisor",                                                          :default => false
+    t.boolean  "org_worker",                                                               :default => false
+    t.boolean  "org_checker",                                                              :default => false
     t.datetime "created_at",                                                                                  :null => false
     t.datetime "updated_at",                                                                                  :null => false
     t.integer  "admin_id"

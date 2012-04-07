@@ -21,14 +21,14 @@ FactoryGirl.define do
       site_admin                true
     end
     factory :supervisor do
-      supervisor                true
+      zone_supervisor           true
       admin 
     end
     factory :checker    do
-      checker                   true
+      org_checker               true
     end
     factory :worker     do
-      worker                    true
+      org_worker                 true
     end
   end
 end

@@ -16,17 +16,17 @@ describe User do
   it { should respond_to(:authenticate)           }
   it { should respond_to(:site_admin)             }
   it { should respond_to(:zone_admin)             }
-  it { should respond_to(:supervisor)             }
-  it { should respond_to(:worker)                 }
-  it { should respond_to(:checker)                }
+  it { should respond_to(:zone_supervisor)             }
+  it { should respond_to(:org_worker)                 }
+  it { should respond_to(:org_checker)                }
   it { should respond_to(:admin_id)               }
 
   it { should be_valid}
   it { should_not be_site_admin                   }
   it { should_not be_zone_admin                   }
-  it { should_not be_supervisor                   }
-  it { should_not be_worker                       }
-  it { should_not be_checker                      }
+  it { should_not be_zone_supervisor                   }
+  it { should_not be_org_worker                    }
+  it { should_not be_org_checker                      }
 
 
   describe "通用测试" do
@@ -92,10 +92,10 @@ describe User do
     before do 
       @admin = FactoryGirl.create(:zone_admin,name:"test_admin")
       @user  = @admin.supervisors.build(name:"sp1",password:"foobar",password_confirmation:"foobar")
-      @user.supervisor = true
+      @user.zone_supervisor = true
     end
 
-    it {should be_supervisor}
+    it {should be_zone_supervisor}
     it {should be_valid}
     specify {
         @user.errors.each do |n|
