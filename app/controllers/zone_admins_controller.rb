@@ -1,6 +1,6 @@
 #encoding:utf-8
 class ZoneAdminsController < ApplicationController
-  before_filter :site_admin_user, only: [:new, :create,:edit,:update]
+  before_filter :site_admin_user, only: [:new, :create,:edit,:update,:show]
 
   def new
     @user = User.new
@@ -34,9 +34,21 @@ class ZoneAdminsController < ApplicationController
       render 'edit'
     end
   end
+  
+  def show
+    @user = User.find_by_id(params[:id])
+    zone_admin_user(@user)
+  end
+
+  def index
+  end
 
 private 
   def site_admin_user
     redirect_to root_path unless (signed_in? and current_user.site_admin?)
   end
+  def zone_admin_user(user)
+    redirect_to root_path if not @user or not @user.zone_admin?
+  end
+  
 end

@@ -5,6 +5,10 @@ describe "ZoneAdmins" do
   subject { page }
   let(:the_site_admin) { FactoryGirl.create(:site_admin,name:'t_s_admin') }
   let(:a_zone_admin)   { FactoryGirl.create(:zone_admin,name:'a_z_admin',admin:the_site_admin) }
+  let(:b_zone_admin)   { FactoryGirl.create(:zone_admin,name:'b_z_admin',admin:the_site_admin) }
+
+
+  let(:a_zone_admin)   { FactoryGirl.create(:zone_admin,name:'a_z_admin',admin:the_site_admin) }
   let(:a_org_checker)  { FactoryGirl.create(:checker,name:'a_checker') }
   describe "新增zoneadmin" do
     describe "未登录用户访问 Get" do
@@ -131,6 +135,67 @@ describe "ZoneAdmins" do
           it { should have_selector('div.alert.alert-error', text: '账号或密码错误')}
         end
       end
+    end
+  end
+
+  describe "浏览一个site_admin" do
+    describe "未登录用户" do
+      before { get zone_admin_path(a_zone_admin) }
+      specify { response.should redirect_to (root_path) }
+    end
+    describe "登陆的非site_admin用户" do
+      before do
+        sign_in a_zone_admin
+        get zone_admin_path(a_zone_admin)
+      end
+      specify { response.should redirect_to (root_path) }
+    end
+    describe "登陆的site_admin" do
+      before { sign_in the_site_admin }
+      describe "访问一个不存在的zone_admin" do
+        before { get zone_admin_path(1203) }
+        specify { response.should redirect_to(root_path) }
+      end
+      describe "访问一个非zone_admin" do
+        before { get zone_admin_path(a_org_checker) }
+        specify { response.should redirect_to(root_path) }
+      end
+      describe "访问一个存在的zone_admin" do
+        before { visit zone_admin_path(a_zone_admin) }
+        it     { should have_selector("td",:text=>a_zone_admin.name) }
+        it     { should have_selector("td",:text=>a_zone_admin.des)}
+        it {should have_link('zone管理员')}
+        it {should have_link('模板管理')  }
+        it {should have_link('设置')      }
+        it {should have_link('退出',href:signout_path)}
+        it {should_not have_link('登陆',href:signin_path)}
+      end
+    end
+  end
+  describe "浏览全部的site_admin" do
+    describe "未登录用户" do
+      before { get zone_admins_path } 
+      specify { response.should redirect_to(root_path) }
+    end
+    describe "登陆的非site_admin" do
+      before do 
+        sign_in a_zone_admin
+        get zone_admins_path 
+      end
+      specify { response.should redirect_to(root_path) }
+    end
+    describe "登陆site_admin" do
+      before do
+        sign_in the_site_admin
+        visit zone_admins_path
+      end
+      it { should have_selector('td',link:zone_admin_path(a_zone_admin)) }
+      it { should have_selector('td',text:a_zone_admin.des)}
+      it {should have_link('zone管理员')}
+      it {should have_link('模板管理')  }
+      it {should have_link('设置')      }
+      it {should have_link('退出',href:signout_path)}
+      it {should_not have_link('登陆',href:signin_path)}
     end
   end
 end
