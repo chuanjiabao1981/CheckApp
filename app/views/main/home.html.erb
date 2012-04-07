@@ -1,2 +1,14 @@
-<h1>Main#home</h1>
-<p>Find me in app/views/main/home.html.erb</p>
+<% provide(:title, "首页") %>
+
+<% if signed_in? %>
+  <% if current_user.site_admin? %>
+    <%= render 'main/site_admin_home' %>
+  <% elsif current_user.zone_admin? %>
+    <%= render 'main/zone_admin_home' %>
+  <% elsif current_user.supervisor? %>
+    <%= render 'main/zone_supervisor_home' %>
+  <% elsif current_user.checker? %>
+    <%= render 'main/org_checker_home' %>
+  <% end %>
+<% else %>
+<% end %>

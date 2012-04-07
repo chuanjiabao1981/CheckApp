@@ -6,18 +6,9 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by_name(params[:session][:name])
     if user && user.authenticate(params[:session][:password])
-      if user.site_admin?
+      if user.site_admin?  or user.zone_admin? or user.supervisor? or user.checker?
         sign_in user
-        redirect_to site_admin_path
-      elsif user.zone_admin?
-        sign_in user
-        redirect_to zone_admin_path
-      elsif user.supervisor?
-        sign_in user
-        redirect_to supervisor_path
-      elsif user.checker?
-        sign_in user
-        redirect_to checker_path
+        redirect_to root_path
       else
         flash.now[:error] = '账号未启用'
         render 'new'
