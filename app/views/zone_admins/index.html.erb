@@ -1,0 +1,14 @@
+<% provide(:title, "全部的管理员") %>
+<%= render 'shared/site_admin_left' %>
+<%= link_to '新增',new_zone_admin_path %>
+<table>
+  <% @zone_admin_users.each do |u| %>
+    <tr>
+        <td><%= link_to u.name,zone_admin_path(u) %></td>
+        <td><%= u.des %></td>
+        <td><%= link_to "编辑", edit_zone_admin_path(u)%>
+        <td><%= link_to "删除", zone_admin_path(u), method: :delete, confirm: "确定删除这个zone管理员吗？" %>
+
+    </tr>
+  <% end %>
+</table>

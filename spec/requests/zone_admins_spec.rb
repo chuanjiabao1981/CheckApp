@@ -3,13 +3,10 @@ require 'spec_helper'
 
 describe "ZoneAdmins" do
   subject { page }
-  let(:the_site_admin) { FactoryGirl.create(:site_admin,name:'t_s_admin') }
-  let(:a_zone_admin)   { FactoryGirl.create(:zone_admin,name:'a_z_admin',admin:the_site_admin) }
-  let(:b_zone_admin)   { FactoryGirl.create(:zone_admin,name:'b_z_admin',admin:the_site_admin) }
-
-
-  let(:a_zone_admin)   { FactoryGirl.create(:zone_admin,name:'a_z_admin',admin:the_site_admin) }
-  let(:a_org_checker)  { FactoryGirl.create(:checker,name:'a_checker') }
+  let!(:the_site_admin) { FactoryGirl.create(:site_admin,name:'t_s_admin') }
+  let!(:a_zone_admin)   { FactoryGirl.create(:zone_admin,name:'a_z_admin',admin:the_site_admin) }
+  let!(:b_zone_admin)   { FactoryGirl.create(:zone_admin,name:'b_z_admin',admin:the_site_admin) }
+  let!(:a_org_checker)  { FactoryGirl.create(:checker,name:'a_checker') }
   describe "新增zoneadmin" do
     describe "未登录用户访问 Get" do
       before { get new_zone_admin_path }
@@ -33,11 +30,7 @@ describe "ZoneAdmins" do
       end
       describe "正常访问" do
         it { should have_content("新增zone管理员") }
-        it {should have_link('zone管理员')}
-        it {should have_link('模板管理')  }
-        it {should have_link('设置')      }
-        it {should have_link('退出',href:signout_path)}
-        it {should_not have_link('登陆',href:signin_path)}
+        check_site_admin_left
       end
       describe "不合法信息" do
         it "不增加用户" do
@@ -97,11 +90,7 @@ describe "ZoneAdmins" do
       end
       describe "正常访问" do
         it { should have_content(a_zone_admin.name) }
-        it {should have_link('zone管理员')}
-        it {should have_link('模板管理')  }
-        it {should have_link('设置')      }
-        it {should have_link('退出',href:signout_path)}
-        it {should_not have_link('登陆',href:signin_path)}
+        check_site_admin_left
       end
       describe "提供非法信息" do
         before do
@@ -118,9 +107,9 @@ describe "ZoneAdmins" do
           fill_in '备注', with: new_des
           click_button '保存'
         end
-        ##todo::要增加页面的验证,在展示作完之后
         specify { a_zone_admin.reload.name.should == new_name }
         specify { a_zone_admin.reload.des.should == new_des  }
+        it { should have_selector('td',text:new_name)}
       end
       describe "正常更新 密码" do
         let(:new_password) { "password_new"}
@@ -164,15 +153,11 @@ describe "ZoneAdmins" do
         before { visit zone_admin_path(a_zone_admin) }
         it     { should have_selector("td",:text=>a_zone_admin.name) }
         it     { should have_selector("td",:text=>a_zone_admin.des)}
-        it {should have_link('zone管理员')}
-        it {should have_link('模板管理')  }
-        it {should have_link('设置')      }
-        it {should have_link('退出',href:signout_path)}
-        it {should_not have_link('登陆',href:signin_path)}
+        check_site_admin_left
       end
     end
   end
-  describe "浏览全部的site_admin" do
+  describe "浏览全部的zone_admin" do
     describe "未登录用户" do
       before { get zone_admins_path } 
       specify { response.should redirect_to(root_path) }
@@ -189,13 +174,52 @@ describe "ZoneAdmins" do
         sign_in the_site_admin
         visit zone_admins_path
       end
+      it { should have_link('新增',href:new_zone_admin_path)}
       it { should have_selector('td',link:zone_admin_path(a_zone_admin)) }
       it { should have_selector('td',text:a_zone_admin.des)}
-      it {should have_link('zone管理员')}
-      it {should have_link('模板管理')  }
-      it {should have_link('设置')      }
-      it {should have_link('退出',href:signout_path)}
-      it {should_not have_link('登陆',href:signin_path)}
+      it { should have_link(b_zone_admin.name,href:zone_admin_path(b_zone_admin))}
+      it { should_not have_selector('a',text:the_site_admin.name)}
+      it { should_not have_selector('a',text:a_org_checker.name) }
+      it { should have_link('编辑',href:edit_zone_admin_path(a_zone_admin))}
+      it { should have_link('编辑',href:edit_zone_admin_path(b_zone_admin))}
+      it { should have_link('删除',href:zone_admin_path(a_zone_admin))}
+      it { should have_link('删除',href:zone_admin_path(b_zone_admin))}
+      check_site_admin_left
+    end
+  end
+  describe "删除zone_admin" do
+    describe "未登录用户" do
+      before { delete zone_admin_path(a_zone_admin) }
+      specify{ response.should redirect_to(root_path)}
+    end
+    describe "非site_admin登陆用户" do
+      before do
+        sign_in(b_zone_admin)
+        before { delete zone_admin_path(b_zone_admin) }
+        specify{ response.should redirect_to(root_path)}
+      end
+    end
+    describe "登陆的site_admin" do
+      before do
+        sign_in(the_site_admin)
+      end
+      describe "不能删除自己" do
+        before { delete zone_admin_path(the_site_admin) }
+        specify { response.should redirect_to(root_path)}
+      end
+      describe "不能删除非zone_admin" do
+        before { delete zone_admin_path(a_org_checker)}
+        specify{response.should redirect_to(root_path)}
+      end
+      describe "删除成功" do
+        before do
+          visit zone_admins_path
+        end
+        it "删除成功" do
+          expect { click_link('删除')}.to change(User,:count).by(-1)
+        end
+        it {should_not have_link('删除',href:zone_admin_path(a_org_checker))}
+      end
     end
   end
 end

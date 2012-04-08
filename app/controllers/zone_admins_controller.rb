@@ -1,14 +1,14 @@
 #encoding:utf-8
 class ZoneAdminsController < ApplicationController
-  before_filter :site_admin_user, only: [:new, :create,:edit,:update,:show]
+  before_filter :site_admin_user, only: [:new, :create,:edit,:update,:show,:index,:destroy]
 
   def new
-    @user = User.new
+    @zone_admin_user = User.new
   end
   def create
-    @user = User.new(params[:user])
-    @user.zone_admin = true
-    if @user.save
+    @zone_admin_user = User.new(params[:user])
+    @zone_admin_user.zone_admin = true
+    if @zone_admin_user.save
       redirect_to root_path
     else
       render 'new'
@@ -16,39 +16,50 @@ class ZoneAdminsController < ApplicationController
   end
 
   def edit
-    @user = User.find_by_id(params[:id])
-    if not @user or not @user.zone_admin?
+    @zone_admin_user = User.find_by_id(params[:id])
+    if not @zone_admin_user or not @zone_admin_user.zone_admin?
       redirect_to root_path
     end
   end
 
   def update
-    @user = User.find(params[:id])
-    if not @user or not @user.zone_admin?
+    @zone_admin_user = User.find(params[:id])
+    if not @zone_admin_user or not @zone_admin_user.zone_admin?
       redirect_to root_path
     end
-    if @user.update_attributes(params[:user])
-      ##todo::这里要跳转到zone_admin展示页面
-      redirect_to root_path
+    if @zone_admin_user.update_attributes(params[:user])
+      redirect_to zone_admin_path(@zone_admin_user)
     else
       render 'edit'
     end
   end
   
   def show
-    @user = User.find_by_id(params[:id])
-    zone_admin_user(@user)
+    @zone_admin_user = User.find_by_id(params[:id])
+    check_zone_admin_user(@zone_admin_user)
   end
 
   def index
+    @zone_admin_users = User.find_all_by_zone_admin(true)
+  end
+  
+  def destroy
+    k = User.find(params[:id])
+    if not k or not k.zone_admin? or k.site_admin?
+      redirect_to root_path
+    else
+      k.destroy
+      flash[:success] = "User destroyed."
+      redirect_to zone_admins_path
+    end
   end
 
 private 
   def site_admin_user
     redirect_to root_path unless (signed_in? and current_user.site_admin?)
   end
-  def zone_admin_user(user)
-    redirect_to root_path if not @user or not @user.zone_admin?
+  def check_zone_admin_user(user)
+    redirect_to root_path if not user or not user.zone_admin?
   end
   
 end
