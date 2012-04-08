@@ -8,6 +8,24 @@ FactoryGirl.define do
     contact                     "王先生（科长）"
     phone                       "15910666434"
   end
+  factory :check_category do
+    category                    "手续责任"
+    des                         "是否建立了责任制度"
+    template        
+  end
+  factory :template do
+    name                        "食品安全2012"
+    admin
+    can_photo                   true
+    can_video                   true
+    factory :for_worker do
+      for_worker                true
+    end
+    factory :for_supervisor do
+      for_supervisor            true
+    end
+  end
+  
 
   factory :user do
     name                        "TestName"

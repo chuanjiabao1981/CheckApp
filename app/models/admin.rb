@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: admins
+#
+#  id              :integer         not null, primary key
+#  name            :string(255)
+#  password_digest :string(255)
+#  des             :string(255)
+#  created_at      :datetime        not null
+#  updated_at      :datetime        not null
+#  contact         :string(255)
+#  phone           :string(255)
+#
+
 class Admin < ActiveRecord::Base
   VALID_NAME_REGEX = /\A[a-z\d_]+\z/i
   attr_accessible :name,:des,:contact,:phone,:password,:password_confirmation

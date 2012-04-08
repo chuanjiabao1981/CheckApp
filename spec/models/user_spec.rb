@@ -1,4 +1,24 @@
 # encoding: utf-8
+# == Schema Information
+#
+# Table name: users
+#
+#  id                                                                       :integer         not null, primary key
+#  name                                                                     :string(255)
+#  password_digest                                                          :string(255)
+#  des                                                                      :string(255)
+#  site_admin                                                               :boolean         default(FALSE)
+#  zone_admin                                                               :boolean         default(FALSE)
+#  zone_supervisor                                                          :boolean         default(FALSE)
+#  org_worker                                                               :boolean         default(FALSE)
+#  org_checker                                                              :boolean         default(FALSE)
+#  created_at                                                               :datetime        not null
+#  updated_at                                                               :datetime        not null
+#  admin_id                                                                 :integer
+#  #<ActiveRecord::ConnectionAdapters::TableDefinition:0x007fa8e3659ee0>_id :integer
+#  remember_token                                                           :string(255)
+#
+
 
 require 'spec_helper'
 
@@ -21,6 +41,7 @@ describe User do
   it { should respond_to(:org_checker)                }
   it { should respond_to(:admin_id)               }
   it { should respond_to(:supervisors)           }
+  it { should respond_to(:templates)             }
 
   it { should be_valid}
   it { should_not be_site_admin                   }

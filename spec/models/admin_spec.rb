@@ -1,4 +1,18 @@
 # encoding: utf-8
+# == Schema Information
+#
+# Table name: admins
+#
+#  id              :integer         not null, primary key
+#  name            :string(255)
+#  password_digest :string(255)
+#  des             :string(255)
+#  created_at      :datetime        not null
+#  updated_at      :datetime        not null
+#  contact         :string(255)
+#  phone           :string(255)
+#
+
 require 'spec_helper'
 
 describe Admin do

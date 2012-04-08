@@ -1,4 +1,24 @@
 # encoding: utf-8
+# == Schema Information
+#
+# Table name: users
+#
+#  id                                                                       :integer         not null, primary key
+#  name                                                                     :string(255)
+#  password_digest                                                          :string(255)
+#  des                                                                      :string(255)
+#  site_admin                                                               :boolean         default(FALSE)
+#  zone_admin                                                               :boolean         default(FALSE)
+#  zone_supervisor                                                          :boolean         default(FALSE)
+#  org_worker                                                               :boolean         default(FALSE)
+#  org_checker                                                              :boolean         default(FALSE)
+#  created_at                                                               :datetime        not null
+#  updated_at                                                               :datetime        not null
+#  admin_id                                                                 :integer
+#  #<ActiveRecord::ConnectionAdapters::TableDefinition:0x007fa8e3659ee0>_id :integer
+#  remember_token                                                           :string(255)
+#
+
 
 class SupervisorValidator < ActiveModel::Validator
   def validate(record)
@@ -25,6 +45,8 @@ class User < ActiveRecord::Base
 
   has_many    :supervisors,:class_name =>"User",foreign_key: "admin_id",:inverse_of=>:admin, :dependent => :destroy
   belongs_to  :admin,:class_name=>"User",:foreign_key=>"admin_id",:inverse_of=>:supervisors
+
+  has_many    :templates,:dependent=>:destroy,foreign_key:"admin_id"
 
 
   private
