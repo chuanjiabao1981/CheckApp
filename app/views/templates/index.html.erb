@@ -1,0 +1,12 @@
+<% provide(:title, "全部模板") %> 
+<%= render 'shared/site_admin_left' %>
+<table>
+<%= link_to '新增',new_template_path %>
+<% @templates.each do |t| %>
+  <tr>
+      <td><%= link_to t.name,template_path(t) %></td>
+      <td><%= link_to '编辑',edit_template_path(t) %></td>
+      <td><%= link_to '删除',template_path(t),method: :delete,confirm:"确定删除这个模板吗?" %></td>
+  </tr>
+<% end %>
+</table>

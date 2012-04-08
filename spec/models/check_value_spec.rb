@@ -30,6 +30,12 @@ describe CheckValue do
   it { should respond_to(:template_id) }
   it { should be_valid }
   describe "不合法情况" do
+    describe "全部为空" do
+      specify do
+        a= FactoryGirl.build(:check_value,template:the_template)
+        a.should_not be_valid
+      end
+    end
     describe "没有template_id" do
       before { @the_check_value.template_id = nil }
       it { should_not be_valid}

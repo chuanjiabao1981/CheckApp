@@ -55,9 +55,6 @@ class ZoneAdminsController < ApplicationController
   end
 
 private 
-  def site_admin_user
-    redirect_to root_path unless (signed_in? and current_user.site_admin?)
-  end
   def check_zone_admin_user(user)
     redirect_to root_path if not user or not user.zone_admin?
   end

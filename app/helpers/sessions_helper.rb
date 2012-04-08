@@ -17,6 +17,10 @@ module SessionsHelper
     !current_user.nil?
   end
 
+  def site_admin_user
+    redirect_to root_path unless (signed_in? and current_user.site_admin?)
+  end
+
   private
 
     def user_from_remember_token

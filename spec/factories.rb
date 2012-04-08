@@ -25,6 +25,13 @@ FactoryGirl.define do
       for_supervisor            true
     end
   end
+  factory :check_value do
+    template
+    boolean_name                nil
+    int_name                    nil
+    float_name                  nil
+    date_name                   nil
+  end
   
 
   factory :user do
