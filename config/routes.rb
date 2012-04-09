@@ -4,7 +4,11 @@ CheckApp::Application.routes.draw do
 
   resources :sessions, only: [:new, :create, :destroy]
   resources :zone_admins
-  resources :templates
+  resources :templates  ,:shallow => true do 
+    resources :check_categories do
+      resources :check_points 
+    end
+  end
 
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete

@@ -14,7 +14,7 @@
 #
 
 class Template < ActiveRecord::Base
-  attr_accessible :name,:for_supervisor,:for_worker
+  attr_accessible :name,:for_supervisor,:for_worker,:check_value_attributes
   belongs_to :admin,class_name:"User",foreign_key:"admin_id"
   has_one :check_value,:dependent => :destroy
 
@@ -23,5 +23,6 @@ class Template < ActiveRecord::Base
   validates :name,  presence: true, length:{ maximum:128 } ,uniqueness: { case_sensitive: false }
   validates :admin_id,presence:true
 
+  accepts_nested_attributes_for :check_value
 
 end

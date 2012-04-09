@@ -1,0 +1,32 @@
+<% provide(:title, "模板|"+@template.name) %> 
+<%= render 'shared/site_admin_left' %>
+<%= link_to '编辑',edit_template_path(@template) %>
+<%= link_to '新增检查类型',new_template_check_category_path(@template) %>
+<table>
+  <th>
+      <td>名称</td>
+      <td>检查类个数</td>
+  </th>
+  <tr>
+      <td><%= link_to @template.name,template_check_categories_path(@template) %></td>
+      <td><%= @template.check_categories.size() %></td>
+  </tr>
+</table>
+<ul>
+   <% if @template.check_value %>
+    <% if @template.check_value.boolean_name  and @template.check_value.boolean_name != "" %>
+      <li><%= @template.check_value.boolean_name %></li>
+    <% end%>
+    <% if @template.check_value.int_name  and @template.check_value.int_name != "" %>
+      <li><%= @template.check_value.int_name %></li>
+    <% end %>
+    <% if @template.check_value.float_name and @template.check_value.float_name != "" %>
+      <li><%= @template.check_value.float_name %></li>
+    <% end %>
+    <% if @template.check_value.date_name and @template.check_value.date_name != "" %>
+      <li><%= @template.check_value.date_name %></li>
+    <% end %>
+   <% end %>
+</ul>
+
+

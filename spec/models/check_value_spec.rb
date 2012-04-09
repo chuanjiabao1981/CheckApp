@@ -36,10 +36,6 @@ describe CheckValue do
         a.should_not be_valid
       end
     end
-    describe "没有template_id" do
-      before { @the_check_value.template_id = nil }
-      it { should_not be_valid}
-    end
     describe "全部的名称都为空" do
       before do
         @the_check_value.boolean_name =  @the_check_value.int_name = ""

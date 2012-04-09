@@ -26,7 +26,6 @@ end
 
 class CheckValue < ActiveRecord::Base
   belongs_to :template
-  validates :template_id,  presence: true
   validates :boolean_name, length:{ maximum: 80} 
   validates :int_name,     length:{ maximum: 80}
   validates :float_name,   length:{ maximum: 80}

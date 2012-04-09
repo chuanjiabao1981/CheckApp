@@ -1,0 +1,24 @@
+<% provide(:title, "新增模板") %> 
+<%= render 'shared/site_admin_left' %>
+<%= form_for @template do |f| %>
+  <%= render 'shared/error_messages' ,:object => f.object%>
+
+  <%= f.label :name,"模板名" %>
+  <%= f.text_field :name %>
+  <%= f.label :for_supervisor,"督察模板" %>
+  <%= f.check_box :for_supervisor %>
+  <%= f.label :for_worker,"自查模板" %>
+  <%= f.check_box :for_worker %>
+  <%= f.fields_for :check_value do |check_value| %>
+    <%= check_value.label :boolean_name,"是否"%>
+    <%= check_value.text_field :boolean_name %>
+    <%= check_value.label :date_name,"日期" %>
+    <%= check_value.text_field :date_name %>
+    <%= check_value.label :int_name,"整数" %>
+    <%= check_value.text_field :int_name %>
+    <%= check_value.label :float_name,"小数" %>
+    <%= check_value.text_field :float_name %>
+  <% end %>
+  <%= f.submit '新增模板' %> 
+<% end %>
+
