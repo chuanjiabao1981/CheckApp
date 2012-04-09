@@ -53,4 +53,19 @@ describe Template do
       it { should_not be_valid }
     end
   end
+  describe "测试关联关系" do
+    let!(:a_template)      { FactoryGirl.create(:template,admin:the_site_admin,name:"静心")}
+    let!(:a_category1)     { FactoryGirl.create(:check_category,template:a_template,category:"类型一")}
+    let!(:b_category2)     { FactoryGirl.create(:check_category,template:a_template,category:"类型二")}
+    let!(:a_value)         { FactoryGirl.create(:check_value,template:a_template,boolean_name:"是否铜鼓",date_name:"整改日期",float_name:"搞毛",int_name:"测试")}
+    specify do
+      cc = a_template.check_categories
+      cv = a_template.check_value
+      a_template.destroy
+      cc.each  do |c|
+        CheckCategory.find_by_id(c.id).should be_nil
+      end
+      CheckValue.find_by_id(cv.id).should be_nil
+    end
+  end
 end

@@ -60,7 +60,37 @@ describe "Templates" do
             a = Template.find_by_name(temp_name)
             a.should be_for_supervisor
             a.should_not be_for_worker
-
+          end
+        end
+      end
+      describe "模板编辑" do
+        before { click_link '编辑' }
+        describe "提供错误信息" do
+          before do
+            fill_in '模板名' ,with:""
+            click_button '保存'
+          end
+          it { should have_content("表单有") }
+        end
+        describe "提供正确信息" do
+          let(:new_temp_name) { "新的末班名字" }
+          before do 
+            fill_in '模板名', with:new_temp_name
+            check  '自查模板'
+            click_button '保存'
+          end
+          specify do
+            page.should have_link(new_temp_name) 
+            a = Template.find_by_name(new_temp_name) 
+            a.should be_for_worker
+          end
+        end
+      end
+      describe "模板删除" do
+        describe "正常减少" do
+          it "-1" do
+            expect { click_link '删除' }.to change(Template,:count).by(-1) 
+            Template.find_by_name(a_template.name).should be_nil
           end
         end
       end
@@ -117,6 +147,37 @@ describe "Templates" do
         get new_template_path
       end
       specify{ response.should redirect_to(root_path)}
+    end
+  end
+
+  describe "模板编辑" do
+    describe "未登录用户不能访问 get" do
+      before { get edit_template_path(a_template) }
+      specify { response.should redirect_to(root_path) }
+    end
+    describe "未登录用户不能访问 post" do
+      before { put template_path(a_template) }
+      specify { response.should redirect_to(root_path)}
+    end
+    describe "登陆的非site_admin 用户" do
+      before do
+        sign_in a_zone_admin
+        get edit_template_path(a_template) 
+      end
+      specify { response.should redirect_to(root_path) }
+    end
+  end
+  describe "摸板删除" do
+    describe "未登录用户不能访问 delete" do
+      before { delete template_path(a_template) }
+      specify { response.should redirect_to(root_path) }
+    end
+    describe "登陆的非site_admin用户也不能访问" do
+      before do
+        sign_in a_zone_admin
+        delete template_path(a_template) 
+      end
+      specify{ response.should redirect_to(root_path) }
     end
   end
 end

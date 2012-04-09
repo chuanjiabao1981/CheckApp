@@ -22,4 +22,23 @@ class TemplatesController < ApplicationController
       render 'new'
     end
   end
+  def edit
+    @template = Template.find_by_id(params[:id])
+    if not @template
+      redirect_to root_path
+    end
+  end
+  def update
+    @template = Template.find_by_id(params[:id])
+    if @template.update_attributes(params[:template])
+      redirect_to template_path(@template)
+    else
+      render 'edit'
+    end
+  end
+  def destroy
+    k = Template.find(params[:id])
+    k.destroy
+    redirect_to templates_path
+  end
 end
