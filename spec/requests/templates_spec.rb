@@ -5,37 +5,37 @@ describe "Templates" do
   subject{page}
   let(:the_site_admin)   { FactoryGirl.create(:site_admin)}
   let(:a_zone_admin)     { FactoryGirl.create(:zone_admin,name:"a_zone_admin")}
-  let!(:a_template)      { FactoryGirl.create(:template,admin:the_site_admin,name:"静心")}
+  let(:b_zone_admin)     { FactoryGirl.create(:zone_admin,name:"b_zone_admin")}
+  let!(:a_template)      { FactoryGirl.create(:template,zone_admin:a_zone_admin,name:"静心")}
   let!(:a_category1)     { FactoryGirl.create(:check_category,template:a_template,category:"类型一")}
   let!(:b_category2)     { FactoryGirl.create(:check_category,template:a_template,category:"类型二")}
   let!(:a_value)         { FactoryGirl.create(:check_value,template:a_template,boolean_name:"是否铜鼓",date_name:"整改日期",float_name:"搞毛",int_name:"测试")}
-  let!(:b_template)      { FactoryGirl.create(:template,admin:the_site_admin,name:"和顺")}
+  let!(:b_template)      { FactoryGirl.create(:template,zone_admin:b_zone_admin,name:"和顺")}
   let!(:b_value)          { FactoryGirl.create(:check_value,template:b_template,float_name:"指数")}
   describe "index 页面" do
     describe "非登陆用户 无法访问" do
-      before { get templates_path }
+      before { get zone_admin_templates_path(a_zone_admin) }
       specify{response.should redirect_to(root_path)}
     end
-    describe "登陆非site_admin用户无法访问" do
+    describe "登陆非创建用户无法访问" do
+      before do
+        sign_in b_zone_admin
+        get zone_admin_templates_path(a_zone_admin)
+      end
+      specify{response.should redirect_to(root_path)}
+    end
+    describe "创建用户登陆" do
       before do
         sign_in a_zone_admin
-        get templates_path
+        ##############sign_in the_site_admin
+        visit zone_admin_templates_path(a_zone_admin)
       end
-      specify{response.should redirect_to(root_path)}
-    end
-    describe "site admin登陆" do
-      before do
-        sign_in the_site_admin
-        visit templates_path
-      end
-      check_site_admin_left
-      it { should have_link('新增模板',href:new_template_path)}
+      check_zone_admin_left
+      it { should have_link('新增模板',href:new_zone_admin_template_path(a_zone_admin))}
       it { should have_link('编辑',href:edit_template_path(a_template))}
       it { should have_link('删除',href:template_path(a_template))}
+      it { should_not have_link('编辑',href:edit_template_path(b_template))}
       it { should have_link(a_template.name,href:template_path(a_template))}
-      it { should have_link('编辑',href:edit_template_path(b_template))}
-      it { should have_link('删除',href:template_path(b_template))}
-      it { should have_link(b_template.name,href:template_path(b_template))}
       describe "新增模板" do
         before { click_link('新增模板') }
         describe "提供错误数据" do
@@ -58,6 +58,7 @@ describe "Templates" do
             expect { click_button '新增模板'}.to change(Template,:count).by(1)
             page.should have_content(temp_name)
             a = Template.find_by_name(temp_name)
+            a.zone_admin.should == a_zone_admin
             a.should be_for_supervisor
             a.should_not be_for_worker
           end
@@ -102,15 +103,18 @@ describe "Templates" do
       before { get template_path(a_template) }
       specify{response.should redirect_to(root_path)}
     end
-    describe "登陆非site_admin用户无法访问" do
+    describe "登陆非创建用户无法访问" do
       before do
         sign_in a_zone_admin
-        get templates_path(a_template) 
+        get zone_admin_templates_path(b_template) 
       end
       specify{response.should redirect_to(root_path)}
     end
     describe "site_admin 登陆" do
-      before { sign_in the_site_admin }
+      before do 
+        sign_in a_zone_admin 
+        #sign_in the_site_admin
+      end
 
       describe "访问不存在的template" do
         before { get template_path(20111203) }
@@ -134,17 +138,17 @@ describe "Templates" do
   end
   describe "新增模板" do
     describe "未登陆用户不能访问" do
-      before { get new_template_path }
+      before { get new_zone_admin_template_path(a_zone_admin)}
       specify{ response.should redirect_to(root_path)}
     end
     describe "未登录用户不能访问post" do
-      before { post templates_path }
+      before { post  zone_admin_templates_path(a_zone_admin) }
       specify {response.should redirect_to(root_path)}
     end
-    describe "登陆的非site_admin用户" do
+    describe "登陆的非创建用户" do
       before do
-        sign_in a_zone_admin
-        get new_template_path
+        sign_in b_zone_admin
+        get new_zone_admin_template_path(a_zone_admin)
       end
       specify{ response.should redirect_to(root_path)}
     end
@@ -155,14 +159,14 @@ describe "Templates" do
       before { get edit_template_path(a_template) }
       specify { response.should redirect_to(root_path) }
     end
-    describe "未登录用户不能访问 post" do
+    describe "未登录用户不能访问 put" do
       before { put template_path(a_template) }
       specify { response.should redirect_to(root_path)}
     end
-    describe "登陆的非site_admin 用户" do
+    describe "登陆的非创建 用户" do
       before do
         sign_in a_zone_admin
-        get edit_template_path(a_template) 
+        get edit_template_path(b_template) 
       end
       specify { response.should redirect_to(root_path) }
     end
@@ -172,10 +176,10 @@ describe "Templates" do
       before { delete template_path(a_template) }
       specify { response.should redirect_to(root_path) }
     end
-    describe "登陆的非site_admin用户也不能访问" do
+    describe "登陆的非创建用户也不能访问" do
       before do
         sign_in a_zone_admin
-        delete template_path(a_template) 
+        delete template_path(b_template) 
       end
       specify{ response.should redirect_to(root_path) }
     end

@@ -15,7 +15,7 @@
 
 class Template < ActiveRecord::Base
   attr_accessible :name,:for_supervisor,:for_worker,:check_value_attributes
-  belongs_to :admin,class_name:"User",foreign_key:"admin_id"
+  belongs_to :zone_admin,class_name:"User",foreign_key:"admin_id"
   has_one :check_value,:dependent => :destroy
 
   has_many :check_categories,:dependent =>:destroy

@@ -1,7 +1,7 @@
 <% provide(:title, "全部模板") %> 
-<%= render 'shared/site_admin_left' %>
+<%= render 'shared/home_left' %>
 <table>
-<%= link_to '新增模板',new_template_path %>
+<%= link_to '新增模板',new_zone_admin_template_path(@zone_admin) %>
 <% @templates.each do |t| %>
   <tr>
       <td><%= link_to t.name,template_path(t) %></td>

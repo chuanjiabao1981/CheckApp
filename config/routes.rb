@@ -3,12 +3,31 @@ CheckApp::Application.routes.draw do
   resources :admins
 
   resources :sessions, only: [:new, :create, :destroy]
-  resources :zone_admins
-  resources :templates  ,:shallow => true do 
+
+  resources :zone_admins,shallow:true do
+    resources :zones,:supervisors,:templates
+  end
+
+
+  resources :zones,shallow:true,only:[] do
+    resources :organizes
+  end
+
+  resources :organizes,shallow:true,only:[] do
+    resources :reports
+  end
+
+  resources :reports,shallow:true,only:[] do
+    resources :records
+  end 
+
+  resources :templates  ,:shallow => true,only:[] do 
     resources :check_categories do
       resources :check_points 
     end
   end
+
+
 
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete

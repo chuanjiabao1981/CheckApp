@@ -24,7 +24,7 @@ describe Template do
   it { should respond_to(:name) }
   it { should respond_to(:for_supervisor) }
   it { should respond_to(:for_worker)}
-  it { should respond_to(:admin) }
+  it { should respond_to(:zone_admin) }
   it { should respond_to(:check_categories) }
   it { should be_for_supervisor}
   it { should_not be_for_worker }
@@ -54,7 +54,7 @@ describe Template do
     end
   end
   describe "测试关联关系" do
-    let!(:a_template)      { FactoryGirl.create(:template,admin:the_site_admin,name:"静心")}
+    let!(:a_template)      { FactoryGirl.create(:template,zone_admin:the_site_admin,name:"静心")}
     let!(:a_category1)     { FactoryGirl.create(:check_category,template:a_template,category:"类型一")}
     let!(:b_category2)     { FactoryGirl.create(:check_category,template:a_template,category:"类型二")}
     let!(:a_value)         { FactoryGirl.create(:check_value,template:a_template,boolean_name:"是否铜鼓",date_name:"整改日期",float_name:"搞毛",int_name:"测试")}

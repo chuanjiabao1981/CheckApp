@@ -15,7 +15,7 @@ FactoryGirl.define do
   end
   factory :template do
     name                        "食品安全2012"
-    admin
+    zone_admin
     can_photo                   true
     can_video                   true
     factory :for_worker do
