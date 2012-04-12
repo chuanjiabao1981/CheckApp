@@ -2,9 +2,9 @@
 <%= link_to 'zone管理员',zone_admins_path %>
 <% end %>
 <% if signed_in? and current_user.zone_admin? %>
-
 <%= link_to 'zone管理',zone_admins_path %>
 <%= link_to '督察员','#' %>
+<%= link_to '模板', zone_admin_templates_path(current_user) %>
 <% end %>
 <%= link_to '设置','#' %>
 <% if signed_in? %>

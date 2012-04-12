@@ -4,7 +4,7 @@
   <% if current_user.site_admin? %>
     <%= render 'main/site_admin_home' %>
   <% elsif current_user.zone_admin? %>
-    <%= render 'main/zone_admin_home' %>
+    <%= render 'shared/home_left' %>
   <% elsif current_user.zone_supervisor? %>
     <%= render 'main/zone_supervisor_home' %>
   <% elsif current_user.org_checker? %>

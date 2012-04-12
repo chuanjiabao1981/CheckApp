@@ -1,0 +1,2 @@
+module CheckCategoriesHelper
+end

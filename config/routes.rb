@@ -1,5 +1,7 @@
 CheckApp::Application.routes.draw do
 
+  get "check_categories/index"
+
   resources :admins
 
   resources :sessions, only: [:new, :create, :destroy]

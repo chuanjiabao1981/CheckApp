@@ -110,7 +110,7 @@ describe "Templates" do
       end
       specify{response.should redirect_to(root_path)}
     end
-    describe "site_admin 登陆" do
+    describe "zone_admin 登陆" do
       before do 
         sign_in a_zone_admin 
         #sign_in the_site_admin
@@ -123,7 +123,7 @@ describe "Templates" do
 
       describe "正常访问" do
         before {visit template_path(a_template)}
-        check_site_admin_left
+        check_zone_admin_left
         it { should have_selector('title',      text:'模板|'+a_template.name)                     }
         it { should have_link('编辑'            ,href:edit_template_path(a_template))                  }
         it { should have_link('新增检查类型'    ,href:new_template_check_category_path(a_template))    }

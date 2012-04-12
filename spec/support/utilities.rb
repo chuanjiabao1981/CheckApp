@@ -23,3 +23,5 @@ def check_zone_admin_left
   it {should have_link('设置')      }
 
 end
+
+
