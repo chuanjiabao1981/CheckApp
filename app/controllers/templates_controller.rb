@@ -31,7 +31,7 @@ class TemplatesController < ApplicationController
     end
   end
   def update
-    @template = Template.find_by_id(params[:id])
+    #@template = Template.find_by_id(params[:id])
     if @template.update_attributes(params[:template])
       redirect_to template_path(@template)
     else

@@ -25,6 +25,50 @@ def sign_in_visit_category_show(a_category1,b_category1)
     page.should have_content(a_category1.des)  
 end
 
+def sign_in_visit_category_new
+  describe "提供错误数据" do
+    it "categories不能发生变化" do
+      expect {click_button '新增检查类型' }.not_to change(CheckCategory,:count)
+    end
+  end
+  describe "提供正确数据" do
+    let(:new_category_name) {"ddxxxiaoliaoliao"}
+    before do
+      fill_in '检查类型名称',with:new_category_name
+      fill_in '描述'        ,with:"xxxxxdddowoo li"
+    end
+    it "检查类型增加" do
+      expect {click_button '新增检查类型'}.to change(CheckCategory,:count).by(1)
+      a = CheckCategory.find_by_category(new_category_name)
+      page.should have_content(a.category)
+    end
+  end
+end
+
+def sign_in_visit_category_edit
+  describe "提供错误的信息" do
+    before do
+      fill_in "检查类型名称",with:""
+      click_button '保存'
+    end
+    it "有错误" do
+      page.should have_content("表单有") 
+    end
+  end
+  describe "提供正确的信息" do
+    let(:new_category_name) {"lia聊"}
+    before do
+      fill_in "检查类型名称",with:new_category_name
+      click_button '保存'
+    end
+    specify do
+      page.should have_link(new_category_name)
+      a = CheckCategory.find_by_category(new_category_name)
+      page.should have_link(a.category,href:check_category_path(a))
+    end
+  end
+end
+
 describe "CheckCategories" do
   subject{page}
   let!(:the_site_admin)   { FactoryGirl.create(:site_admin)}
@@ -161,23 +205,14 @@ describe "CheckCategories" do
         click_link(a_template.name)
         click_link('新增检查类型')
       end
-      describe "提供错误数据" do
-        it "categories不能发生变化" do
-          expect {click_button '新增检查类型' }.not_to change(CheckCategory,:count)
-        end
+      sign_in_visit_category_new
+    end
+    describe "正常登陆的site_admin" do
+      before do
+        sign_in the_site_admin
+        visit new_template_check_category_path(a_template) 
       end
-      describe "提供正确数据" do
-        let(:new_category_name) {"ddxxxiaoliaoliao"}
-        before do
-          fill_in '检查类型名称',with:new_category_name
-          fill_in '描述'        ,with:"xxxxxdddowoo li"
-        end
-        it "检查类型增加" do
-          expect {click_button '新增检查类型'}.to change(CheckCategory,:count).by(1)
-          a = CheckCategory.find_by_category(new_category_name)
-          page.should have_content(a.category)
-        end
-      end
+      sign_in_visit_category_new
     end
   end
   describe "编辑检查类型" do
@@ -189,6 +224,13 @@ describe "CheckCategories" do
       before do
         sign_in b_zone_admin
         get edit_check_category_path(a_category1) 
+      end
+      specify{response.should redirect_to root_path}
+    end
+    describe "登陆非创建用户不能访问put" do
+      before do
+        sign_in b_zone_admin
+        put check_category_path(a_category1)
       end
       specify{response.should redirect_to root_path}
     end
@@ -208,7 +250,16 @@ describe "CheckCategories" do
         click_link(a_category1.category)
         click_link('编辑')
       end
-      ###############
+      check_zone_admin_left
+      sign_in_visit_category_edit
+    end
+    describe "site admin正常登陆" do
+      before do
+        sign_in the_site_admin
+        visit edit_check_category_path(a_category1)
+      end
+      check_site_admin_left
+      sign_in_visit_category_edit
     end
   end
 end

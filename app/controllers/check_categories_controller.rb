@@ -19,6 +19,15 @@ class CheckCategoriesController < ApplicationController
       render 'new'
     end
   end
+  def edit
+  end
+  def update
+    if @category.update_attributes(params[:check_category])
+      redirect_to template_check_categories_path(@template)
+    else
+      render 'edit'
+    end
+  end
 
 private
 
