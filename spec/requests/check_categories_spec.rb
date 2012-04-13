@@ -45,6 +45,16 @@ def sign_in_visit_category_new
   end
 end
 
+def sign_in_visit_category_destroy
+  it "减少1" do
+    cps = a_template.check_categories.first.check_points
+    expect { click_link '删除'}.to change(CheckCategory,:count).by(-1)
+    cps.each do |cp|
+      CheckPoint.find_by_id(cp.id).should be_nil
+    end
+  end
+end
+
 def sign_in_visit_category_edit
   describe "提供错误的信息" do
     before do
@@ -260,6 +270,44 @@ describe "CheckCategories" do
       end
       check_site_admin_left
       sign_in_visit_category_edit
+    end
+  end
+  describe "删除" do
+    describe "未登陆用户无法删除" do
+      before { delete check_category_path(a_category1) }
+      specify{response.should redirect_to root_path}
+    end
+    describe "登陆的非创建用户无法删除" do
+      before do 
+        sign_in b_zone_admin
+        delete check_category_path(a_category1)
+      end
+      specify {response.should redirect_to root_path}
+    end
+    describe "删除不存在" do
+      before do
+        sign_in a_zone_admin
+        delete check_category_path(20111203)
+      end
+      specify{ response.should redirect_to root_path} 
+    end
+    describe "正常登陆" do
+      before do
+        sign_in a_zone_admin
+        click_link '模板'
+        click_link(a_template.name)
+        click_link(a_template.name)
+      end
+      check_zone_admin_left
+      sign_in_visit_category_destroy
+    end
+    describe "site_admin登陆" do
+      before do
+        sign_in the_site_admin
+        visit template_check_categories_path(a_template)
+      end
+      check_site_admin_left
+      sign_in_visit_category_destroy
     end
   end
 end

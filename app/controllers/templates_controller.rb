@@ -31,7 +31,6 @@ class TemplatesController < ApplicationController
     end
   end
   def update
-    #@template = Template.find_by_id(params[:id])
     if @template.update_attributes(params[:template])
       redirect_to template_path(@template)
     else
@@ -39,9 +38,10 @@ class TemplatesController < ApplicationController
     end
   end
   def destroy
-    k = Template.find(params[:id])
-    @zone_admin = k.zone_admin
-    k.destroy
+    #k = Template.find(params[:id])
+    @zone_admin = @template.zone_admin
+    @template.destroy
+    #k.destroy
     redirect_to zone_admin_templates_path(@zone_admin)
   end
 

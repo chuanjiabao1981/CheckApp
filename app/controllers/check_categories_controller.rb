@@ -28,6 +28,10 @@ class CheckCategoriesController < ApplicationController
       render 'edit'
     end
   end
+  def destroy
+    @category.destroy
+    return redirect_to template_check_categories_path(@template)
+  end
 
 private
 
