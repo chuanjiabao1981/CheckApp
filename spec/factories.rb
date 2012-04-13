@@ -8,6 +8,10 @@ FactoryGirl.define do
     contact                     "王先生（科长）"
     phone                       "15910666434"
   end
+  factory :check_point do
+    content                     "是否有执照"
+    check_category  
+  end
   factory :check_category do
     category                    "手续责任"
     des                         "是否建立了责任制度"

@@ -152,6 +152,13 @@ describe "Templates" do
       end
       specify{ response.should redirect_to(root_path)}
     end
+    describe "登陆的费创建用户不能Post" do
+      before do
+        sign_in b_zone_admin
+        post new_zone_admin_template_path(a_zone_admin)
+      end
+      specify{ response.should redirect_to root_path }
+    end
   end
 
   describe "模板编辑" do

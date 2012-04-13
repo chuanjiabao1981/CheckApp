@@ -1,0 +1,21 @@
+<% provide(:title, "检查类型|"+@category.category) %> 
+<%= render 'shared/home_left' %>
+
+
+<%= link_to '编辑',edit_check_category_path(@category) %>
+<%= link_to '新增检查点',new_check_category_check_point_path(@category) %>
+<table>
+  <tr>
+      <th>检查类型</th>
+      <td><%= link_to @category.category,check_category_check_points_path(@category) %></td>
+  </tr>
+  <tr>
+      <th>包含检查点</th>
+      <td><%= @category.check_points.size() %></td>
+  </tr>
+  <tr>
+      <th>说明</th>
+      <td><%= @category.des %></td>
+  </tr>
+</table>
+
