@@ -11,6 +11,8 @@ FactoryGirl.define do
   factory :check_point do
     content                     "是否有执照"
     check_category  
+    can_photo                   false
+    can_video                   false
   end
   factory :check_category do
     category                    "手续责任"
@@ -20,8 +22,6 @@ FactoryGirl.define do
   factory :template do
     name                        "食品安全2012"
     zone_admin
-    can_photo                   true
-    can_video                   true
     factory :for_worker do
       for_worker                true
     end

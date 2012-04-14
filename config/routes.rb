@@ -1,6 +1,8 @@
 CheckApp::Application.routes.draw do
 
-  get "check_categories/index"
+ # get "check_points/index"
+
+ # get "check_categories/index"
 
   resources :admins
 
@@ -25,7 +27,7 @@ CheckApp::Application.routes.draw do
 
   resources :templates  ,:shallow => true,only:[] do 
     resources :check_categories do
-      resources :check_points 
+      resources :check_points ,:except => :show
     end
   end
 

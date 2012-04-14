@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120408124245) do
+ActiveRecord::Schema.define(:version => 20120414012337) do
 
   create_table "admins", :force => true do |t|
     t.string   "name"
@@ -34,8 +34,10 @@ ActiveRecord::Schema.define(:version => 20120408124245) do
   create_table "check_points", :force => true do |t|
     t.text     "content"
     t.integer  "check_category_id"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+    t.boolean  "can_photo",         :default => false
+    t.boolean  "can_video",         :default => false
   end
 
   create_table "check_values", :force => true do |t|
@@ -44,10 +46,8 @@ ActiveRecord::Schema.define(:version => 20120408124245) do
     t.string   "float_name"
     t.string   "date_name"
     t.integer  "template_id"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
-    t.boolean  "can_photo",    :default => false
-    t.boolean  "can_video",    :default => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "templates", :force => true do |t|
@@ -55,10 +55,8 @@ ActiveRecord::Schema.define(:version => 20120408124245) do
     t.boolean  "for_supervisor"
     t.boolean  "for_worker"
     t.integer  "admin_id"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
-    t.boolean  "can_video",      :default => false
-    t.boolean  "can_photo",      :default => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "users", :force => true do |t|

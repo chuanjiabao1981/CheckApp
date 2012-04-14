@@ -1,0 +1,17 @@
+<% provide(:title, "全部检查点") %> 
+<%= render 'shared/home_left' %>
+<table>
+<%= link_to '新增检查点',new_check_category_check_point_path(@category) %>
+<% @check_points.each do |cp| %>
+  <tr>
+      <td><%= cp.content %></td>
+      <% if cp.can_photo? %>
+        <td>是</td>
+      <% else %>
+        <td> 否 </td>
+      <% end %>
+      <td><%= link_to '编辑',edit_check_point_path(cp) %></td>
+      <td><%= link_to '删除',check_point_path(cp),method: :delete,confirm:"确定删除这个检查点吗？" %></td>
+  </tr>
+<% end %>
+</table>

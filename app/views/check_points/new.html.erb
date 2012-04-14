@@ -1,0 +1,12 @@
+<% provide(:title, "新增检查点") %> 
+<%= render 'shared/home_left' %>
+<%= form_for(@check_point,url:check_category_check_points_path(@category)) do |f| %>
+  <%= render 'shared/error_messages' ,:object => f.object%>
+
+  <%= f.label :content,"检查内容描述" %>
+  <%= f.text_field :content %>
+  <%= f.label :can_photo, "需要图片" %>
+  <%= f.check_box :can_photo %>
+  <%= f.submit '新增检查点' %> 
+<% end %>
+

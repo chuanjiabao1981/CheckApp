@@ -1,0 +1,12 @@
+<% provide(:title, "编辑检查点") %> 
+<%= render 'shared/home_left' %>
+<%= form_for(@check_point,url:check_point_path(@check_point)) do |f| %>
+  <%= render 'shared/error_messages' ,:object => f.object%>
+
+  <%= f.label :content,"检查内容描述" %>
+  <%= f.text_field :content %>
+  <%= f.label :can_photo, "需要图片" %>
+  <%= f.check_box :can_photo %>
+  <%= f.submit '保存' %> 
+<% end %>
+

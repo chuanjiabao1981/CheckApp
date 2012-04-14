@@ -21,6 +21,8 @@ describe CheckPoint do
   it {should respond_to(:content) }
   it {should respond_to(:check_category_id) }
   it {should respond_to(:check_category)}
+  it {should respond_to(:can_video)}
+  it {should respond_to(:can_photo)}
   it {should be_valid }
 
   describe "错误数据" do

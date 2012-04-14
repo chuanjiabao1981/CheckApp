@@ -29,8 +29,6 @@ describe Template do
   it { should be_for_supervisor}
   it { should_not be_for_worker }
   it { should respond_to(:check_value) }
-  it { should_not be_can_video }
-  it { should_not be_can_photo}
 
   describe "不合法的情况" do
     describe "名字为空" do
