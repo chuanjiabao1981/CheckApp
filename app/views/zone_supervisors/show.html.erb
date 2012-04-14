@@ -1,0 +1,17 @@
+<% provide(:title, "督察员|"+@zone_supervisor.name) %> 
+<%= render 'shared/home_left' %>
+
+
+<%= link_to '编辑',edit_zone_supervisor_path(@zone_supervisor) %>
+<table>
+    <tr>
+        <th>督察员账号</th>
+        <td><%= @zone_supervisor.name %></td>
+    </tr>
+    <tr>
+        <th>备注</th>
+        <td><%= @zone_supervisor.des %></td>
+    </tr>
+</table>
+
+

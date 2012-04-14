@@ -1,0 +1,14 @@
+<% provide(:title, "全部督察员") %> 
+<%= render 'shared/home_left' %>
+
+<table>
+  <%= link_to '添加督察员',new_zone_admin_zone_supervisor_path(@zone_admin) %>
+  <% @zone_supervisors.each do |s| %>
+    <tr>
+      <td><%= link_to s.name,zone_supervisor_path(s) %></td>
+      <td><%= link_to '编辑',edit_zone_supervisor_path(s) %> </td>
+      <td><%= link_to '删除',zone_supervisor_path(s),method: :delete,confirm:"确定要删除这个督察员吗？" %></td>
+    </tr>
+  <% end %>
+</table>
+

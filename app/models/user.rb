@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
   has_secure_password
   before_save :create_remember_token
 
-  validates :name,  presence: true, length:{ maximum:12 },  format:{with:VALID_NAME_REGEX} ,uniqueness: { case_sensitive: false }
+  validates :name,  presence: true, length:{ maximum:36 },  format:{with:VALID_NAME_REGEX} ,uniqueness: { case_sensitive: false }
   validates :des,   length:{maximum:250}
   validates :password_confirmation,presence:true,:unless=>"password==''"
   validates :admin_id,presence:true,:if=>:zone_supervisor?

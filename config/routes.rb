@@ -1,15 +1,12 @@
 CheckApp::Application.routes.draw do
 
- # get "check_points/index"
-
- # get "check_categories/index"
 
   resources :admins
 
   resources :sessions, only: [:new, :create, :destroy]
 
   resources :zone_admins,shallow:true do
-    resources :zones,:supervisors,:templates
+    resources :zones,:zone_supervisors,:templates
   end
 
 

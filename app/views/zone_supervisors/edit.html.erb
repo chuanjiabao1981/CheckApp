@@ -1,0 +1,23 @@
+<% provide(:title, "编辑督察员|"+@zone_supervisor.name) %>
+<%= render 'shared/home_left' %>
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@zone_supervisor,url:zone_supervisor_path(@zone_supervisor)) do |f| %>
+      <%= render 'shared/error_messages' ,:object => f.object%>
+      <%= f.label :name,"督察员账号" %>
+      <%= f.text_field :name %>
+
+      <%= f.label :password ,"密码"%>
+      <%= f.password_field :password %>
+
+      <%= f.label :password_confirmation, "确认密码" %>
+      <%= f.password_field :password_confirmation %>
+
+      <%= f.label :des,"备注" %>
+      <%= f.text_field :des %>
+
+      <%= f.submit "保存", class: "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>
+

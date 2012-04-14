@@ -11,7 +11,7 @@
         <td> 否 </td>
       <% end %>
       <td><%= link_to '编辑',edit_check_point_path(cp) %></td>
-      <td><%= link_to '删除',check_point_path(cp),method: :delete,confirm:"确定删除这个检查点吗？" %></td>
+      <td><%= link_to '删除',check_point_path(cp),method: :delete,confirm:"确定删除这个检查点以及相关的报告项吗？" %></td>
   </tr>
 <% end %>
 </table>
