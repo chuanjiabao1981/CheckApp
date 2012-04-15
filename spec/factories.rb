@@ -1,13 +1,18 @@
 # encoding: utf-8
 FactoryGirl.define do
-  factory :admin  do
+  factory :site_admin do
     name                        "TestAdmin"
     password                    "foobar"
     password_confirmation       "foobar"
-    des                         "来自于山西"
-    contact                     "王先生（科长）"
-    phone                       "15910666434"
   end
+  factory :zone_admin do
+    name                        "TestZoneAdmin"
+    password                    "foobar"
+    password_confirmation       "foobar"
+    site_admin
+
+  end
+
   factory :check_point do
     content                     "是否有执照"
     check_category  
@@ -48,10 +53,10 @@ FactoryGirl.define do
     password                    "foobar"
     password_confirmation       "foobar"
     des                         "来自于山西"
-    factory :zone_admin do
+    factory :_zone_admin do
       zone_admin                true
     end
-    factory :site_admin do
+    factory :_site_admin do
       site_admin                true
     end
     factory :supervisor do

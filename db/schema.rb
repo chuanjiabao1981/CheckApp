@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120415031423) do
+ActiveRecord::Schema.define(:version => 20120415160209) do
 
   create_table "check_categories", :force => true do |t|
     t.string   "category"
@@ -50,6 +50,24 @@ ActiveRecord::Schema.define(:version => 20120415031423) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "sessions", :force => true do |t|
+    t.string   "remember_token"
+    t.integer  "login_id"
+    t.string   "login_type"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "sessions", ["login_id"], :name => "index_sessions_on_login_id"
+
+  create_table "site_admins", :force => true do |t|
+    t.string   "name"
+    t.string   "des"
+    t.string   "password_digest"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
   create_table "templates", :force => true do |t|
     t.string   "name"
     t.boolean  "for_supervisor"
@@ -71,12 +89,24 @@ ActiveRecord::Schema.define(:version => 20120415031423) do
     t.datetime "created_at",                                                                                  :null => false
     t.datetime "updated_at",                                                                                  :null => false
     t.integer  "admin_id"
-    t.integer  "#<ActiveRecord::ConnectionAdapters::TableDefinition:0x007ff696c9f240>_id"
+    t.integer  "#<ActiveRecord::ConnectionAdapters::TableDefinition:0x007fcc0490a150>_id"
     t.string   "remember_token"
   end
 
   add_index "users", ["name"], :name => "index_users_on_name"
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
+
+  create_table "zone_admins", :force => true do |t|
+    t.string   "name"
+    t.string   "des"
+    t.string   "password_digest"
+    t.integer  "template_max_num",       :default => 2
+    t.integer  "template_max_photo_num", :default => 5
+    t.integer  "template_max_video_num", :default => 1
+    t.integer  "site_admin_id"
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+  end
 
   create_table "zone_supervisor_relations", :force => true do |t|
     t.integer  "zone_id"

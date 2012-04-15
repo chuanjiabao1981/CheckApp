@@ -9,9 +9,10 @@
 <body>
 
 <% if signed_in? %>
-<%= link_to '退出',signout_path ,method: "delete"%>
+  <%= link_to '退出',signout_path ,method: "delete"%>
 <% else %>
-<%= link_to "登陆", signin_path %>
+  <%= link_to 'SiteAdmin登陆',site_admin_signin_path %>
+  <%= link_to 'ZoneAdmin登陆','#' %>
 <% end %>
 
   <div class="container">

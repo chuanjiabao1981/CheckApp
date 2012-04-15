@@ -1,8 +1,8 @@
 <% provide(:title, "首页") %>
 
 <% if signed_in? %>
-  <% if current_user.site_admin? %>
-    <%= render 'main/site_admin_home' %>
+  <% if current_user.session.site_admin? %>
+    <%= render 'shared/home_left' %>
   <% elsif current_user.zone_admin? %>
     <%= render 'shared/home_left' %>
   <% elsif current_user.zone_supervisor? %>

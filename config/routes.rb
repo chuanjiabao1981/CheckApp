@@ -1,8 +1,5 @@
 CheckApp::Application.routes.draw do
 
-
-  resources :admins
-
   resources :sessions, only: [:new, :create, :destroy]
 
   resources :zone_admins,shallow:true do
@@ -29,6 +26,8 @@ CheckApp::Application.routes.draw do
   end
 
 
+  match '/site_admin/signin'     ,to:'sessions#site_admin_new'
+  match '/site_admin/sessions'  ,to:'sessions#site_admin_create',via: :post
 
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
