@@ -36,7 +36,12 @@ FactoryGirl.define do
     float_name                  nil
     date_name                   nil
   end
-  
+ 
+  factory :zone do
+    name        "中心区"
+    des         "testme for ever"
+    zone_admin  
+  end 
 
   factory :user do
     name                        "TestName"

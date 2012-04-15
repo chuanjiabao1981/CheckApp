@@ -11,17 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120414012337) do
-
-  create_table "admins", :force => true do |t|
-    t.string   "name"
-    t.string   "password_digest"
-    t.string   "des"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
-    t.string   "contact"
-    t.string   "phone"
-  end
+ActiveRecord::Schema.define(:version => 20120415031423) do
 
   create_table "check_categories", :force => true do |t|
     t.string   "category"
@@ -50,6 +40,16 @@ ActiveRecord::Schema.define(:version => 20120414012337) do
     t.datetime "updated_at",   :null => false
   end
 
+  create_table "organizations", :force => true do |t|
+    t.string   "name"
+    t.string   "phone"
+    t.string   "address"
+    t.string   "contact"
+    t.integer  "zone_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "templates", :force => true do |t|
     t.string   "name"
     t.boolean  "for_supervisor"
@@ -71,11 +71,26 @@ ActiveRecord::Schema.define(:version => 20120414012337) do
     t.datetime "created_at",                                                                                  :null => false
     t.datetime "updated_at",                                                                                  :null => false
     t.integer  "admin_id"
-    t.integer  "#<ActiveRecord::ConnectionAdapters::TableDefinition:0x007fa8e3659ee0>_id"
+    t.integer  "#<ActiveRecord::ConnectionAdapters::TableDefinition:0x007ff696c9f240>_id"
     t.string   "remember_token"
   end
 
   add_index "users", ["name"], :name => "index_users_on_name"
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
+
+  create_table "zone_supervisor_relations", :force => true do |t|
+    t.integer  "zone_id"
+    t.integer  "zone_supervisor_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  create_table "zones", :force => true do |t|
+    t.string   "name"
+    t.string   "des"
+    t.integer  "zone_admin_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
 
 end

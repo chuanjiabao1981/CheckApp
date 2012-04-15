@@ -48,6 +48,12 @@ class User < ActiveRecord::Base
 
   has_many    :templates,:dependent=>:destroy,foreign_key:"admin_id"
 
+  #zone_admin
+  has_many    :zones,foreign_key:"zone_admin_id",:dependent => :destroy
+  #zone_supervisor
+  has_many    :zone_supervisor_relations,foreign_key:"zone_supervisor_id",:dependent=>:destroy
+  has_many    :supervise_zones,:through=>'zone_supervisor_relations',:source=>"zone_id"
+
 
   private
     def create_remember_token

@@ -42,6 +42,7 @@ describe User do
   it { should respond_to(:admin_id)               }
   it { should respond_to(:supervisors)           }
   it { should respond_to(:templates)             }
+  it { should respond_to(:zones)                }
 
   it { should be_valid}
   it { should_not be_site_admin                   }
@@ -118,7 +119,6 @@ describe User do
     specify { sup.admin.should ==  adm }
     specify { adm.should be_valid}
     specify { adm.should be_zone_admin}
-     
   end
   describe "supervisor 测试" do
     before do 
