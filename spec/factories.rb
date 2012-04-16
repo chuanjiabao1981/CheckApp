@@ -12,6 +12,34 @@ FactoryGirl.define do
     site_admin
 
   end
+  factory :zone_supervisor do
+    name                        "TestZoneSupervisor"
+    password                    "foobar"
+    password_confirmation       "foobar"
+    zone_admin
+  end
+  factory :organization do
+    name                        "11122"
+    phone                       "eeeeddd"
+    content                     "王科长"
+    address                     "xxxxxx"
+    zone_admin      
+  end
+
+  factory :report do
+    name                        "template_name_time"
+    factory :supervisor_report do
+      supervisor_report         true
+    end
+    factory :worker_report do
+      worker_report             true
+    end
+    reporter_name               "ddssss"
+    template
+    organization
+    status                      "new"
+  end
+
 
   factory :check_point do
     content                     "是否有执照"

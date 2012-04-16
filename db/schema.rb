@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120415160209) do
+ActiveRecord::Schema.define(:version => 20120416083045) do
 
   create_table "check_categories", :force => true do |t|
     t.string   "category"
@@ -40,6 +40,17 @@ ActiveRecord::Schema.define(:version => 20120415160209) do
     t.datetime "updated_at",   :null => false
   end
 
+  create_table "checkers", :force => true do |t|
+    t.string   "name"
+    t.string   "des"
+    t.string   "password_digest"
+    t.integer  "organization_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "checkers", ["organization_id"], :name => "index_checkers_on_organization_id"
+
   create_table "organizations", :force => true do |t|
     t.string   "name"
     t.string   "phone"
@@ -49,6 +60,21 @@ ActiveRecord::Schema.define(:version => 20120415160209) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "reports", :force => true do |t|
+    t.string   "name"
+    t.boolean  "supervisor_report", :default => false
+    t.boolean  "worker_report",     :default => false
+    t.string   "reporter_name"
+    t.integer  "template_id"
+    t.integer  "organization_id"
+    t.string   "status"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+  end
+
+  add_index "reports", ["organization_id"], :name => "index_reports_on_organization_id"
+  add_index "reports", ["template_id"], :name => "index_reports_on_template_id"
 
   create_table "sessions", :force => true do |t|
     t.string   "remember_token"
@@ -72,7 +98,7 @@ ActiveRecord::Schema.define(:version => 20120415160209) do
     t.string   "name"
     t.boolean  "for_supervisor"
     t.boolean  "for_worker"
-    t.integer  "admin_id"
+    t.integer  "zone_admin_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end
@@ -89,12 +115,23 @@ ActiveRecord::Schema.define(:version => 20120415160209) do
     t.datetime "created_at",                                                                                  :null => false
     t.datetime "updated_at",                                                                                  :null => false
     t.integer  "admin_id"
-    t.integer  "#<ActiveRecord::ConnectionAdapters::TableDefinition:0x007fcc0490a150>_id"
+    t.integer  "#<ActiveRecord::ConnectionAdapters::TableDefinition:0x007f85f67a0638>_id"
     t.string   "remember_token"
   end
 
   add_index "users", ["name"], :name => "index_users_on_name"
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
+
+  create_table "workers", :force => true do |t|
+    t.string   "name"
+    t.string   "des"
+    t.string   "password_digest"
+    t.integer  "organization_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "workers", ["organization_id"], :name => "index_workers_on_organization_id"
 
   create_table "zone_admins", :force => true do |t|
     t.string   "name"
@@ -113,6 +150,15 @@ ActiveRecord::Schema.define(:version => 20120415160209) do
     t.integer  "zone_supervisor_id"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+  end
+
+  create_table "zone_supervisors", :force => true do |t|
+    t.string   "name"
+    t.string   "des"
+    t.string   "password_digest"
+    t.integer  "zone_admin_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "zones", :force => true do |t|

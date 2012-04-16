@@ -16,27 +16,14 @@
 
 require 'spec_helper'
 
-describe Template do
-  let(:the_site_admin) { FactoryGirl.create(:site_admin)}
-  before { @template=the_site_admin.templates.build(name:'test_template',for_supervisor:true,for_worker:false)}
-  subject { @template }
-  it { should be_valid}
-  it { should respond_to(:name) }
-  it { should respond_to(:for_supervisor) }
-  it { should respond_to(:for_worker)}
-  it { should respond_to(:zone_admin) }
-  it { should respond_to(:check_categories) }
-  it { should be_for_supervisor}
-  it { should_not be_for_worker }
-  it { should respond_to(:check_value) }
-
+def normal_test
   describe "不合法的情况" do
     describe "名字为空" do
       before { @template.name = " " }
       it { should_not be_valid }
     end
     describe "admin_id为空" do
-      before { @template.admin_id = nil }
+      before { @template.zone_admin_id = nil }
       it { should_not be_valid }
     end
     describe "重复的" do
@@ -51,8 +38,39 @@ describe Template do
       it { should_not be_valid }
     end
   end
+end
+
+describe Template do
+  let(:the_site_admin)      { FactoryGirl.create(:site_admin) }
+  let(:a_zone_admin)        { the_site_admin.zone_admins.create(name:"testme",password:"foobar",password_confirmation:"foobar") }
+  let(:a_zone)              { a_zone_admin.zones.create(name:"123",des:"3333") }
+  let(:a_zone_supervisor)   { a_zone_admin.zone_supervisors.create(name:"222",password:"foobar",password_confirmation:"foobar") }
+
+  before { @template=a_zone_admin.templates.build(name:'test_template',for_supervisor:true,for_worker:false,check_value_attributes:{boolean_name:"b1",date_name:"d1"})}
+  subject { @template }
+  it { should be_valid}
+  it { should respond_to(:name) }
+  it { should respond_to(:for_supervisor) }
+  it { should respond_to(:for_worker)}
+  it { should respond_to(:zone_admin) }
+  it { should respond_to(:check_categories) }
+  it { should be_for_supervisor}
+  it { should_not be_for_worker }
+  it { should respond_to(:check_value) }
+
+  describe "nest attribute test" do
+    specify do
+      a = a_zone_admin.templates.create(
+            name:"test_template_2",
+            for_supervisor:true,
+            check_value_attributes: { boolean_name:"b1",date_name:"d1" } 
+          )
+      a.should be_valid
+    end
+  end
+
   describe "测试关联关系" do
-    let!(:a_template)      { FactoryGirl.create(:template,zone_admin:the_site_admin,name:"静心")}
+    let!(:a_template)      {a_zone_admin.templates.create(name:'test_template2',for_supervisor:true,for_worker:false,check_value_attributes:{boolean_name:"b1",date_name:"d1"})}
     let!(:a_category1)     { FactoryGirl.create(:check_category,template:a_template,category:"类型一")}
     let!(:b_category2)     { FactoryGirl.create(:check_category,template:a_template,category:"类型二")}
     let!(:a_value)         { FactoryGirl.create(:check_value,template:a_template,boolean_name:"是否铜鼓",date_name:"整改日期",float_name:"搞毛",int_name:"测试")}

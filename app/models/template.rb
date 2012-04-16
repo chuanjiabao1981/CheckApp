@@ -15,14 +15,15 @@
 
 class Template < ActiveRecord::Base
   attr_accessible :name,:for_supervisor,:for_worker,:check_value_attributes
-  belongs_to :zone_admin,class_name:"User",foreign_key:"admin_id"
-  has_one :check_value,:dependent => :destroy
+  belongs_to :zone_admin
+  has_one :check_value,dependent:  :destroy,inverse_of: :template
 
-  has_many :check_categories,:dependent =>:destroy
+  has_many :check_categories,dependent: :destroy
 
   validates :name,  presence: true, length:{ maximum:128 } ,uniqueness: { case_sensitive: false }
-  validates :admin_id,presence:true
-
+  validates :zone_admin_id,presence:true
+  validates :check_value,presence:true
+  
   accepts_nested_attributes_for :check_value
 
 end

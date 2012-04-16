@@ -4,7 +4,7 @@ class CreateTemplates < ActiveRecord::Migration
       t.string :name
       t.boolean :for_supervisor
       t.boolean :for_checker
-      t.references :admin
+      t.references :zone_admin
 
       t.timestamps
     end

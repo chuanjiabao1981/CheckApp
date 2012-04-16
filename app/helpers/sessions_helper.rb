@@ -25,6 +25,7 @@ module SessionsHelper
     redirect_to root_path unless (signed_in? and (current_user.site_admin? or current_user.zone_admin?))
   end
 
+
   private
 
     def user_from_remember_token2
