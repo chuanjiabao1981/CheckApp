@@ -19,8 +19,9 @@ class Template < ActiveRecord::Base
   has_one :check_value,dependent:  :destroy,inverse_of: :template
 
   has_many :check_categories,dependent: :destroy
+  has_many :reports,dependent: :destroy, inverse_of: :template
 
-  validates :name,  presence: true, length:{ maximum:128 } ,uniqueness: { case_sensitive: false }
+  validates :name,  presence: true, length:{ maximum:64 } ,uniqueness: { case_sensitive: false }
   validates :zone_admin_id,presence:true
   validates :check_value,presence:true
   
