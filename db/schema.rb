@@ -63,14 +63,14 @@ ActiveRecord::Schema.define(:version => 20120416083045) do
 
   create_table "reports", :force => true do |t|
     t.string   "name"
-    t.boolean  "supervisor_report", :default => false
-    t.boolean  "worker_report",     :default => false
     t.string   "reporter_name"
     t.integer  "template_id"
     t.integer  "organization_id"
+    t.integer  "committer_id"
+    t.string   "committer_type"
     t.string   "status"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   add_index "reports", ["organization_id"], :name => "index_reports_on_organization_id"
@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(:version => 20120416083045) do
     t.datetime "created_at",                                                                                  :null => false
     t.datetime "updated_at",                                                                                  :null => false
     t.integer  "admin_id"
-    t.integer  "#<ActiveRecord::ConnectionAdapters::TableDefinition:0x007f85f67a0638>_id"
+    t.integer  "#<ActiveRecord::ConnectionAdapters::TableDefinition:0x007fce037a5d90>_id"
     t.string   "remember_token"
   end
 

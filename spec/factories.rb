@@ -18,6 +18,12 @@ FactoryGirl.define do
     password_confirmation       "foobar"
     zone_admin
   end
+  factory :worker do
+    name                        "TestWorker"
+    password                    "foobar"
+    password_confirmation       "foobar"
+    organization        
+  end
   factory :organization do
     name                        "11122"
     phone                       "eeeeddd"
@@ -94,7 +100,7 @@ FactoryGirl.define do
     factory :checker    do
       org_checker               true
     end
-    factory :worker     do
+    factory :_worker     do
       org_worker                 true
     end
   end
