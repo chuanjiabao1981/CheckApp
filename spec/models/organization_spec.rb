@@ -56,6 +56,20 @@ describe Organization do
   it {should respond_to(:reports) }
 
   describe "关联测试" do
+    before do
+      @worker   = FactoryGirl.create(:worker,organization:@org) 
+      puts @worker.valid?
+      @checker  = FactoryGirl.create(:checker,organization:@org)
+    end
+    specify do
+      Worker.find_by_id(@worker.id).should be_valid
+      
+      Checker.find_by_id(@checker.id).should be_valid
+      @org.destroy
+      Worker.find_by_id(@worker.id).should be_nil
+      Checker.find_by_id(@checker.id).should be_nil
+
+    end
   end
 
 end
