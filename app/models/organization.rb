@@ -1,5 +1,5 @@
 class Organization < ActiveRecord::Base
-  attr_accessible :name,:phone,:contact,:address
+  attr_accessible :name,:phone,:contact,:address,:worker_attributes,:checker_attributes
 
   belongs_to :zone
   
@@ -12,5 +12,8 @@ class Organization < ActiveRecord::Base
   validates :phone      ,presence:true,length:{maximum:250}
   validates :contact    ,presence:true,length:{maximum:250}
   validates :address    ,presence:true,length:{maximum:250}
+
+  accepts_nested_attributes_for :checker,:worker
+
 
 end

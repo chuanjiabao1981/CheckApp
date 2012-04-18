@@ -58,7 +58,6 @@ describe Organization do
   describe "关联测试" do
     before do
       @worker   = FactoryGirl.create(:worker,organization:@org) 
-      puts @worker.valid?
       @checker  = FactoryGirl.create(:checker,organization:@org)
     end
     specify do
@@ -71,5 +70,17 @@ describe Organization do
 
     end
   end
-
+  describe "nest attribute 测试" do
+    before do
+      @org = a_zone.organizations.build(name:"a_zone_org",phone:"222333-44",contact:"王先生",address:"北京市",
+                                        checker_attributes:{name:"a_org_cheker",password:"foobar",password_confirmation:"foobar"},
+                                        worker_attributes:{name:"a_org_woker",password:"foobar",password_confirmation:"foobar"}
+                                       )
+    end
+    it { should be_valid }
+    specify do
+      @org.checker should be_valid
+      @org.worker  should be_valid
+    end
+  end
 end
