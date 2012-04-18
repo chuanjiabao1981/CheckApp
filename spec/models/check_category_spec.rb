@@ -15,9 +15,11 @@ require 'spec_helper'
 
 describe CheckCategory do
   let(:the_site_admin) { FactoryGirl.create(:site_admin) }
-  let(:the_template)   { FactoryGirl.create(:for_supervisor,zone_admin:the_site_admin) }
+  let(:a_zone_admin)   { FactoryGirl.create(:zone_admin) }
+  let(:the_template)   { FactoryGirl.create(:for_supervisor,zone_admin:a_zone_admin) }
 
   before {@check_category = the_template.check_categories.build(category:"手续检查",des:"测试水平")}
+  #before {@check_category = FactoryGirl.build(:check_category) }
 
   subject{@check_category}
 

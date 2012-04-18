@@ -88,7 +88,7 @@ describe Report do
   let!(:b_organization)      { b_zone.organizations.build(name:"b_org",phone:"222333",contact:"马科长",address:"十八最") }
 
   let!(:a_worker)            { FactoryGirl.create(:worker,organization:a_organization) }
-  let!(:b_worker)            { FactoryGirl.create(:worker,organization:b_organization) }
+  let!(:b_worker)            { FactoryGirl.create(:worker,organization:b_organization,name:"b_worker") }
 
 
   before do 

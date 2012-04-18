@@ -15,7 +15,6 @@ class Checker < ActiveRecord::Base
 
   validates :name,  presence: true, length:{ maximum:36 },  format:{with:VALID_NAME_REGEX} ,uniqueness: { case_sensitive: false }
   validates :des,   length:{maximum:250}
-  validates :password_confirmation,presence:true, :if => :validate_password?
   validates :organization,presence:true
 
 private 
@@ -23,10 +22,5 @@ private
     session = self.build_session()
     session.remember_token = SecureRandom.urlsafe_base64
   end
-  def validate_password?
-    password.present? || password_confirmation.present?
-  end
-
-
  
 end

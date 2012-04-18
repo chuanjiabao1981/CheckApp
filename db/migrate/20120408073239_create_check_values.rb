@@ -5,6 +5,7 @@ class CreateCheckValues < ActiveRecord::Migration
       t.string :int_name
       t.string :float_name
       t.string :date_name
+      t.string :text_name
       t.references :template
 
 

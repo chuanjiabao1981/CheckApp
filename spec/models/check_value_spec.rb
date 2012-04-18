@@ -19,7 +19,7 @@ require 'spec_helper'
 
 describe CheckValue do
   let(:the_site_admin) { FactoryGirl.create(:site_admin) }
-  let(:the_template)   { FactoryGirl.create(:for_supervisor,zone_admin:the_site_admin)}
+  let(:the_template)   { FactoryGirl.create(:for_supervisor)}
   before {@the_check_value = the_template.build_check_value(boolean_name:"确认",float_name:"取值",date_name:"整改日期") }
   subject {@the_check_value}
   it { should respond_to(:boolean_name) }

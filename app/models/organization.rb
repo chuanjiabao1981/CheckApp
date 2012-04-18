@@ -3,8 +3,8 @@ class Organization < ActiveRecord::Base
 
   belongs_to :zone
   
-  has_one :checker,dependent: :destroy
-  has_one :worker ,dependent: :destroy,inverse_of: :organization,autosave:true
+  has_one :checker,dependent: :destroy,inverse_of: :organization
+  has_one :worker ,dependent: :destroy,inverse_of: :organization
 
   has_many :reports,dependent: :destroy
 

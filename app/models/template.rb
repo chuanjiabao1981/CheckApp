@@ -23,7 +23,7 @@ class Template < ActiveRecord::Base
 
   validates :name,  presence: true, length:{ maximum:64 } ,uniqueness: { case_sensitive: false }
   validates :zone_admin_id,presence:true
-  validates :check_value,presence:true
+  #validates :check_value,presence:true
   
   accepts_nested_attributes_for :check_value
 

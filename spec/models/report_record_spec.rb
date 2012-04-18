@@ -1,0 +1,46 @@
+#encoding:utf-8
+require 'spec_helper'
+
+describe ReportRecord do
+  let!(:the_site_admin)      { FactoryGirl.create(:site_admin) }
+  let!(:a_zone_admin)        { the_site_admin.zone_admins.create(name:"testme",password:"foobar",password_confirmation:"foobar") }
+  let!(:b_zone_admin)        { the_site_admin.zone_admins.create(name:"bzone_admin",password:"foobar",password_confirmation:"foobar") }
+  let!(:a_zone)              { a_zone_admin.zones.create(name:"a_zone",des:"a_zone_des") }
+  let!(:b_zone)              { b_zone_admin.zones.create(name:"b_zone",des:"b_zone_des")}
+  let!(:a_zone_supervisor)   { a_zone_admin.zone_supervisors.create(name:"a_zone_sup",password:"foobar",password_confirmation:"foobar") }
+  let!(:b_zone_supervisor)   { b_zone_admin.zone_supervisors.create(name:"b_zone_sup",password:"foobar",password_confirmation:"foobar") }
+  let!(:a_template)          { a_zone_admin.templates.create(
+                                                            name:'a_template',
+                                                            for_supervisor:true,
+                                                            for_worker:false,
+                                                            check_value_attributes:{boolean_name:"b1",date_name:"d1"}
+                                                          )
+                            }
+  let!(:a_check_category)     {a_template.check_categories.build(category:"手续检查",des:"测试水平")}
+  let!(:a_check_point)        {a_check_category.check_points.build(content:"是否建立了培训制度") }
+
+
+  let!(:b_template)          { b_zone_admin.templates.create(
+                                                            name:'b_template',
+                                                            for_supervisor:true,
+                                                            for_worker:true,
+                                                            check_value_attributes:{boolean_name:"b2",date_name:"dd"}
+                                                           )
+                            }
+                                                                
+  let!(:a_organization)      { a_zone.organizations.build(name:"a_org",phone:"222333",contact:"马科长",address:"十八最") }
+  let!(:b_organization)      { b_zone.organizations.build(name:"b_org",phone:"222333",contact:"马科长",address:"十八最") }
+
+
+
+  before do 
+    @a_supervisor_zone_relation = a_zone.zone_supervisor_relations.create(zone_supervisor_id:a_zone_supervisor.id)
+    @report = a_zone_supervisor.reports.build(reporter_name:"dddd",organization_id:a_organization.id,template_id:a_template.id)
+    @report.name    = "自查报告_模板名称_2012_"
+    @report.status = 'new'
+    @report_record = @report.report_records.build(check_point_id:a_check_point.id,boolean_value:false)
+  end
+
+  it {should be_valid}
+
+end

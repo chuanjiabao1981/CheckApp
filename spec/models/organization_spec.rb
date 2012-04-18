@@ -56,20 +56,17 @@ describe Organization do
   it {should respond_to(:reports) }
 
   describe "关联测试" do
-    before do
-      @worker   = FactoryGirl.create(:worker,organization:@org) 
-      @checker  = FactoryGirl.create(:checker,organization:@org)
-    end
-    specify do
-      Worker.find_by_id(@worker.id).should be_valid
-      
-      Checker.find_by_id(@checker.id).should be_valid
-      @org.destroy
-      Worker.find_by_id(@worker.id).should be_nil
-      Checker.find_by_id(@checker.id).should be_nil
 
+    #let!(:a_checker) {FactoryGirl.create(:checker,organizations:@org) }
+    let!(:a_checker) {@org.create_checker(name:"a_checker",password:"foobar",password_confirmation:"foobar") }
+    let!(:a_worker)  {@org.create_worker(name:"a_worker",password:"foobar",password_confirmation:"foobar") }
+    before  {@org.destroy}
+    specify do
+      Worker.find_by_id(a_worker.id).should be_nil
+      Checker.find_by_id(a_checker.id).should be_nil
     end
   end
+
   describe "nest attribute 测试" do
     before do
       @org = a_zone.organizations.build(name:"a_zone_org",phone:"222333-44",contact:"王先生",address:"北京市",
@@ -78,6 +75,7 @@ describe Organization do
                                        )
     end
     it { should be_valid }
+    
     specify do
       @org.checker should be_valid
       @org.worker  should be_valid

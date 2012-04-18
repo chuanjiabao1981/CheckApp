@@ -16,14 +16,8 @@ class Worker < ActiveRecord::Base
 
   validates :name,  presence: true, length:{ maximum:36 },  format:{with:VALID_NAME_REGEX} ,uniqueness: { case_sensitive: false }
   validates :des,   length:{maximum:250}
-  #validates :password_confirmation,presence:true
   validates :organization,presence:true
 
-  def validate_password?
-    puts password.nil?,password_confirmation.nil?
-    puts password.present?,password_confirmation.present?
-    password.present? || password_confirmation.present?
-  end
 
 private 
   def create_remember_token

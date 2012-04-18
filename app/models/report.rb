@@ -35,6 +35,7 @@ class Report < ActiveRecord::Base
   belongs_to :template,inverse_of: :reports
   belongs_to :organization
   belongs_to :committer,polymorphic:true
+  has_many   :report_records, dependent: :destroy
 
 
   validates :organization,presence:true

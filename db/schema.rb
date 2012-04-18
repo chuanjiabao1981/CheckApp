@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120416083045) do
+ActiveRecord::Schema.define(:version => 20120418114929) do
 
   create_table "check_categories", :force => true do |t|
     t.string   "category"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20120416083045) do
     t.string   "int_name"
     t.string   "float_name"
     t.string   "date_name"
+    t.string   "text_name"
     t.integer  "template_id"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
@@ -60,6 +61,23 @@ ActiveRecord::Schema.define(:version => 20120416083045) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "report_records", :force => true do |t|
+    t.integer  "report_id"
+    t.integer  "check_point_id"
+    t.boolean  "boolean_value"
+    t.integer  "int_value"
+    t.float    "float_value"
+    t.date     "date_value"
+    t.text     "text_value"
+    t.string   "photo_path"
+    t.string   "video_path"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "report_records", ["check_point_id"], :name => "index_report_records_on_check_point_id"
+  add_index "report_records", ["report_id"], :name => "index_report_records_on_report_id"
 
   create_table "reports", :force => true do |t|
     t.string   "name"
@@ -115,7 +133,7 @@ ActiveRecord::Schema.define(:version => 20120416083045) do
     t.datetime "created_at",                                                                                  :null => false
     t.datetime "updated_at",                                                                                  :null => false
     t.integer  "admin_id"
-    t.integer  "#<ActiveRecord::ConnectionAdapters::TableDefinition:0x007fce037a5d90>_id"
+    t.integer  "#<ActiveRecord::ConnectionAdapters::TableDefinition:0x007f921dc272c8>_id"
     t.string   "remember_token"
   end
 

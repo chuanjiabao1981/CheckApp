@@ -13,8 +13,9 @@
 require 'spec_helper'
 
 describe CheckPoint do
-  let(:the_site_admin)        { FactoryGirl.create(:site_admin) }
-  let(:the_template)          { FactoryGirl.create(:for_supervisor,zone_admin:the_site_admin) }
+  #let(:the_site_admin)        { FactoryGirl.create(:site_admin) }
+  let(:a_zone_admin)          { FactoryGirl.create(:zone_admin) }
+  let(:the_template)          { FactoryGirl.create(:for_supervisor,zone_admin:a_zone_admin) }
   let(:a_check_category)      { FactoryGirl.create(:check_category,template:the_template)}
   before { @a_check_point  = a_check_category.check_points.build(content:"是否建立了培训制度") }
   subject{ @a_check_point }

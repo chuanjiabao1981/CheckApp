@@ -24,6 +24,7 @@ FactoryGirl.define do
     password_confirmation       "foobar"
     organization        
   end
+
   factory :checker do
     name                        "TestChecker"
     password                    "foobar"
@@ -64,14 +65,14 @@ FactoryGirl.define do
     des                         "是否建立了责任制度"
     template        
   end
-  factory :template do
-    name                        "食品安全2012"
+  factory :template do |t|
+    t.name                        "食品安全2012"
     zone_admin
     factory :for_worker do
-      for_worker                true
+      t.for_worker                true
     end
     factory :for_supervisor do
-      for_supervisor            true
+      t.for_supervisor            true
     end
   end
   factory :check_value do
@@ -80,6 +81,10 @@ FactoryGirl.define do
     int_name                    nil
     float_name                  nil
     date_name                   nil
+  end
+
+  factory :template_with_check_value,parent: :template do
+    after_create { |a| Factory(:check_value, :template => a) }
   end
  
   factory :zone do

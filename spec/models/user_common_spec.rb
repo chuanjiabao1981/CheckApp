@@ -49,42 +49,9 @@ def user_normal_test
       it {  should_not be_valid }
     end
     describe "密码相关测试" do
-      describe "xyz 测试" do
-        before do 
-          puts "before save digest:"+@user.password_digest
-          @user.password = ''
-          @user.password_confirmation = ''
-          @user.save
-        end
-        specify do
-          old_password = "foobar"
-          new_password = "A"
-          puts @user.password
-          puts @user.password_confirmation
-          puts "can use correct password:" + String(@user.authenticate(old_password) == @user)
-          puts "old digest:"+@user.password_digest
-          @user.should be_valid
-          @user.password = ''
-          @user.password_confirmation = ''
-          puts @user.save
-          puts "digest afer change the password"+@user.password_digest
-          puts "digest in the db:"+Worker.find_by_id(@user.id).password_digest
-
-          puts "new is valid:"+String(@user.valid?)
-          puts "after change:"+@user.password_digest
-        end
-      end
-      describe "密码为空不合法" do
-        before { @user.password = @user.password_confirmation = " " }
-        it {should_not be_valid}
-      end
       describe "密码不匹配不合法" do
         before {@user.password_confirmation ="mis match"}
         it {should_not be_valid}
-      end
-      describe "确认密码为nil不合发" do
-        before {@user.password_confirmation = nil }
-        it {should_not be_valid }
       end
     end
     describe "remember me token" do
