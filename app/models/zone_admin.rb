@@ -18,7 +18,7 @@ class ZoneAdmin < ActiveRecord::Base
 
   validates :name,  presence: true, length:{ maximum:36 },  format:{with:VALID_NAME_REGEX} ,uniqueness: { case_sensitive: false }
   validates :des,   length:{maximum:250}
-  validates :password_confirmation,presence:true,:unless=>"password==''"
+  #validates :password_confirmation,presence:true,:unless=>"password==''"
   validates :template_max_num, :numericality => { only_integer:true ,greater_than_or_equal_to:0}
   validates :template_max_video_num, :numericality => { only_integer:true ,greater_than_or_equal_to:0}
   validates :template_max_photo_num, :numericality => { only_integer:true ,greater_than_or_equal_to:0}

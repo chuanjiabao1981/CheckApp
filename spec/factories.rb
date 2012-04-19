@@ -4,7 +4,15 @@ FactoryGirl.define do
     name                        "TestAdmin"
     password                    "foobar"
     password_confirmation       "foobar"
+
+    factory :site_admin_with_two_zone_admin do
+      after_create do |site_admin|
+        FactoryGirl.create(:zone_admin,site_admin:site_admin,name:"a_zone_admin")
+        FactoryGirl.create(:zone_admin,site_admin:site_admin,name:"b_zone_admin")
+      end
+    end
   end
+
   factory :zone_admin do
     name                        "TestZoneAdmin"
     password                    "foobar"
@@ -86,26 +94,4 @@ FactoryGirl.define do
     des         "testme for ever"
     zone_admin  
   end 
-  factory :user do
-    name                        "TestName"
-    password                    "foobar"
-    password_confirmation       "foobar"
-    des                         "来自于山西"
-    factory :_zone_admin do
-      zone_admin                true
-    end
-    factory :_site_admin do
-      site_admin                true
-    end
-    factory :supervisor do
-      zone_supervisor           true
-      admin 
-    end
-    factory :_checker    do
-      org_checker               true
-    end
-    factory :_worker     do
-      org_worker                 true
-    end
-  end
 end
