@@ -3,11 +3,11 @@ class CreateReportRecords < ActiveRecord::Migration
     create_table :report_records do |t|
       t.references :report
       t.references :check_point
-      t.boolean :boolean_value
-      t.integer :int_value
-      t.float :float_value
-      t.date :date_value
-      t.text :text_value
+      t.boolean :boolean_value,default:false
+      t.integer :int_value,default:0
+      t.float :float_value,default:0.0
+      t.date :date_value,default:'2011-12-03'
+      t.text :text_value,default:''
       t.string :photo_path
       t.string :video_path
 

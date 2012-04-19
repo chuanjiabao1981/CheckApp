@@ -74,7 +74,7 @@ describe Zone do
   describe "Zone删除 ORG同样被删除" do
     before do
       @a_zone.save
-      @a_org = @a_zone.organizations.create(name:"2233333")
+      @a_org = @a_zone.organizations.create(name:"2233333",phone:"159",contact:"xxxx",address:"44444")
     end
     specify do
       Organization.find_by_id(@a_org.id).should_not be_nil

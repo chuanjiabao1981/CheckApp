@@ -24,10 +24,10 @@ ActiveRecord::Schema.define(:version => 20120418114929) do
   create_table "check_points", :force => true do |t|
     t.text     "content"
     t.integer  "check_category_id"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
     t.boolean  "can_photo",         :default => false
     t.boolean  "can_video",         :default => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
   end
 
   create_table "check_values", :force => true do |t|
@@ -65,15 +65,15 @@ ActiveRecord::Schema.define(:version => 20120418114929) do
   create_table "report_records", :force => true do |t|
     t.integer  "report_id"
     t.integer  "check_point_id"
-    t.boolean  "boolean_value"
-    t.integer  "int_value"
-    t.float    "float_value"
-    t.date     "date_value"
-    t.text     "text_value"
+    t.boolean  "boolean_value",  :default => false
+    t.integer  "int_value",      :default => 0
+    t.float    "float_value",    :default => 0.0
+    t.date     "date_value",     :default => '2011-12-03'
+    t.text     "text_value",     :default => ""
     t.string   "photo_path"
     t.string   "video_path"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
   end
 
   add_index "report_records", ["check_point_id"], :name => "index_report_records_on_check_point_id"
@@ -120,25 +120,6 @@ ActiveRecord::Schema.define(:version => 20120418114929) do
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end
-
-  create_table "users", :force => true do |t|
-    t.string   "name"
-    t.string   "password_digest"
-    t.string   "des"
-    t.boolean  "site_admin",                                                               :default => false
-    t.boolean  "zone_admin",                                                               :default => false
-    t.boolean  "zone_supervisor",                                                          :default => false
-    t.boolean  "org_worker",                                                               :default => false
-    t.boolean  "org_checker",                                                              :default => false
-    t.datetime "created_at",                                                                                  :null => false
-    t.datetime "updated_at",                                                                                  :null => false
-    t.integer  "admin_id"
-    t.integer  "#<ActiveRecord::ConnectionAdapters::TableDefinition:0x007f921dc272c8>_id"
-    t.string   "remember_token"
-  end
-
-  add_index "users", ["name"], :name => "index_users_on_name"
-  add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
 
   create_table "workers", :force => true do |t|
     t.string   "name"

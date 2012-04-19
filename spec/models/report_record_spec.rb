@@ -16,8 +16,8 @@ describe ReportRecord do
                                                             check_value_attributes:{boolean_name:"b1",date_name:"d1"}
                                                           )
                             }
-  let!(:a_check_category)     {a_template.check_categories.build(category:"手续检查",des:"测试水平")}
-  let!(:a_check_point)        {a_check_category.check_points.build(content:"是否建立了培训制度") }
+  let!(:a_check_category)     {a_template.check_categories.create(category:"手续检查",des:"测试水平")}
+  let!(:a_check_point)        {a_check_category.check_points.create(content:"是否建立了培训制度") }
 
 
   let!(:b_template)          { b_zone_admin.templates.create(
@@ -40,7 +40,28 @@ describe ReportRecord do
     @report.status = 'new'
     @report_record = @report.report_records.build(check_point_id:a_check_point.id,boolean_value:false)
   end
+  subject {@report_record}
 
-  it {should be_valid}
+  it {should be_valid }
 
+
+  it {should respond_to(:report) }
+  it {should respond_to(:check_point_id) }
+  it {should respond_to(:check_point)}
+  it {should respond_to(:boolean_value)}
+  it {should respond_to(:int_value)}
+  it {should respond_to(:float_value)}
+  it {should respond_to(:date_value)}
+  it {should respond_to(:text_value)}
+  it {should respond_to(:photo_path)}
+  it {should respond_to(:video_path)}
+  
+  describe "没有check_point是非法的" do
+    before do
+      @report_record.check_point_id = '202'
+    end
+    it {should_not be_valid }
+  end
+
+  
 end

@@ -41,12 +41,6 @@ FactoryGirl.define do
 
   factory :report do
     name                        "template_name_time"
-    factory :supervisor_report do
-      supervisor_report         true
-    end
-    factory :worker_report do
-      worker_report             true
-    end
     reporter_name               "ddssss"
     template
     organization
@@ -92,7 +86,6 @@ FactoryGirl.define do
     des         "testme for ever"
     zone_admin  
   end 
-
   factory :user do
     name                        "TestName"
     password                    "foobar"

@@ -25,11 +25,13 @@ class NullNameValidator < ActiveModel::Validator
 end
 
 class CheckValue < ActiveRecord::Base
+  attr_accessible :boolean_name,:int_name,:float_name,:date_name,:text_name
   belongs_to :template,inverse_of: :check_value
   validates :boolean_name, length:{ maximum: 80} 
   validates :int_name,     length:{ maximum: 80}
   validates :float_name,   length:{ maximum: 80}
   validates :date_name,    length:{ maximum: 80}
+  validates :text_name,    length:{ maximum: 80}
   validates_with NullNameValidator
   #这里只能用template不能用template_id
   #因为有可能template_id还不存在

@@ -14,4 +14,6 @@ class CheckPoint < ActiveRecord::Base
   belongs_to :check_category
   validates  :check_category_id,presence:true
   validates  :content,presence:true,length:{maximum:1800} 
+
+  has_many :report_records,dependent: :destroy
 end
