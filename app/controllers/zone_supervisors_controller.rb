@@ -4,16 +4,15 @@ class ZoneSupervisorsController < ApplicationController
   before_filter :correct_user_for_collection,   only: [:new, :create,:index]
 
   def index
-    @zone_supervisors       = @zone_admin.supervisors
+    @zone_supervisors       = @zone_admin.zone_supervisors
   end
   def show
   end
   def new
-    @zone_supervisor = User.new
+    @zone_supervisor = ZoneSupervisor.new
   end
   def create
-    @zone_supervisor = @zone_admin.supervisors.build(params[:user])
-    @zone_supervisor.zone_supervisor = true
+    @zone_supervisor = @zone_admin.zone_supervisors.build(params[:zone_supervisor])
     if @zone_supervisor.save
       redirect_to zone_admin_zone_supervisors_path(@zone_admin)
     else
@@ -23,7 +22,7 @@ class ZoneSupervisorsController < ApplicationController
   def edit
   end
   def update
-    if @zone_supervisor.update_attributes(params[:user])
+    if @zone_supervisor.update_attributes(params[:zone_supervisor])
       return redirect_to zone_admin_zone_supervisors_path(@zone_admin)
     else
       render 'edit'
@@ -36,16 +35,16 @@ class ZoneSupervisorsController < ApplicationController
 
 private 
   def correct_user_for_member
-    @zone_supervisor        = User.find_by_id(params[:id])
+    @zone_supervisor        = ZoneSupervisor.find_by_id(params[:id])
     return redirect_to root_path if not @zone_supervisor
-    @zone_admin             = @zone_supervisor.admin
+    @zone_admin             = @zone_supervisor.zone_admin
     return redirect_to root_path if not @zone_admin
-    return redirect_to root_path unless @zone_admin == current_user or current_user.site_admin?
+    return redirect_to root_path unless @zone_admin == current_user or current_user.session.site_admin?
   end
 
   def correct_user_for_collection
-    @zone_admin             = User.find_by_id(params[:zone_admin_id])
+    @zone_admin             = ZoneAdmin.find_by_id(params[:zone_admin_id])
     return redirect_to root_path if not @zone_admin
-    return redirect_to root_path unless @zone_admin == current_user or current_user.site_admin?
+    return redirect_to root_path unless @zone_admin == current_user or current_user.session.site_admin?
   end
 end

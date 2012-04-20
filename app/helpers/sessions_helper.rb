@@ -22,7 +22,7 @@ module SessionsHelper
   end
 
   def site_or_zone_admin_user
-    redirect_to root_path unless (signed_in? and (current_user.site_admin? or current_user.zone_admin?))
+    redirect_to root_path unless (signed_in? and (current_user.session.site_admin? or current_user.session.zone_admin?))
   end
 
 

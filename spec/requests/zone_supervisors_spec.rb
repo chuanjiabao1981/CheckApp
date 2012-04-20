@@ -4,12 +4,12 @@ require 'spec_helper'
 def sign_in_visit_zone_supervisor_index
   specify do
     page.should have_link('添加督察员',href:new_zone_admin_zone_supervisor_path(a_zone_admin))
-    a_zone_admin.supervisors.each  do |s|
+    a_zone_admin.zone_supervisors.each  do |s|
       page.should have_link('编辑',href:edit_zone_supervisor_path(s))
       page.should have_link('删除',href:zone_supervisor_path(s))
       page.should have_link(s.name,href:zone_supervisor_path(s)) 
     end
-    b_zone_admin.supervisors.each  do |s|
+    b_zone_admin.zone_supervisors.each  do |s|
       page.should_not have_link('编辑',href:edit_zone_supervisor_path(s)) 
       page.should_not have_link('删除',href:zone_supervisor_path(s))
       page.should_not have_link(s.name,href:zone_supervisor_path(s)) 
@@ -26,7 +26,7 @@ end
 def sign_in_visit_zone_supervisor_new
   describe '提供错误信息' do
     it '不增加' do
-      expect { click_button '添加督察员'}.not_to change(User,:count)
+      expect { click_button '添加督察员'}.not_to change(ZoneSupervisor,:count)
     end
   end
   describe '提供正确信息' do
@@ -38,9 +38,9 @@ def sign_in_visit_zone_supervisor_new
       fill_in '备注'  ,with:'123'
     end
     it '增加' do
-      expect { click_button '添加督察员'}.to change(User,:count).by(1)
-      a = User.find_by_name(new_supervisor_name)
-      a.should be_zone_supervisor
+      expect { click_button '添加督察员'}.to change(ZoneSupervisor,:count).by(1)
+      a = ZoneSupervisor.find_by_name(new_supervisor_name)
+      a.should_not be_nil
     end
   end
 end
@@ -60,7 +60,7 @@ def sign_in_visit_zone_supervisor_edit
       click_button '保存'
     end
     specify do
-      a =User.find_by_name(new_supervisor_name_str)
+      a =ZoneSupervisor.find_by_name(new_supervisor_name_str)
       a.should_not be_nil
       page.should have_link('编辑',href:edit_zone_supervisor_path(a))
     end
@@ -69,7 +69,7 @@ end
 
 def sign_in_visit_zone_supervisor_destroy
   it '-1' do
-    expect { click_link '删除' }.to change(User,:count).by(-1)
+    expect { click_link '删除' }.to change(ZoneSupervisor,:count).by(-1)
     page.should_not have_content(a_zone_supervisor1.name)
     page.should have_content(a_zone_supervisor2.name)
   end
@@ -78,12 +78,12 @@ end
 describe "ZoneSupervisors" do
   subject { page }
   let!(:the_site_admin)       { FactoryGirl.create(:site_admin)}
-  let!(:a_zone_admin)         { FactoryGirl.create(:zone_admin,name:"a_zone_admin")}
-  let!(:b_zone_admin)         { FactoryGirl.create(:zone_admin,name:"b_zone_admin")}
-  let!(:a_zone_supervisor1)   { FactoryGirl.create(:supervisor,name:"a_zone_supervisor1",admin:a_zone_admin) }
-  let!(:a_zone_supervisor2)   { FactoryGirl.create(:supervisor,name:"a_zone_supervisor2",admin:a_zone_admin) }
-  let!(:b_zone_supervisor1)   { FactoryGirl.create(:supervisor,name:"b_zone_supervisor1",admin:b_zone_admin) }
-  let!(:b_zone_supervisor2)   { FactoryGirl.create(:supervisor,name:"b_zone_supervisor2",admin:b_zone_admin) }
+  let!(:a_zone_admin)         { FactoryGirl.create(:zone_admin,name:"a_zone_admin",site_admin:the_site_admin)}
+  let!(:b_zone_admin)         { FactoryGirl.create(:zone_admin,name:"b_zone_admin",site_admin:the_site_admin)}
+  let!(:a_zone_supervisor1)   { FactoryGirl.create(:zone_supervisor,name:"a_zone_supervisor1",zone_admin:a_zone_admin) }
+  let!(:a_zone_supervisor2)   { FactoryGirl.create(:zone_supervisor,name:"a_zone_supervisor2",zone_admin:a_zone_admin) }
+  let!(:b_zone_supervisor1)   { FactoryGirl.create(:zone_supervisor,name:"b_zone_supervisor1",zone_admin:b_zone_admin) }
+  let!(:b_zone_supervisor2)   { FactoryGirl.create(:zone_supervisor,name:"b_zone_supervisor2",zone_admin:b_zone_admin) }
 
 
   describe "Index" do

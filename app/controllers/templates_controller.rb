@@ -4,7 +4,7 @@ class TemplatesController < ApplicationController
   before_filter :correct_user_for_collection,   only: [:new, :create,:index]
 
   def index
-    @templates = Template.find_all_by_admin_id(@zone_admin.id)
+    @templates = Template.find_all_by_zone_admin_id(@zone_admin.id)
   end
   def show
     @template     = Template.find_by_id(params[:id])
@@ -46,13 +46,13 @@ class TemplatesController < ApplicationController
   private
   def correct_user_for_member
     @template = current_user.templates.find_by_id(params[:id])
-    redirect_to root_path if @template.nil? and not current_user.site_admin?
+    redirect_to root_path if @template.nil? and not current_user.session.site_admin?
   end
   def correct_user_for_collection
-    if current_user.zone_admin?
+    if current_user.session.zone_admin?
       @zone_admin = current_user
-    elsif current_user.site_admin?
-      @zone_admin = User.find_by_id(params[:zone_admin_id])
+    elsif current_user.session.site_admin?
+      @zone_admin = ZoneAdmin.find_by_id(params[:zone_admin_id])
     end
     if @zone_admin.id.to_s != params[:zone_admin_id] 
       redirect_to root_path

@@ -4,8 +4,8 @@ require 'spec_helper'
 describe "Templates" do
   subject{page}
   let(:the_site_admin)   { FactoryGirl.create(:site_admin)}
-  let(:a_zone_admin)     { FactoryGirl.create(:zone_admin,name:"a_zone_admin")}
-  let(:b_zone_admin)     { FactoryGirl.create(:zone_admin,name:"b_zone_admin")}
+  let(:a_zone_admin)     { FactoryGirl.create(:zone_admin,name:"a_zone_admin",site_admin:the_site_admin)}
+  let(:b_zone_admin)     { FactoryGirl.create(:zone_admin,name:"b_zone_admin",site_admin:the_site_admin)}
   let!(:a_template)      { FactoryGirl.create(:template,zone_admin:a_zone_admin,name:"静心")}
   let!(:a_category1)     { FactoryGirl.create(:check_category,template:a_template,category:"类型一")}
   let!(:b_category2)     { FactoryGirl.create(:check_category,template:a_template,category:"类型二")}

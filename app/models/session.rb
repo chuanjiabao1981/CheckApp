@@ -7,4 +7,7 @@ class Session < ActiveRecord::Base
   def zone_admin?
     return true if self.login_type  == 'ZoneAdmin'
   end
+  def checker?
+    return true if self.login_type == 'Checker'
+  end
 end

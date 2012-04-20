@@ -66,8 +66,8 @@ end
 describe "CheckPoints" do
   subject{page}
   let!(:the_site_admin)   { FactoryGirl.create(:site_admin)}
-  let!(:a_zone_admin)     { FactoryGirl.create(:zone_admin,name:"a_zone_admin")}
-  let!(:b_zone_admin)     { FactoryGirl.create(:zone_admin,name:"b_zone_admin")}
+  let!(:a_zone_admin)     { FactoryGirl.create(:zone_admin,name:"a_zone_admin",site_admin:the_site_admin)}
+  let!(:b_zone_admin)     { FactoryGirl.create(:zone_admin,name:"b_zone_admin",site_admin:the_site_admin)}
   let!(:a_template_name)             { "静心" }
   let!(:a_template_category1_name)   { "类型一" }
   let!(:a_template_category2_name)   { "类型二" }

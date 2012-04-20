@@ -12,7 +12,8 @@
   <%= link_to '退出',signout_path ,method: "delete"%>
 <% else %>
   <%= link_to 'SiteAdmin登陆',site_admin_signin_path %>
-  <%= link_to 'ZoneAdmin登陆','#' %>
+  <%= link_to 'ZoneAdmin登陆',zone_admin_signin_path %>
+  <%= link_to 'Checker登陆',checker_signin_path %>
 <% end %>
 
   <div class="container">

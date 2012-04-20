@@ -5,9 +5,7 @@
     <%= render 'shared/home_left' %>
   <% elsif current_user.session.zone_admin? %>
     <%= render 'shared/home_left' %>
-  <% elsif current_user.zone_supervisor? %>
-    <%= render 'main/zone_supervisor_home' %>
-  <% elsif current_user.org_checker? %>
+  <% elsif current_user.session.checker? %>
     <%= render 'main/org_checker_home' %>
   <% end %>
 <% else %>

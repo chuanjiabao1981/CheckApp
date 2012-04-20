@@ -41,7 +41,7 @@ private
     @template    = @category.template
     return redirect_to root_path if not @template
     @zone_admin  = @template.zone_admin
-    return redirect_to root_path unless @zone_admin == current_user or current_user.site_admin?
+    return redirect_to root_path unless @zone_admin == current_user or current_user.session.site_admin?
   end
 
   def correct_user_for_collection
@@ -50,7 +50,7 @@ private
     @template = @category.template
     return redirect_to root_path if not @template
     @zone_admin = @template.zone_admin
-    return redirect_to root_path unless @zone_admin == current_user or current_user.site_admin?
+    return redirect_to root_path unless @zone_admin == current_user or current_user.session.site_admin?
   end
 
 end

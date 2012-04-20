@@ -30,8 +30,10 @@ CheckApp::Application.routes.draw do
   match '/site_admin/sessions'   ,to:'sessions#site_admin_create',via: :post
   match '/zone_admin/signin'     ,to:'sessions#zone_admin_new'
   match '/zone_admin/sessions'   ,to:'sessions#zone_admin_create',via: :post
+  match '/checker/signin'        ,to:'sessions#checker_new'
+  match '/checker/sessions'      ,to:'sessions#checker_create',via: :post
 
-  match '/signin',  to: 'sessions#new'
+#  match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
 
   root  to:'main#home'
