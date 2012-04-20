@@ -5,6 +5,6 @@ class Session < ActiveRecord::Base
     return true if self.login_type == 'SiteAdmin'
   end
   def zone_admin?
-    return false
+    return true if self.login_type  == 'ZoneAdmin'
   end
 end

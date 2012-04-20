@@ -5,11 +5,7 @@ describe "test" do
   let!(:a_zone_admin)     { the_site_admin.zone_admins.first}
   let!(:b_zone_admin)     { the_site_admin.zone_admins.last}
   it "ceshi " do
-    puts a_zone_admin.valid?
-    a_zone_admin.errors.each do |m|
-      puts m,a_zone_admin.errors[m]
-    end
-    #puts the_site_admin.zone_admins.first.name
+    puts the_site_admin.zone_admins.first.templates
     #puts the_site_admin.zone_admins.last.name
     b_zone_admin.should be_valid
   end

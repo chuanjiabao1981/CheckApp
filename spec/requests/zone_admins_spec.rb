@@ -4,8 +4,8 @@ require 'spec_helper'
 describe "ZoneAdmins" do
   subject { page }
   let!(:the_site_admin) { FactoryGirl.create(:site_admin,name:'t_s_admin') }
-  let!(:a_zone_admin)   { FactoryGirl.create(:zone_admin,name:'a_z_admin',admin:the_site_admin) }
-  let!(:b_zone_admin)   { FactoryGirl.create(:zone_admin,name:'b_z_admin',admin:the_site_admin) }
+  let!(:a_zone_admin)   { FactoryGirl.create(:zone_admin,name:'a_z_admin',site_admin:the_site_admin) }
+  let!(:b_zone_admin)   { FactoryGirl.create(:zone_admin,name:'b_z_admin',site_admin:the_site_admin) }
   let!(:a_org_checker)  { FactoryGirl.create(:checker,name:'a_checker') }
   describe "新增zoneadmin" do
     describe "未登录用户访问 Get" do
@@ -34,7 +34,7 @@ describe "ZoneAdmins" do
       end
       describe "不合法信息" do
         it "不增加用户" do
-          expect { click_button "确定"}.not_to change(User,:count) 
+          expect { click_button "确定"}.not_to change(ZoneAdmin,:count) 
           page.should have_content('表单有 3 errors')
         end
       end
@@ -46,9 +46,9 @@ describe "ZoneAdmins" do
           fill_in "备注",     with: "没啥可说的"
         end
         it " 增加一个用户" do
-          expect { click_button "确定"}.to change(User,:count).by(1)
-          a = User.find_by_name("test_z_admin")
-          a.should be_zone_admin
+          expect { click_button "确定"}.to change(ZoneAdmin,:count).by(1)
+          a = ZoneAdmin.find_by_name("test_z_admin")
+          a.should_not be_nil
         end
       end
     end
@@ -73,13 +73,6 @@ describe "ZoneAdmins" do
       before do 
         sign_in the_site_admin
         get edit_zone_admin_path(201233) 
-      end
-      specify { response.should redirect_to(root_path) }
-    end
-    describe "编辑一个非zoneadmin用户" do
-      before do
-        sign_in the_site_admin
-        get edit_zone_admin_path(a_org_checker)
       end
       specify { response.should redirect_to(root_path) }
     end
@@ -145,10 +138,6 @@ describe "ZoneAdmins" do
         before { get zone_admin_path(1203) }
         specify { response.should redirect_to(root_path) }
       end
-      describe "访问一个非zone_admin" do
-        before { get zone_admin_path(a_org_checker) }
-        specify { response.should redirect_to(root_path) }
-      end
       describe "访问一个存在的zone_admin" do
         before { visit zone_admin_path(a_zone_admin) }
         it     { should have_selector("td",:text=>a_zone_admin.name) }
@@ -203,22 +192,15 @@ describe "ZoneAdmins" do
       before do
         sign_in(the_site_admin)
       end
-      describe "不能删除自己" do
-        before { delete zone_admin_path(the_site_admin) }
-        specify { response.should redirect_to(root_path)}
-      end
-      describe "不能删除非zone_admin" do
-        before { delete zone_admin_path(a_org_checker)}
-        specify{response.should redirect_to(root_path)}
-      end
       describe "删除成功" do
         before do
           visit zone_admins_path
         end
         it "删除成功" do
-          expect { click_link('删除')}.to change(User,:count).by(-1)
+          expect { click_link('删除')}.to change(ZoneAdmin,:count).by(-1)
+          page.should_not have_link('删除',href:zone_admin_path(a_zone_admin))
+          page.should     have_link('删除',href:zone_admin_path(b_zone_admin))
         end
-        it {should_not have_link('删除',href:zone_admin_path(a_org_checker))}
       end
     end
   end

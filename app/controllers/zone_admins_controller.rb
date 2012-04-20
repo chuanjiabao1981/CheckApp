@@ -3,11 +3,10 @@ class ZoneAdminsController < ApplicationController
   before_filter :site_admin_user, only: [:new, :create,:edit,:update,:show,:index,:destroy]
 
   def new
-    @zone_admin_user = User.new
+    @zone_admin_user = ZoneAdmin.new
   end
   def create
-    @zone_admin_user = User.new(params[:user])
-    @zone_admin_user.zone_admin = true
+    @zone_admin_user = ZoneAdmin.new(params[:zone_admin])
     if @zone_admin_user.save
       redirect_to root_path
     else
@@ -16,18 +15,18 @@ class ZoneAdminsController < ApplicationController
   end
 
   def edit
-    @zone_admin_user = User.find_by_id(params[:id])
-    if not @zone_admin_user or not @zone_admin_user.zone_admin?
+    @zone_admin_user = ZoneAdmin.find_by_id(params[:id])
+    if not @zone_admin_user 
       redirect_to root_path
     end
   end
 
   def update
-    @zone_admin_user = User.find(params[:id])
-    if not @zone_admin_user or not @zone_admin_user.zone_admin?
+    @zone_admin_user = ZoneAdmin.find(params[:id])
+    if not @zone_admin_user
       redirect_to root_path
     end
-    if @zone_admin_user.update_attributes(params[:user])
+    if @zone_admin_user.update_attributes(params[:zone_admin])
       redirect_to zone_admin_path(@zone_admin_user)
     else
       render 'edit'
@@ -35,17 +34,18 @@ class ZoneAdminsController < ApplicationController
   end
   
   def show
-    @zone_admin_user = User.find_by_id(params[:id])
-    check_zone_admin_user(@zone_admin_user)
+    @zone_admin_user = ZoneAdmin.find_by_id(params[:id])
+    return redirect_to root_path unless  @zone_admin_user
+    #check_zone_admin_user(@zone_admin_user)
   end
 
   def index
-    @zone_admin_users = User.find_all_by_zone_admin(true)
+    @zone_admin_users = ZoneAdmin.all
   end
   
   def destroy
-    k = User.find(params[:id])
-    if not k or not k.zone_admin? or k.site_admin?
+    k = ZoneAdmin.find(params[:id])
+    if not k or k == current_user
       redirect_to root_path
     else
       k.destroy
