@@ -7,8 +7,8 @@ FactoryGirl.define do
 
     factory :site_admin_with_two_zone_admin do
       after_create do |site_admin|
-        FactoryGirl.create(:zone_admin,site_admin:site_admin,name:"a_zone_admin")
-        FactoryGirl.create(:zone_admin,site_admin:site_admin,name:"b_zone_admin")
+        FactoryGirl.create(:zone_admin_with_two_zone,site_admin:site_admin,name:"a_zone_admin")
+        FactoryGirl.create(:zone_admin_with_two_zone,site_admin:site_admin,name:"b_zone_admin")
       end
     end
   end
@@ -18,7 +18,14 @@ FactoryGirl.define do
     password                    "foobar"
     password_confirmation       "foobar"
     site_admin
-
+    factory :zone_admin_with_two_zone do
+      after_create do |zone_admin|
+        FactoryGirl.create(:zone,name:zone_admin.name+"_zone_1",zone_admin:zone_admin,des:zone_admin.name+"_desfor_1")
+        FactoryGirl.create(:zone,name:zone_admin.name+"_zone_2",zone_admin:zone_admin,des:zone_admin.name+"_desfor_2")
+        FactoryGirl.create(:zone_supervisor,name:zone_admin.name+"_supervisor_1",zone_admin:zone_admin)
+        FactoryGirl.create(:zone_supervisor,name:zone_admin.name+"_supervisor_2",zone_admin:zone_admin)
+      end
+    end
   end
   factory :zone_supervisor do
     name                        "TestZoneSupervisor"
@@ -75,6 +82,11 @@ FactoryGirl.define do
     end
     factory :for_supervisor do
       t.for_supervisor            true
+    end
+    factory :template_with_check_valud do |template|
+      after_create do |template|
+        Factory.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期")
+      end
     end
   end
   factory :check_value do

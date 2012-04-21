@@ -1,0 +1,17 @@
+<% provide(:title, "编辑Zone | "+@zone.name) %> 
+<%= render 'shared/home_left' %>
+<%= form_for(@zone,url:zone_path(@zone)) do |f| %>
+  <%= render 'shared/error_messages' ,:object => f.object%>
+
+  <%= f.label :name,"Zone名称" %>
+  <%= f.text_field :name %>
+  <%= f.label :des,"备注信息" %>
+  <%= f.text_field :des %>
+  <% @zone_admin.zone_supervisors.each do |supervisor| %>
+    <label><%= supervisor.name %>
+      <%= check_box_tag "zone[zone_supervisor_ids][]", supervisor.id, @zone.zone_supervisor_ids.include?(supervisor.id) %>
+    </label>
+  <% end %>
+  <%= f.submit '保存' %> 
+<% end %>
+

@@ -2,7 +2,7 @@
 <%= link_to 'zone管理员',zone_admins_path %>
 <% end %>
 <% if signed_in? and current_user.session.zone_admin? %>
-<%= link_to 'zone管理',zone_admins_path %>
+<%= link_to 'zone管理',zone_admin_zones_path(current_user) %>
 <%= link_to '督察员',zone_admin_zone_supervisors_path(current_user) %>
 <%= link_to '模板', zone_admin_templates_path(current_user) %>
 <% end %>

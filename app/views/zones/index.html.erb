@@ -1,0 +1,13 @@
+<% provide(:title, "全部的Zone") %>
+<%= render 'shared/home_left' %>
+
+<%= link_to '新增Zone',new_zone_admin_zone_path(@zone_admin) %>
+<table>
+  <% @zones.each do |z| %>
+    <tr>
+        <td><%= link_to z.name,zone_path(z) %></td>
+        <td><%= link_to "编辑", edit_zone_path(z)%>
+        <td><%= link_to "删除", zone_path(z), method: :delete, confirm: "确定删除这个zone以及下属全部信息吗？" %>
+    </tr>
+  <% end %>
+</table>

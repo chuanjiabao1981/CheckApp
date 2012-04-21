@@ -1,5 +1,5 @@
 class Zone < ActiveRecord::Base
-  attr_accessible :name,:des
+  attr_accessible :name,:des,:zone_supervisor_ids
 
   belongs_to :zone_admin
 

@@ -33,7 +33,6 @@ CheckApp::Application.routes.draw do
   match '/checker/signin'        ,to:'sessions#checker_new'
   match '/checker/sessions'      ,to:'sessions#checker_create',via: :post
 
-#  match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
 
   root  to:'main#home'
