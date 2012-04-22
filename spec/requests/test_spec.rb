@@ -5,8 +5,6 @@ describe "test" do
   let!(:a_zone_admin)     { the_site_admin.zone_admins.first}
   let!(:b_zone_admin)     { the_site_admin.zone_admins.last}
   it "ceshi " do
-    puts the_site_admin.zone_admins.first.templates
-    #puts the_site_admin.zone_admins.last.name
     b_zone_admin.should be_valid
   end
 end

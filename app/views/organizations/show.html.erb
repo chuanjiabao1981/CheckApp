@@ -1,0 +1,32 @@
+<% provide(:title, "机构|"+@organization.name) %>
+<%= render 'shared/home_left' %>
+
+<%= link_to '编辑',edit_organization_path(@organization) %>
+<table>
+  <tr>
+      <td>名称</td>
+      <td><%= @organization.name %></td>
+  <tr>
+  <tr>
+      <td>联系人</td>
+      <td><%= @organization.contact %> </td>
+  </tr>
+  <tr>
+      <td>电话</td>
+      <td><%= @organization.phone %> </td>
+  </tr>
+  <tr>
+      <td>地址</td>
+      <td><%= @organization.address %> </td> 
+  </tr>
+  <tr>
+      <td>自查员账号</td>
+      <td><%= @organization.worker.name %> </td>
+  </tr>
+  <tr>
+      <td>审核员账号</td>
+      <td><%= @organization.checker.name %> </td>
+  </tr>
+</table>
+
+

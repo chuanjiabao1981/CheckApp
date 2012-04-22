@@ -1,13 +1,13 @@
 <% provide(:title, "Zone | "+@zone.name) %>
 <%= render 'shared/home_left' %>
 
-<%= link_to '新增机构',new_zone_organize_path(@zone) %>
+<%= link_to '新增机构',new_zone_organization_path(@zone) %>
 <%= link_to '编辑',edit_zone_path(@zone) %>
 
 <table>
     <tr>
       <th>名称</th>
-      <td><%= link_to @zone.name,zone_organizes_path(@zone) %></td>
+      <td><%= link_to @zone.name,zone_organizations_path(@zone) %></td>
     </tr>
     <tr>
       <th>简介</th>

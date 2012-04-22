@@ -20,8 +20,8 @@ FactoryGirl.define do
     site_admin
     factory :zone_admin_with_two_zone do
       after_create do |zone_admin|
-        FactoryGirl.create(:zone,name:zone_admin.name+"_zone_1",zone_admin:zone_admin,des:zone_admin.name+"_desfor_1")
-        FactoryGirl.create(:zone,name:zone_admin.name+"_zone_2",zone_admin:zone_admin,des:zone_admin.name+"_desfor_2")
+        FactoryGirl.create(:zone_with_two_organizations,name:zone_admin.name+"_zone_1",zone_admin:zone_admin,des:zone_admin.name+"_desfor_1")
+        FactoryGirl.create(:zone_with_two_organizations,name:zone_admin.name+"_zone_2",zone_admin:zone_admin,des:zone_admin.name+"_desfor_2")
         FactoryGirl.create(:zone_supervisor,name:zone_admin.name+"_supervisor_1",zone_admin:zone_admin)
         FactoryGirl.create(:zone_supervisor,name:zone_admin.name+"_supervisor_2",zone_admin:zone_admin)
       end
@@ -48,10 +48,16 @@ FactoryGirl.define do
   end
   factory :organization do
     name                        "11122"
-    phone                       "eeeeddd"
     contact                     "王科长"
     address                     "xxxxxx"
+    phone                       "1482943"
     zone      
+    factory :organization_with_a_checker_and_a_worker do
+      after_create do |organization|
+        FactoryGirl.create(:worker,name:organization.name+"_worker",organization:organization)
+        FactoryGirl.create(:checker,name:organization.name+"_checker",organization:organization)
+      end
+    end
   end
 
   factory :report do
@@ -105,5 +111,13 @@ FactoryGirl.define do
     name        "中心区"
     des         "testme for ever"
     zone_admin  
+    factory :zone_with_two_organizations do
+      after_create do |zone|
+       # FactoryGirl.create(:organization,name:zone.name+"_org_1",zone:zone)
+       # FactoryGirl.create(:organization,name:zone.name+"_org_2",zone:zone)
+       FactoryGirl.create(:organization_with_a_checker_and_a_worker,name:zone.name + "_org_1",zone:zone)
+       FactoryGirl.create(:organization_with_a_checker_and_a_worker,name:zone.name + "_org_2",zone:zone)
+      end
+    end
   end 
 end

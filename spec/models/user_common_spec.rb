@@ -14,7 +14,7 @@ def user_normal_test
       it { should_not be_valid }
     end
     describe "用户名过长" do
-      before  { @user.name = "t"*100 }
+      before  { @user.name = "t"*129 }
       it { should_not be_valid }
     end
 

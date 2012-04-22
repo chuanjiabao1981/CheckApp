@@ -6,14 +6,14 @@ class Checker < ActiveRecord::Base
   before_save :create_remember_token
 
   has_secure_password
-
-  belongs_to :organization,inverse_of: :checker,autosave:true
+##auto save导致factory_girl的:organization_with_a_checker_and_a_worker递归save
+  belongs_to :organization,inverse_of: :checker#,autosave:true
 
   has_one :session ,as: :login
 
 
 
-  validates :name,  presence: true, length:{ maximum:36 },  format:{with:VALID_NAME_REGEX} ,uniqueness: { case_sensitive: false }
+  validates :name,  presence: true, length:{ maximum:128 },  format:{with:VALID_NAME_REGEX} ,uniqueness: { case_sensitive: false }
   validates :des,   length:{maximum:250}
   validates :organization,presence:true
 

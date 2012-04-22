@@ -1,5 +1,6 @@
 CheckApp::Application.routes.draw do
 
+
   resources :sessions, only: [:new, :create, :destroy]
 
   resources :zone_admins,shallow:true do
@@ -8,11 +9,12 @@ CheckApp::Application.routes.draw do
 
 
   resources :zones,shallow:true,only:[] do
-    resources :organizes
+    resources :organizations
   end
 
-  resources :organizes,shallow:true,only:[] do
+  resources :organizations,shallow:true,only:[] do
     resources :reports
+    #resource  :checker,:worker,except:[:destroy]
   end
 
   resources :reports,shallow:true,only:[] do

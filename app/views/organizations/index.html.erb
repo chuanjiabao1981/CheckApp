@@ -1,0 +1,13 @@
+<% provide(:title, "全部的机构") %>
+<%= render 'shared/home_left' %>
+
+<%= link_to '新增机构',new_zone_organization_path(@zone) %>
+<table>
+  <% @organizations.each do |o| %>
+    <tr>
+        <td><%= link_to o.name,organization_path(o) %></td>
+        <td><%= link_to "编辑", edit_organization_path(o)%>
+        <td><%= link_to "删除", organization_path(o), method: :delete, confirm: "确定删除这个Org以及下属全部信息吗？" %>
+    </tr>
+  <% end %>
+</table>

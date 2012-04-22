@@ -19,9 +19,9 @@ end
 
 def signin_visit_zone_show
   specify do
-    page.should have_link('新增机构',href:new_zone_organize_path(a_zone_1))
+    page.should have_link('新增机构',href:new_zone_organization_path(a_zone_1))
     page.should have_link('编辑',href:edit_zone_path(a_zone_1))
-    page.should have_link(a_zone_1.name,href:zone_organizes_path(a_zone_1))
+    page.should have_link(a_zone_1.name,href:zone_organizations_path(a_zone_1))
     page.should have_selector('td',text:a_zone_1.des)
     a_zone_1.zone_supervisors.each do |zs|
       page.should have_selector('li',text:zs.name)
