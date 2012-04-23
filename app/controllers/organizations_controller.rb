@@ -30,6 +30,10 @@ class OrganizationsController < ApplicationController
       render 'edit'
     end
   end
+  def destroy
+    @organization.destroy
+    return redirect_to zone_organizations_path(@zone)
+  end
 
 private 
   def correct_user_for_member

@@ -115,6 +115,20 @@ def signin_visit_organization_edit
     end
   end
 end
+def signin_visit_organization_destroy
+  describe '正常删除' do
+    it 'org -1' do
+      expect {click_link '删除'}.to change(Organization,:count).by(-1)
+    end
+    it 'worker -1' do
+      expect {click_link '删除'}.to change(Organization,:count).by(-1)
+    end
+    it 'checker -1' do
+      expect {click_link '删除'}.to change(Organization,:count).by(-1)
+    end
+  end
+end
+
 describe "Organiztions" do
   let(:the_site_admin) {FactoryGirl.create(:site_admin_with_two_zone_admin)}
   let(:a_zone_admin)   {the_site_admin.zone_admins.first}
@@ -129,6 +143,24 @@ describe "Organiztions" do
   end
   subject{page}
   describe "index" do
+    describe "非登陆用户" do
+      before  { get zone_organizations_path(a_zone) }
+      specify { response.should redirect_to root_path}
+    end
+    describe "登陆非创建用户" do
+      before do
+        sign_in b_zone_admin
+        get zone_organizations_path(a_zone) 
+      end
+      specify { response.should redirect_to root_path}
+    end
+    describe "访问不存在" do
+      before do
+        sign_in a_zone_admin
+        get zone_organizations_path(1203)
+      end
+      specify { response.should redirect_to root_path}
+    end
     describe "正常访问" do
       before do
         sign_in a_zone_admin
@@ -147,6 +179,24 @@ describe "Organiztions" do
     end
   end
   describe "show" do
+    describe '未登录用户' do
+      before {get organization_path(a_zone_a_org)}
+      specify { response.should redirect_to root_path}
+    end
+    describe '登陆非创建用户' do
+      before do
+        sign_in b_zone_admin
+        get organization_path(a_zone_a_org)
+      end
+      specify { response.should redirect_to root_path }
+    end
+    describe '登陆访问不存在' do  
+      before do
+        sign_in a_zone_admin
+        get organization_path(1203)
+      end
+      specify { response.should redirect_to root_path }
+    end
     describe "正常访问" do
       before do
         sign_in a_zone_admin
@@ -169,7 +219,38 @@ describe "Organiztions" do
     let!(:org_name)        {'test_org'}
     let!(:org_checker)     {'test_org_checker'}
     let!(:org_worker)      {'test_org_worker'}
-
+    describe '未登陆' do
+      before  { get new_zone_organization_path(a_zone) }
+      specify { response.should redirect_to root_path  }
+    end
+    describe "非创建用户get" do
+      before do
+        sign_in b_zone_admin
+        get new_zone_organization_path(a_zone)
+      end
+      specify { response.should redirect_to root_path }
+    end
+    describe "非创建用户post" do
+      before do
+        sign_in b_zone_admin
+        post zone_organizations_path(a_zone)
+      end
+      specify { response.should redirect_to root_path }
+    end
+    describe "不存在get" do
+      before do
+        sign_in a_zone_admin
+        get new_zone_organization_path(1203)
+      end
+      specify { response.should redirect_to root_path }
+    end
+    describe "不存在post" do
+      before do
+        sign_in a_zone_admin
+        post zone_organizations_path(1203)
+      end
+      specify { response.should redirect_to root_path }
+    end
     describe "正常登陆" do
       before do 
         sign_in a_zone_admin
@@ -208,6 +289,24 @@ describe "Organiztions" do
         visit edit_organization_path(a_zone_a_org)
       end
       signin_visit_organization_edit
+    end
+  end
+  describe "destroy" do
+    describe "正常登陆" do
+      before do
+        sign_in a_zone_admin
+        click_link 'zone管理'
+        click_link a_zone_admin.zones.first.name
+        click_link a_zone_admin.zones.first.name
+      end
+      signin_visit_organization_destroy
+    end
+    describe "siteadmin 登陆" do
+      before do
+        sign_in the_site_admin
+        visit zone_organizations_path(a_zone)
+      end
+      signin_visit_organization_destroy
     end
   end
 end
