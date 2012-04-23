@@ -1,0 +1,34 @@
+<% provide(:title, "机构|"+@organization.name) %> 
+<%= render 'shared/home_left' %>
+<%= form_for(@organization,url:organization_path(@organization)) do |f| %>
+  <%= render 'shared/error_messages' ,:object => f.object%>
+
+  <%= f.label :name,"机构名" %>
+  <%= f.text_field :name %>
+  <%= f.label :contact,"联系人" %>
+  <%= f.text_field :contact %>
+  <%= f.label :address,"地址" %>
+  <%= f.text_field :address %>
+  <%= f.label :phone,"联系电话" %>
+  <%= f.text_field :phone %>
+
+  <%= f.fields_for :worker do |worker| %>
+    <%= worker.label :name,"自查员账号"%>
+    <%= worker.text_field :name %>
+    <%= worker.label :password,"自查员密码" %>
+    <%= worker.password_field :password %>
+    <%= worker.label :password_confirmation,"自查员密码确认" %>
+    <%= worker.password_field :password_confirmation %>
+  <% end %>
+  <%= f.fields_for :checker do |checker| %>
+    <%= checker.label :name,"审核员账号"%>
+    <%= checker.text_field :name %>
+    <%= checker.label :password,"审核员密码" %>
+    <%= checker.password_field :password %>
+    <%= checker.label :password_confirmation,"审核员密码确认" %>
+    <%= checker.password_field :password_confirmation %>
+  <% end %>
+
+  <%= f.submit '保存' %> 
+<% end %>
+

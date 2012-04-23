@@ -29,6 +29,92 @@ def signin_visit_organization_show
   end
 end
 
+def signin_visit_organization_new
+  describe '提供正确数据' do
+    before do
+      fill_in '机构名',with:org_name
+      fill_in '联系人',with:'ceshiren'
+      fill_in '联系电话',with:'111111111'
+      fill_in '地址',with:'skk'
+      fill_in '自查员账号',with:org_worker
+      fill_in '自查员密码',with:'foobar'
+      fill_in '自查员密码确认',with:'foobar'
+      fill_in '审核员账号',with:org_checker
+      fill_in '审核员密码',with:'foobar'
+      fill_in '审核员密码确认',with:'foobar'
+    end
+    it 'org +1' do
+      expect {click_button '新增机构'}.to change(Organization,:count).by(1)
+    end
+    it 'checker +1' do
+      expect {click_button '新增机构'}.to change(Checker,:count).by(1)
+    end
+    it 'worker +1' do
+      expect {click_button '新增机构'}.to change(Worker,:count).by(1)
+    end
+  end
+  describe '提供错误数据' do
+    describe '无Checker' do
+      before do
+        fill_in '机构名',with:org_name
+        fill_in '联系人',with:'ceshiren'
+        fill_in '联系电话',with:'111111111'
+        fill_in '地址',with:'skk'
+        fill_in '自查员账号',with:org_worker
+        fill_in '自查员密码',with:'foobar'
+        fill_in '自查员密码确认',with:'foobar'
+      end
+      it 'org notchange' do
+        expect {click_button '新增机构'}.not_to change(Organization,:count)
+      end
+      it 'woker notchange' do
+        expect {click_button '新增机构'}.not_to change(Worker,:count)
+      end
+      it 'checker notchange' do
+        expect {click_button '新增机构'}.not_to change(Checker,:count)
+      end
+    end
+    describe '普通错误' do
+      it 'org notchange' do
+        expect {click_button '新增机构'}.not_to change(Organization,:count)
+      end
+      it 'woker notchange' do
+        expect {click_button '新增机构'}.not_to change(Worker,:count)
+      end
+      it 'checker notchange' do
+        expect {click_button '新增机构'}.not_to change(Checker,:count)
+      end
+    end
+  end
+
+end
+def signin_visit_organization_edit
+  describe "提供正确信息" do
+    before do
+      fill_in '机构名',with:new_org_name
+      fill_in '审核员账号',with:new_checker_name
+      fill_in '自查员账号',with:new_worker_name
+      click_button '保存'
+    end
+    specify do
+      Organization.find_by_name(new_org_name).should_not be_nil
+      Checker.find_by_name(new_checker_name).should_not be_nil
+      Worker.find_by_name(new_worker_name).should_not be_nil
+      page.should have_link(new_org_name,href:organization_path(a_zone_a_org))
+    end
+  end
+  describe "提供错误信息" do
+    before do
+      fill_in '机构名',with:''
+      click_button '保存'
+    end
+    specify do
+      Organization.find_by_name(new_org_name).should be_nil
+      Checker.find_by_name(new_checker_name).should be_nil
+      Worker.find_by_name(new_worker_name).should be_nil
+    end
+  end
+end
 describe "Organiztions" do
   let(:the_site_admin) {FactoryGirl.create(:site_admin_with_two_zone_admin)}
   let(:a_zone_admin)   {the_site_admin.zone_admins.first}
@@ -80,10 +166,11 @@ describe "Organiztions" do
     end
   end
   describe "new" do
+    let!(:org_name)        {'test_org'}
+    let!(:org_checker)     {'test_org_checker'}
+    let!(:org_worker)      {'test_org_worker'}
+
     describe "正常登陆" do
-      let!(:org_name)        {'test_org'}
-      let!(:org_checker)     {'test_org_checker'}
-      let!(:org_worker)      {'test_org_worker'}
       before do 
         sign_in a_zone_admin
         click_link 'zone管理'
@@ -91,35 +178,36 @@ describe "Organiztions" do
         click_link a_zone_admin.zones.first.name
         click_link '新增机构'
       end
-      describe '提供正确数据' do
-        before do
-          fill_in '机构名',with:org_name
-          fill_in '联系人',with:'ceshiren'
-          fill_in '联系电话',with:'111111111'
-          fill_in '地址',with:'skk'
-          fill_in '自查员账号',with:org_worker
-          fill_in '自查员密码',with:'foobar'
-          fill_in '自查员密码确认',with:'foobar'
-          fill_in '审核员账号',with:org_checker
-          fill_in '审核员密码',with:'foobar'
-          fill_in '审核员密码确认',with:'foobar'
-        end
-        it 'org +1' do
-          expect {click_button '新增机构'}.to change(Organization,:count).by(1)
-        end
-        it 'checker +1' do
-          expect {click_button '新增机构'}.to change(Checker,:count).by(1)
-        end
-        it 'worker +1' do
-          expect {click_button '新增机构'}.to change(Worker,:count).by(1)
-        end
+      signin_visit_organization_new
+    end
+    describe "the siteadmin登陆" do
+      before do
+        sign_in the_site_admin
+        visit new_zone_organization_path(a_zone)
       end
-      describe '提供错误数据' do
-        describe '无worker' do
-        end
-        describe '普通错误' do
-        end
+      signin_visit_organization_new
+    end
+  end
+  describe "edit" do
+    let(:new_org_name) {'新名字'}
+    let(:new_checker_name) {'new_checker_name'}
+    let(:new_worker_name)  {'new_worker_name'}
+    describe "正常登陆" do
+      before do
+        sign_in a_zone_admin
+        click_link 'zone管理'
+        click_link a_zone_admin.zones.first.name
+        click_link a_zone_admin.zones.first.name
+        click_link '编辑'
       end
+      signin_visit_organization_edit
+    end
+    describe "site admin登陆" do
+      before do
+        sign_in the_site_admin
+        visit edit_organization_path(a_zone_a_org)
+      end
+      signin_visit_organization_edit
     end
   end
 end

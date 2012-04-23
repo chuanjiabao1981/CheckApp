@@ -21,6 +21,15 @@ class OrganizationsController < ApplicationController
       render 'new'
     end
   end
+  def edit
+  end
+  def update
+    if @organization.update_attributes(params[:organization])
+      return redirect_to zone_organizations_path(@zone)
+    else
+      render 'edit'
+    end
+  end
 
 private 
   def correct_user_for_member
