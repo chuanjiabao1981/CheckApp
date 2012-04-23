@@ -39,6 +39,13 @@ CheckApp::Application.routes.draw do
 
   root  to:'main#home'
 
+
+  namespace :api do
+    match '/worker/login',to:'sessions#worker_login'
+    match '/zone_supervisor/login',to:'sessions#zone_supervisor_login'
+  end
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
