@@ -41,8 +41,10 @@ CheckApp::Application.routes.draw do
 
 
   namespace :api do
-    match '/worker/login',to:'sessions#worker_login'
-    match '/zone_supervisor/login',to:'sessions#zone_supervisor_login'
+    namespace :v1 do
+      match '/worker/login',to:'sessions#worker_login',via: :post
+      match '/zone_supervisor/login',to:'sessions#zone_supervisor_login',via: :post
+    end
   end
 
 
