@@ -273,6 +273,38 @@ describe "Organiztions" do
     let(:new_org_name) {'新名字'}
     let(:new_checker_name) {'new_checker_name'}
     let(:new_worker_name)  {'new_worker_name'}
+    describe "未登录用户" do
+      before { get edit_organization_path(a_zone_a_org) }
+      specify { response.should redirect_to root_path }
+    end
+    describe "非创建用户get" do
+      before do
+        sign_in b_zone_admin
+        get edit_organization_path(a_zone_a_org)
+      end
+      specify { response.should redirect_to root_path }
+    end
+    describe "非创建用户put" do
+      before do
+        sign_in b_zone_admin
+        put organization_path(a_zone_a_org)
+      end
+      specify{ response.should redirect_to root_path }
+    end
+    describe "不存在get" do
+      before do
+        sign_in a_zone_admin
+        get edit_organization_path(1203)
+      end
+      specify { response.should redirect_to root_path }
+    end
+    describe "不存在 put" do
+      before do
+        sign_in a_zone_admin
+        put organization_path(1203)
+      end
+      specify { response.should redirect_to root_path}
+    end
     describe "正常登陆" do
       before do
         sign_in a_zone_admin
@@ -292,6 +324,21 @@ describe "Organiztions" do
     end
   end
   describe "destroy" do
+    describe "未登录用户" do
+      before { delete organization_path(a_zone_a_org) }
+      specify {response.should redirect_to root_path}
+    end
+    describe "登陆非创建用户" do
+      before do
+        sign_in b_zone_admin
+        delete organization_path(a_zone_a_org)
+      end
+      specify { response.should redirect_to root_path }
+    end
+    describe "不存在" do
+      before { delete organization_path(1203) }
+      specify { response.should redirect_to root_path }
+    end
     describe "正常登陆" do
       before do
         sign_in a_zone_admin
