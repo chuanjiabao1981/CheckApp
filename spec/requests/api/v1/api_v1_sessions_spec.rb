@@ -7,7 +7,7 @@ describe "Api::V1::Sessions" do
   let(:a_worker)          {the_site_admin.zone_admins.first.zones.first.organizations.first.worker}
   before do
     a_zone_supervisor.password = 'foobar'
-    a_worker                   = 'foobar'
+    a_worker.password          = 'foobar'
   end
   describe "ZoneSupervisor" do
     let(:login_hash)      {{session:{:name=>a_zone_supervisor.name,"password"=>a_zone_supervisor.password}}}
