@@ -16,6 +16,13 @@ def sign_in(user)
   cookies[:remember_token] = user.session.remember_token
 end
 
+def api_post_request(uri,body)
+  @headers ||= {} 
+  @headers['ACCEPT'] =  'application/json'
+  @headers['CONTENT_TYPE'] = 'application/json'
+  post uri,body,@headers
+end
+
 def check_site_admin_left
   it {should have_link('zone管理员',href:zone_admins_path)}
   it {should have_link('设置')      }

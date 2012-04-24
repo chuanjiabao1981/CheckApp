@@ -1,6 +1,14 @@
 class Session < ActiveRecord::Base
+  
   belongs_to :login , polymorphic: true
 
+
+  def as_json(options={})
+    a          = {}
+    a["token"] = self.remember_token
+    a
+    #super(:only=>[:remember_token])
+  end
   def site_admin?
     return true if self.login_type == 'SiteAdmin'
   end
