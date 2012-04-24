@@ -11,7 +11,7 @@ describe "Api::V1::Sessions" do
   end
   describe "ZoneSupervisor" do
     let(:login_hash)      {{session:{:name=>a_zone_supervisor.name,"password"=>a_zone_supervisor.password}}}
-    let(:login_suc)       {{"status"=>"ok",   "login"=>   a_zone_supervisor.session.as_json}}
+    let(:login_suc)       {{"status"=>"ok",   "login"=>   a_zone_supervisor.session.as_json,"name"=>a_zone_supervisor.name}}
     let(:login_fail)      {{"status"=>"fail", "reason"=>  { "用户名或密码"=> ["错误"] }}               }
     describe "正确密码" do
       before do
@@ -33,7 +33,7 @@ describe "Api::V1::Sessions" do
   end
   describe "Worker" do
     let(:login_hash)      {{session:{:name=>a_worker.name,"password"=>a_worker.password}}}
-    let(:login_suc)       {{"status"=>"ok",   "login"=>   a_worker.session.as_json}}
+    let(:login_suc)       {{"status"=>"ok",   "login"=>   a_worker.session.as_json,"name"=>a_worker.name}}
     let(:login_fail)      {{"status"=>"fail", "reason"=>  { "用户名或密码"=> ["错误"] }}               }
     describe "正确密码" do
       before do
