@@ -11,6 +11,7 @@
 #
 
 class CheckCategory < ActiveRecord::Base
+  JSON_OPTS = {only:[:id,:category,:des],include:{check_points:CheckPoint::JSON_OPTS}}
   attr_accessible :category,:des
   has_many :check_points,:dependent=>:destroy
   belongs_to :template
@@ -18,5 +19,6 @@ class CheckCategory < ActiveRecord::Base
   validates :category,  presence: true, length:{ maximum:255 } 
   validates :des,length:{maximum:600}
   validates :template_id,presence:true
+
 
 end

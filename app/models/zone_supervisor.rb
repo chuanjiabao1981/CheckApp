@@ -1,6 +1,8 @@
 class ZoneSupervisor < ActiveRecord::Base
   VALID_NAME_REGEX = /\A[a-zA-Z\d_]+\z/i
 
+  JSON_OPTS = {only:[],include:{zones:Zone::JSON_OPTS}}
+
   attr_accessible :name,:des,:password,:password_confirmation 
 
   before_save :create_remember_token

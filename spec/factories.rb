@@ -70,28 +70,44 @@ FactoryGirl.define do
 
 
   factory :check_point do
-    content                     "是否有执照"
+    content                     {Faker::Lorem::sentence(5)}
     check_category  
     can_photo                   false
     can_video                   false
   end
   factory :check_category do
-    category                    "手续责任"
+    category                    {Faker::Lorem::words(2)}
     des                         "是否建立了责任制度"
     template        
+    factory :check_category_five_check_points do |check_category|
+      after_create do |check_category|
+        5.times do |n|
+          Factory.create(:check_point,check_category:check_category)
+        end
+      end
+    end
   end
-  factory :template do |t|
-    t.name                        "食品安全2012"
+  factory :template do 
+    name                        "食品安全2012"
     zone_admin
     factory :for_worker do
-      t.for_worker                true
+      for_worker                true
     end
     factory :for_supervisor do
-      t.for_supervisor            true
+      for_supervisor            true
     end
     factory :template_with_check_valud do |template|
       after_create do |template|
         Factory.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期")
+      end
+    end
+    factory :template_with_all_required do |template|
+      sequence(:name)  {|n| "template_#{n}"}
+      after_create do |template|
+        FactoryGirl.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期",text_name:"备注" )
+        2.times do |n|
+          FactoryGirl.create(:check_category_five_check_points,template:template)
+        end
       end
     end
   end
@@ -101,12 +117,9 @@ FactoryGirl.define do
     int_name                    nil
     float_name                  nil
     date_name                   nil
+    text_name                   nil
   end
 
-  factory :template_with_check_value,parent: :template do
-    after_create { |a| Factory(:check_value, :template => a) }
-  end
- 
   factory :zone do
     name        "中心区"
     des         "testme for ever"

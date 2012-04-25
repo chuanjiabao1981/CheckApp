@@ -1,4 +1,6 @@
 class Organization < ActiveRecord::Base
+
+  JSON_OPTS = {only:[:id,:name,:phone,:contact,:address]}
   attr_accessible :name,:phone,:contact,:address,:worker_attributes,:checker_attributes
 
   belongs_to :zone

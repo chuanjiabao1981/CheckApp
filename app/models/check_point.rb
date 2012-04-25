@@ -10,10 +10,12 @@
 #
 
 class CheckPoint < ActiveRecord::Base
+  JSON_OPTS = {only:[:id,:content,:can_photo,:can_video]}
   attr_accessible :content,:can_photo,:can_video
   belongs_to :check_category
   validates  :check_category_id,presence:true
   validates  :content,presence:true,length:{maximum:1800} 
 
   has_many :report_records,dependent: :destroy
+
 end

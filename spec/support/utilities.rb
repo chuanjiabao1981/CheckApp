@@ -23,6 +23,12 @@ def api_post_request(uri,body)
   post uri,body,@headers
 end
 
+def api_get_request(uri)
+  @headers ||= {} 
+  @headers['ACCEPT'] =  'application/json'
+  get uri,nil,@headers
+end
+
 def check_site_admin_left
   it {should have_link('zone管理员',href:zone_admins_path)}
   it {should have_link('设置')      }
