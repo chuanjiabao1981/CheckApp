@@ -16,6 +16,9 @@ CheckApp::Application.routes.draw do
     resources :reports
     #resource  :checker,:worker,except:[:destroy]
   end
+  resources :zone_supervisors,shallow:true,only:[] do
+    resources :zones,only:[:index]
+  end
 
   resources :reports,shallow:true,only:[] do
     resources :records
