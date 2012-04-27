@@ -61,10 +61,11 @@ FactoryGirl.define do
   end
 
   factory :report do
-    name                        "template_name_time"
+    sequence(:name)             {|n| "report_template_time_#{n}"}
     reporter_name               "ddssss"
     template
     organization
+    committer                   factory: :worker
     status                      "new"
   end
 
@@ -126,8 +127,6 @@ FactoryGirl.define do
     zone_admin  
     factory :zone_with_two_organizations do
       after_create do |zone|
-       # FactoryGirl.create(:organization,name:zone.name+"_org_1",zone:zone)
-       # FactoryGirl.create(:organization,name:zone.name+"_org_2",zone:zone)
        FactoryGirl.create(:organization_with_a_checker_and_a_worker,name:zone.name + "_org_1",zone:zone)
        FactoryGirl.create(:organization_with_a_checker_and_a_worker,name:zone.name + "_org_2",zone:zone)
       end

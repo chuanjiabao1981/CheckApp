@@ -25,6 +25,10 @@ module SessionsHelper
     redirect_to root_path unless (signed_in? and (current_user.session.site_admin? or current_user.session.zone_admin?))
   end
 
+  def singed_in_user
+    redirect_to root_path unless signed_in? 
+  end
+
 
   private
 

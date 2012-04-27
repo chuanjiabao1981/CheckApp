@@ -28,8 +28,8 @@ describe ReportRecord do
                                                            )
                             }
                                                                 
-  let!(:a_organization)      { a_zone.organizations.build(name:"a_org",phone:"222333",contact:"马科长",address:"十八最") }
-  let!(:b_organization)      { b_zone.organizations.build(name:"b_org",phone:"222333",contact:"马科长",address:"十八最") }
+  let!(:a_organization)      { a_zone.organizations.create(name:"a_org",phone:"222333",contact:"马科长",address:"十八最") }
+  let!(:b_organization)      { b_zone.organizations.create(name:"b_org",phone:"222333",contact:"马科长",address:"十八最") }
 
 
 
@@ -39,6 +39,7 @@ describe ReportRecord do
     @report.name    = "自查报告_模板名称_2012_"
     @report.status = 'new'
     @report_record = @report.report_records.build(check_point_id:a_check_point.id,boolean_value:false)
+    @report_record.check_category_id = a_check_point.check_category.id
   end
   subject {@report_record}
 
@@ -55,6 +56,8 @@ describe ReportRecord do
   it {should respond_to(:text_value)}
   it {should respond_to(:photo_path)}
   it {should respond_to(:video_path)}
+  it {should respond_to(:check_category)}
+  it {should respond_to(:check_category_id)}
   
   describe "没有check_point是非法的" do
     before do

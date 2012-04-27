@@ -3,6 +3,7 @@ class CreateReportRecords < ActiveRecord::Migration
     create_table :report_records do |t|
       t.references :report
       t.references :check_point
+      t.references :check_category
       t.boolean :boolean_value,default:false
       t.integer :int_value,default:0
       t.float :float_value,default:0.0

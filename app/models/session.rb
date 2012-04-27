@@ -18,4 +18,10 @@ class Session < ActiveRecord::Base
   def checker?
     return true if self.login_type == 'Checker'
   end
+  def worker?
+    return true if self.login_type  == 'Worker'
+  end
+  def zone_supervisor?
+    return true if self.login_type == 'ZoneSupervisor'
+  end
 end

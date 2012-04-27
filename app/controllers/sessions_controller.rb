@@ -40,7 +40,19 @@ class SessionsController < ApplicationController
       render 'checker_new'
     end
   end
+  def worker_new
+  end
 
+  def worker_create
+    worker = Worker.find_by_name(params[:session][:name])
+    if worker && worker.authenticate(params[:session][:password])
+      sign_in(worker)
+      redirect_to root_path
+    else
+      flash.now[:error] = '账号密码错误'
+      render 'worker_new'
+    end
+  end
 
   def destroy
     sign_out

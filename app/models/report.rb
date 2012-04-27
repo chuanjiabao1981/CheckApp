@@ -24,7 +24,7 @@ class ReportValidator < ActiveModel::Validator
         return
       end
     end
-    if record.status != 'new' && record.status !='reject' && record.status != 'done'
+    if record.status != 'new' && record.status !='reject' && record.status != 'finished'
       record.errors[:status] = 'report状态错误'
     end
   end
@@ -44,4 +44,17 @@ class Report < ActiveRecord::Base
   validates :status,presence:true
 
   validates_with ReportValidator
+
+  def supervisor_report?
+    return true if self.committer_type == 'ZoneSupervisor'
+  end
+  def worker_report?
+    return true if self.committer_type == 'Worker'
+  end
+  def is_finished?
+    return true if self.status == 'finished'
+  end
+  def is_new?
+    return true if self.status == 'new'
+  end
 end

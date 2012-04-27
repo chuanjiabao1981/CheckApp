@@ -1,3 +1,4 @@
+#encoding:utf-8
 CheckApp::Application.routes.draw do
 
 
@@ -13,16 +14,30 @@ CheckApp::Application.routes.draw do
   end
 
   resources :organizations,shallow:true,only:[] do
-    resources :reports
-    #resource  :checker,:worker,except:[:destroy]
-  end
-  resources :zone_supervisors,shallow:true,only:[] do
-    resources :zones,only:[:index]
+    resources :reports,shallow:true do
+      collection do
+        #  督察报告，格式html,mobile
+        get 'zone_supervisor',action:'supervisor_report'
+        #  自查报告，格式html，mobile
+        get 'worker',action:'worker_report'
+      end
+      member do
+        #展示报告检查类型
+        get 'check_categories',defaults:{format:'mobile'}
+        #展示报告检查类型下的检查点
+        get 'check_category/:check_category_id/check_points',defaults:{format:'mobile'},as:'check_category_check_point_reports',action:'check_points'
+        #把报告的内容一次性展示出来，主要对zone_admin和checker使用,格式仅html
+        get 'report_detail'
+      end
+    end
   end
 
-  resources :reports,shallow:true,only:[] do
-    resources :records
-  end 
+
+  resources :records,only:[:edit,:update,:show,:destroy]
+
+  match '/report/:id/check_category/:check_category_id/check_point/:check_point_id/records',to:'records#create',via: :post,as:'new_record'
+  
+  
 
   resources :templates  ,:shallow => true,only:[] do 
     resources :check_categories do
@@ -37,10 +52,16 @@ CheckApp::Application.routes.draw do
   match '/zone_admin/sessions'   ,to:'sessions#zone_admin_create',via: :post
   match '/checker/signin'        ,to:'sessions#checker_new'
   match '/checker/sessions'      ,to:'sessions#checker_create',via: :post
+  match '/worker/signin'         ,to:'sessions#worker_new',format:'mobile'
+  match '/worker/sessions'       ,to:'sessions#worker_create',via: :post,format:'mobile'
 
   match '/signout', to: 'sessions#destroy', via: :delete
 
   root  to:'main#home'
+
+  resources :zone_supervisors,shallow:true,only:[] do
+    resources :zones,only:[:index]
+  end
 
 
   namespace :api do
