@@ -65,15 +65,15 @@ describe "Reports" do
         end
       end
     end
-    describe "正常访问 report的某一个category下全部的checkpoints" do
+    describe "正常访问 一个status为new的report的某一个category下全部的checkpoints" do
       before do
         sign_in a_zone_worker
         visit worker_organization_reports_path(a_zone_org,format: :mobile)
         click_link a_report_1.template.name
-        click_link a_report_1.template.check_categories.last.category
+        click_link a_report_1.template.check_categories[2].category
       end
       specify do
-        a_report_1.template.check_categories.last.check_points.each do |cp|
+        a_report_1.template.check_categories[2].check_points.each do |cp|
           #if a_report_1.is_finished?
           #  r = ReportRecord.where('report_id=? and check_point_id=?',a_report_1.id,cp.id)
           #  if r.nil?
@@ -85,13 +85,13 @@ describe "Reports" do
           #  end
           #end
           if a_report_1.is_new? 
-            r = ReportRecord.where('report_id=? and check_point_id=?',a_report_1.id,cp.id)
+            r = ReportRecord.where('report_id=? and check_point_id=?',a_report_1.id,cp.id).first
             if r.nil?
               page.should have_selector('td',text:cp.content)
-              page.should have_link('新建',href:new_report_record_path(a_report_1,cp))
+              page.should have_link('新建',href:new_report_record_path(a_report_1,cp,format: :mobile))
             elsif
               page.should have_selector('td',text:cp.content)
-              page.should have_link('编辑',href:edit_report_record_path(r))
+              page.should have_link('编辑',href:edit_report_record_path(r,format: :mobile))
             end
           end
         end

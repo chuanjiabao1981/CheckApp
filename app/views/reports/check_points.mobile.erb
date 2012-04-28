@@ -1,0 +1,12 @@
+<table>
+  <% @check_category.check_points.each do |cp| %>
+    <tr>
+        <td><%= cp.content %></td>
+        <% if @report.check_point_is_done?(cp.id) %>
+          <td><%= link_to '编辑', edit_report_record_path(@report.get_report_record_by_check_point_id(cp.id),format: :mobile) %></td>
+        <% else %>
+          <td><%= link_to '新建',new_report_record_path(@report,cp,format: :mobile)%></td>
+        <% end %>
+    </tr>
+  <% end %>
+</table>

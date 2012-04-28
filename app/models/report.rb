@@ -58,11 +58,23 @@ class Report < ActiveRecord::Base
     return true if self.status == 'new'
   end
   def get_finished_check_points_num_by_check_category(check_category_id)
-    ReportRecord.where('check_category_id=? and report_id=?',check_category_id,self.id).size
+    #ReportRecord.where('check_category_id=? and report_id=?',check_category_id,self.id).size
+    s = 0
+    self.report_records.each do |rr|
+      s = s+1 if rr.check_category_id == check_category_id
+    end
+    return s
+  end
+  def get_report_record_by_check_point_id(check_point_id)
+    #ReportRecord.where('check_point_id=? and report_id=?',check_point_id,self.id).first
+    self.report_records.each do|rr|
+      return rr.id if rr.check_point_id == check_point_id
+    end
   end
   def check_point_is_done?(check_point_id)
-    self.report_records.each do |r|
-      return true if r.check_point_id == check_point_id
+    self.report_records.each do |rr|
+      return true if rr.check_point_id == check_point_id
     end
+    return false
   end
 end
