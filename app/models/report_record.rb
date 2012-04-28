@@ -12,5 +12,4 @@ class ReportRecord < ActiveRecord::Base
   validates :check_category,presence:true
   #validates :report,presence:true
 
-  ##TODO::check_point和check_category 之间的对应关系
 end

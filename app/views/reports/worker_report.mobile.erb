@@ -1,0 +1,17 @@
+<table>
+<% @worker_reports.each do |report| %>
+  <tr>
+      <td> <%= link_to report.template.name ,check_categories_report_path(report,format: :mobile) %> </td>
+      <td> <%= link_to report.created_at %> </td>
+      <td>
+        <% if report.is_new? %>
+          进行中
+        <% elsif report.is_finished? %>
+          通过
+        <% else %>
+          N/A
+        <% end %>
+      </td>
+  </tr>
+<% end %>
+</table>

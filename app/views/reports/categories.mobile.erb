@@ -1,0 +1,13 @@
+<table>
+<th>
+  <td>检查类型</td>
+  <td>完成百分比</td>
+</th>
+<% @categories.each do |c| %>
+  <tr>
+      <td><%= link_to c.category,check_category_path(c) %></td>
+      <td><%= link_to '编辑',edit_check_category_path(c) %></td>
+      <td><%= link_to '删除',check_category_path(c),method: :delete,confirm:"确定删除这个检查类型，以及下属的检查点吗？" %></td>
+  </tr>
+<% end %>
+</table>

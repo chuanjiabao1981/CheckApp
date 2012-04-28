@@ -59,6 +59,17 @@ FactoryGirl.define do
       end
     end
   end
+  
+  factory :report_record do
+    report
+    check_category  
+    check_point
+    boolean_value   {rand(2) == 1}
+    float_value     {rand(1000.0)}
+    int_value       {rand(2000)}
+    date_value      {rand(10.years).ago.strftime("%Y-%m-%d")  }
+    text_value      {Faker::Lorem::sentence(20)}
+  end
 
   factory :report do
     sequence(:name)             {|n| "report_template_time_#{n}"}
@@ -67,6 +78,19 @@ FactoryGirl.define do
     organization
     committer                   factory: :worker
     status                      "new"
+    factory :report_with_some_records do
+      after_create do |report|
+        report.template.check_categories.first.check_points.each do |cp|
+          Factory.create(:report_record,report:report,check_category:cp.check_category,check_point:cp)
+        end
+        n = 0
+        report.template.check_categories[2].check_points.each do |cp|
+          Factory.create(:report_record,report:report,check_category:cp.check_category,check_point:cp) 
+          n = n+1
+          break if n == 4 
+        end
+      end
+    end
   end
 
 
@@ -77,7 +101,7 @@ FactoryGirl.define do
     can_video                   false
   end
   factory :check_category do
-    category                    {Faker::Lorem::words(2)}
+    category                    {Faker::Lorem::sentence(1)}
     des                         "是否建立了责任制度"
     template        
     factory :check_category_five_check_points do |check_category|
@@ -106,7 +130,7 @@ FactoryGirl.define do
       sequence(:name)  {|n| "template_#{n}"}
       after_create do |template|
         FactoryGirl.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期",text_name:"备注" )
-        2.times do |n|
+        3.times do |n|
           FactoryGirl.create(:check_category_five_check_points,template:template)
         end
       end
