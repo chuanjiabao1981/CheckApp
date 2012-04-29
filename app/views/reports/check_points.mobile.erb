@@ -3,9 +3,19 @@
     <tr>
         <td><%= cp.content %></td>
         <% if @report.check_point_is_done?(cp.id) %>
-          <td><%= link_to '编辑', edit_report_record_path(@report.get_report_record_by_check_point_id(cp.id),format: :mobile) %></td>
+          <% if @report.status_is_new? %>
+            <td><%= link_to '编辑', edit_report_record_path(@report.get_report_record_by_check_point_id(cp.id),format: :mobile) %></td>
+          <% end %>
+          <% if @report.status_is_finished? %>
+            <td> <%= link_to '查看',report_record_path(@report.get_report_record_by_check_point_id(cp.id),format: :mobile) %> <td>
+          <% end %>
         <% else %>
-          <td><%= link_to '新建',new_report_record_path(@report,cp,format: :mobile)%></td>
+          <% if @report.status_is_new? %>
+            <td><%= link_to '新建',new_report_record_path(@report,cp,format: :mobile)%></td>
+          <% end %>
+          <% if @report.status_is_finished? %>
+            <td>未完成</td>
+          <% end %>
         <% end %>
     </tr>
   <% end %>

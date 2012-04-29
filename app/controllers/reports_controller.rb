@@ -48,6 +48,5 @@ private
     if current_user.session.zone_supervisor?
       return redirect_to root_path if current_user.zones.find('id=?',@organization.zone.id).nil?
     end
-
   end
 end

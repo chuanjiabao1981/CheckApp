@@ -14,7 +14,7 @@ CheckApp::Application.routes.draw do
   end
 
   resources :organizations,shallow:true,only:[] do
-    resources :reports,shallow:true do
+    resources :reports,shallow:true,except:[:show] do
       collection do
         #  督察报告，格式html,mobile
         get 'zone_supervisor',action:'supervisor_report'
@@ -22,7 +22,7 @@ CheckApp::Application.routes.draw do
         get 'worker',action:'worker_report'
       end
       member do
-        #展示报告检查类型
+        #展示报告检查类型(替换了resource是的show)
         get 'check_categories',defaults:{format:'mobile'}
         #展示报告检查类型下的检查点
         get 'check_category/:check_category_id/check_points',defaults:{format:'mobile'},as:'check_category_check_point_reports',action:'check_points'

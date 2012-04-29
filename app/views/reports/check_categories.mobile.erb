@@ -1,3 +1,7 @@
+<% if @report.status_is_new? %>
+<%= link_to '编辑',edit_report_path(@report,format: :mobile) %>
+<%= link_to '删除',report_path(@report), method: :delete,confirm:"确定删除自查报告吗?" %>
+<% end %>
 <table>
     <tr>
       <td>检查类型</td>
@@ -6,7 +10,7 @@
     </tr>
   <% @report.template.check_categories.each do |cc| %>
     <tr>
-      <td><%= link_to cc.category,check_category_check_point_reports_report_path(@report,cc) %> </td>
+      <td><%= link_to cc.category,check_category_check_point_reports_report_path(@report,cc,format: :mobile) %> </td>
       <td><%= cc.check_points.size %> </td>
       <td><%= @report.get_finished_check_points_num_by_check_category(cc.id) %></td>
     </tr>

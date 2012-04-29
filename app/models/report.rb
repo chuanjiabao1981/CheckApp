@@ -51,10 +51,10 @@ class Report < ActiveRecord::Base
   def worker_report?
     return true if self.committer_type == 'Worker'
   end
-  def is_finished?
+  def status_is_finished?
     return true if self.status == 'finished'
   end
-  def is_new?
+  def status_is_new?
     return true if self.status == 'new'
   end
   def get_finished_check_points_num_by_check_category(check_category_id)
