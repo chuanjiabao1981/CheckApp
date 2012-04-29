@@ -38,9 +38,11 @@ def validate_test
     describe " worker_report 的 valid关系" do
       describe "worker 只能用worker的摸板" do
         before do
-          @worker_report = b_worker.reports.build(reporter_name:"b_worker",organization_id:b_organization.id,template_id:b_template.id)
+          #@worker_report = b_worker.reports.build(reporter_name:"b_worker",organization_id:b_organization.id,template_id:b_template.id)
+          @worker_report = b_organization.reports.build(reporter_name:"b_worker",template_id:b_template.id)
+          @worker_report.committer = b_worker
           @worker_report.status = 'reject'
-          @worker_report.name ="督察报告-2012-33344"
+          #@worker_report.name ="督察报告-2012-33344"
         end
         specify do
           @worker_report.should be_valid
@@ -93,14 +95,14 @@ describe Report do
 
   before do 
     @a_supervisor_zone_relation = a_zone.zone_supervisor_relations.create(zone_supervisor_id:a_zone_supervisor.id)
-    @report = a_zone_supervisor.reports.build(reporter_name:"dddd",organization_id:a_organization.id,template_id:a_template.id)
-    @report.name    = "自查报告_模板名称_2012_"
+    #@report = a_zone_supervisor.reports.build(reporter_name:"dddd",organization_id:a_organization.id,template_id:a_template.id)
+    @report = a_organization.reports.build(reporter_name:"dddd",template_id:a_template.id)
+    @report.committer = a_zone_supervisor
     @report.status = 'new'
   end
   subject {@report }
   it {should be_valid }
 
-  it {should respond_to(:name)                }  
   it {should respond_to(:reporter_name)       }
   it {should respond_to(:template)            }
   it {should respond_to(:organization)        }

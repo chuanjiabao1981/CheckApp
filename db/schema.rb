@@ -81,7 +81,6 @@ ActiveRecord::Schema.define(:version => 20120418114929) do
   add_index "report_records", ["report_id"], :name => "index_report_records_on_report_id"
 
   create_table "reports", :force => true do |t|
-    t.string   "name"
     t.string   "reporter_name"
     t.integer  "template_id"
     t.integer  "organization_id"

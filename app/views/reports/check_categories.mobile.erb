@@ -2,6 +2,11 @@
 <%= link_to '编辑',edit_report_path(@report,format: :mobile) %>
 <%= link_to '删除',report_path(@report), method: :delete,confirm:"确定删除自查报告吗?" %>
 <% end %>
+<ul>
+  <li><%= @report.template.name%></li>
+  <li><%= @report.reporter_name%></li>
+  <li><%= @report.created_at %></li>
+</ul>
 <table>
     <tr>
       <td>检查类型</td>

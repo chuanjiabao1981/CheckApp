@@ -72,7 +72,7 @@ FactoryGirl.define do
   end
 
   factory :report do
-    sequence(:name)             {|n| "report_template_time_#{n}"}
+    #sequence(:name)             {|n| "report_template_time_#{n}"}
     reporter_name               "ddssss"
     template
     organization

@@ -40,6 +40,7 @@ describe "Reports" do
       specify do
         a_report_1.should be_valid
         a_template.should be_valid
+        page.should have_link('新建报告',href:new_organization_report_path(a_zone_org,format: :mobile))
         a_zone_org.reports.each do |report|
           if report.supervisor_report?
             page.should_not have_link(report.template.name,href:check_categories_report_path(report,format: :mobile))
@@ -66,6 +67,7 @@ describe "Reports" do
           #仅能修改提交人姓名
           page.should have_link('编辑',href:edit_report_path(a_report_1,format: :mobile))
           page.should have_link('删除',href:report_path(a_report_1))
+          page.should have_selector('li',text:a_report_1.reporter_name)
 
           a_report_1.template.check_categories.each do |cc|
             page.should have_selector('td',text:cc.check_points.size().to_s)
@@ -125,6 +127,26 @@ describe "Reports" do
             page.should have_link('查看',href:report_record_path(r,format: :mobile))
           end
         end
+      end
+    end
+    describe "new a report" do
+      before do
+        sign_in(a_zone_worker)
+        visit worker_organization_reports_path(a_zone_org,format: :mobile)
+        click_link '新建报告'
+      end
+      describe "正常信息" do
+        before do
+          fill_in '提交人员',with: '马李了'
+          select a_zone_admin.templates.first.name, from:'报告类型'
+        end
+        it "增加一个" do
+          expect { click_button '新增'}.to change(Report,:count).by(1)
+        end
+      end
+    end
+    describe "edit a report" do
+      before do
       end
     end
   end

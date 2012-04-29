@@ -35,8 +35,8 @@ describe ReportRecord do
 
   before do 
     @a_supervisor_zone_relation = a_zone.zone_supervisor_relations.create(zone_supervisor_id:a_zone_supervisor.id)
-    @report = a_zone_supervisor.reports.build(reporter_name:"dddd",organization_id:a_organization.id,template_id:a_template.id)
-    @report.name    = "自查报告_模板名称_2012_"
+    @report = a_organization.reports.build({reporter_name:"dddd",template_id:a_template.id})#,committer:a_zone_supervisor)
+    @report.committer = a_zone_supervisor
     @report.status = 'new'
     @report_record = @report.report_records.build(check_point_id:a_check_point.id,boolean_value:false)
     @report_record.check_category_id = a_check_point.check_category.id

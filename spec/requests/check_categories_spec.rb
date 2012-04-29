@@ -35,7 +35,7 @@ def sign_in_visit_category_new
     let(:new_category_name) {"ddxxxiaoliaoliao"}
     before do
       fill_in '检查类型名称',with:new_category_name
-      fill_in '描述'        ,with:"xxxxxdddowoo li"
+      fill_in '备注'        ,with:"xxxxxdddowoo li"
     end
     it "检查类型增加" do
       expect {click_button '新增检查类型'}.to change(CheckCategory,:count).by(1)

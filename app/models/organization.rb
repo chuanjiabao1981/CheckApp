@@ -17,5 +17,11 @@ class Organization < ActiveRecord::Base
 
   accepts_nested_attributes_for :checker,:worker
 
+  def build_a_report(report_attribute,committer)
+    a = self.reports.build(report_attribute)
+    a.committer = committer
+    a.set_status_new
+    return a
+  end
 
 end

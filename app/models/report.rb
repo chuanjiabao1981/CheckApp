@@ -31,7 +31,8 @@ class ReportValidator < ActiveModel::Validator
 end
 
 class Report < ActiveRecord::Base
-  attr_accessible :template_id,:organization_id,:reporter_name
+  #attr_accessible :template_id,:organization_id,:reporter_name
+  attr_accessible :template_id,:reporter_name
   belongs_to :template,inverse_of: :reports
   belongs_to :organization
   belongs_to :committer,polymorphic:true
@@ -58,7 +59,6 @@ class Report < ActiveRecord::Base
     return true if self.status == 'new'
   end
   def get_finished_check_points_num_by_check_category(check_category_id)
-    #ReportRecord.where('check_category_id=? and report_id=?',check_category_id,self.id).size
     s = 0
     self.report_records.each do |rr|
       s = s+1 if rr.check_category_id == check_category_id
@@ -66,7 +66,6 @@ class Report < ActiveRecord::Base
     return s
   end
   def get_report_record_by_check_point_id(check_point_id)
-    #ReportRecord.where('check_point_id=? and report_id=?',check_point_id,self.id).first
     self.report_records.each do|rr|
       return rr.id if rr.check_point_id == check_point_id
     end
@@ -76,5 +75,8 @@ class Report < ActiveRecord::Base
       return true if rr.check_point_id == check_point_id
     end
     return false
+  end
+  def set_status_new
+    self.status = 'new'
   end
 end
