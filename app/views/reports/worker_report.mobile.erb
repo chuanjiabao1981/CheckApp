@@ -1,5 +1,6 @@
-
-<%= link_to '新建报告',new_organization_report_path(@organization,format: :mobile) %>
+<% if @organization.worker == current_user %>
+<%= link_to '新建自检报告',new_organization_report_path(@organization,format: :mobile) %>
+<% end %>
 <table>
 <% @worker_reports.each do |report| %>
   <tr>

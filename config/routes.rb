@@ -44,14 +44,17 @@ CheckApp::Application.routes.draw do
   end
 
 
-  match '/site_admin/signin'     ,to:'sessions#site_admin_new'
-  match '/site_admin/sessions'   ,to:'sessions#site_admin_create',via: :post
-  match '/zone_admin/signin'     ,to:'sessions#zone_admin_new'
-  match '/zone_admin/sessions'   ,to:'sessions#zone_admin_create',via: :post
-  match '/checker/signin'        ,to:'sessions#checker_new'
-  match '/checker/sessions'      ,to:'sessions#checker_create',via: :post
-  match '/worker/signin'         ,to:'sessions#worker_new',format:'mobile'
-  match '/worker/sessions'       ,to:'sessions#worker_create',via: :post,format:'mobile'
+  match '/site_admin/signin'              ,to:'sessions#site_admin_new'
+  match '/site_admin/sessions'            ,to:'sessions#site_admin_create',via: :post
+  match '/zone_admin/signin'              ,to:'sessions#zone_admin_new'
+  match '/zone_admin/sessions'            ,to:'sessions#zone_admin_create',via: :post
+  match '/checker/signin'                 ,to:'sessions#checker_new'
+  match '/checker/sessions'               ,to:'sessions#checker_create',via: :post
+  match '/worker/signin'                  ,to:'sessions#worker_new',format:'mobile'
+  match '/worker/sessions'                ,to:'sessions#worker_create',via: :post,format:'mobile'
+  match '/zone_supervisor/signin'         ,to:'sessions#zone_supervisor_new',format:'mobile'
+  match '/zone_supervisor/sessions'       ,to:'sessions#zone_supervisor_create',via: :post,format:'mobile'
+
 
   match '/signout', to: 'sessions#destroy', via: :delete
 

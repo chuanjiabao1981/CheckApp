@@ -55,6 +55,19 @@ class SessionsController < ApplicationController
     end
   end
 
+  def zone_supervisor_new
+  end
+  def zone_supervisor_create
+    zone_supervisor = ZoneSupervisor.find_by_name(params[:session][:name])
+    if zone_supervisor and zone_supervisor.authenticate(params[:session][:password])
+      sign_in(zone_supervisor)
+      redirect_to root_path
+    else
+      flash.now[:error] ='账号密码错误'
+      render 'zone_supervisor_new'
+    end
+  end
+
   def destroy
     sign_out
     redirect_to root_path

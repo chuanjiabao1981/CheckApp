@@ -8,6 +8,8 @@ def sign_in(user)
     visit checker_signin_path
   elsif user.class == Worker
     visit worker_signin_path(format: :mobile)
+  elsif user.class == ZoneSupervisor
+    visit zone_supervisor_signin_path(foramt: :mobile)
   end
   fill_in "账号",    with: user.name
   fill_in "密码", with: user.password

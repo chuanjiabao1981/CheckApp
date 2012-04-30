@@ -1,5 +1,6 @@
 class ReportsController < ApplicationController
-  before_filter :singed_in_user,only:[:worker_report,:check_categories]
+  before_filter :singed_in_user
+  before_filter :validate_format,                         only:[:worker_report,:check_categories,:check_points,:new,:edit]
   before_filter :validate_organization_visitor,           only:[:worker_report]
   before_filter :validate_report_visitor,                 only:[:check_categories]
   before_filter :validate_report_check_points_visitor,  only:[:check_points]
@@ -7,7 +8,11 @@ class ReportsController < ApplicationController
   before_filter :validate_report_template_when_create,    only:[:create]
   before_filter :validate_report_edit_and_update_and_destroy,         only:[:edit,:update,:destroy]
   def worker_report
-    @worker_reports = Report.where('organization_id=? and committer_type=?',params[:organization_id],'Worker')
+    if current_user.session.checker? or current_user.session.worker?
+      @worker_reports = Report.where('organization_id=? and committer_type=?',params[:organization_id],'Worker')
+    elsif
+      @worker_reports = Report.where('organization_id=? and committer_type=? and status = ?',params[:organization_id],'Worker','finished')
+    end
     respond_to do |format|
       format.mobile
     end
@@ -41,7 +46,7 @@ class ReportsController < ApplicationController
       elsif current_user.session.zone_supervisor?
         @template_list = Template.where(for_supervisor:true,zone_admin_id:@organization.zone.zone_admin_id)
       end
-      render 'new.mobile'
+      render 'new',formats: [:mobile]
     end
   end
 
@@ -52,12 +57,16 @@ class ReportsController < ApplicationController
     if @report.update_attributes(reporter_name:params[:report][:reporter_name])
       redirect_to check_categories_report_path(@report,format: :mobile)
     else
-      render 'edit.mobile'
+      render 'edit',formats: [:mobile]
     end
   end
 
   def destroy
-    @report.destroy
+    if @report.status_is_new?
+      @report.destroy
+    elsif current_user.session.site_admin? or current_user.session.checker? or current_user.zone_supervisor?
+      @report.destroy
+    end
     return redirect_to worker_organization_reports_path(@report.organization,format: :mobile) if @report.worker_report?
     return redirect_to zone_supervisor_organization_reports(@report.organization,format: :mobile) if @report.supervisor_report?
   end
@@ -101,6 +110,13 @@ private
   def validate_organization_visitor
     check_current_user_can_visit_the_organization(params[:organization_id])
   end
+  def validate_format
+    if request.format == :mobile
+      return redirect_to root_path unless current_user.session.worker? or current_user.session.zone_supervisor?
+    else request.format == :html
+      return redirect_to root_path unless current_user.session.zone_admin? or current_user.session.checker? or current_user.session.site_admin?
+    end
+  end
   def check_current_user_can_visit_the_organization(organization_id)
     @organization = Organization.find_by_id(organization_id)
     return redirect_to root_path if @organization.nil?
@@ -110,8 +126,11 @@ private
     if current_user.session.worker?
       return redirect_to root_path unless @organization.worker  == current_user
     end
+    if current_user.session.checker?
+      return redirect_to root_path unless @organization.checker == current_user
+    end
     if current_user.session.zone_supervisor?
-      return redirect_to root_path if current_user.zones.find('id=?',@organization.zone.id).nil?
+      return redirect_to root_path unless current_user.zone_ids.include?(@organization.zone.id)
     end
   end
 end
