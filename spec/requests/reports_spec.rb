@@ -64,7 +64,7 @@ describe "Reports" do
       describe "report status 是new" do
         before { click_link a_report_1.template.name }
         specify do
-          #仅能修改提交人姓名
+          #TODO::owner才能有编辑和修改功能
           page.should have_link('编辑',href:edit_report_path(a_report_1,format: :mobile))
           page.should have_link('删除',href:report_path(a_report_1))
           page.should have_selector('li',text:a_report_1.reporter_name)
@@ -141,12 +141,43 @@ describe "Reports" do
           select a_zone_admin.templates.first.name, from:'报告类型'
         end
         it "增加一个" do
+          #TODO::基本元素的存在
           expect { click_button '新增'}.to change(Report,:count).by(1)
         end
       end
     end
     describe "edit a report" do
       before do
+        sign_in a_zone_worker
+        visit worker_organization_reports_path(a_zone_org,format: :mobile)
+        click_link a_zone_org.reports.first.template.name
+        click_link '编辑'
+      end
+      it '基本元素正常' do
+        page.should have_selector('li',text:a_zone_org.reports.first.template.name)
+      end
+      describe "正常修改" do
+        let(:new_reporter_name) {'了马李'}
+        before do
+          fill_in '提交人员',with:new_reporter_name
+          click_button '保存'
+        end
+        it '修改提交者名称' do
+          page.should have_selector('li',text:new_reporter_name)
+        end
+      end
+    end
+    describe "destroy a report" do
+      before do
+        sign_in a_zone_worker
+        visit worker_organization_reports_path(a_zone_org,format: :mobile)
+        click_link a_zone_org.reports.first.template.name
+      end
+      it "-1" do 
+        expect { click_link '删除' }.to change(Report,:count).by(-1)
+      end
+      it "-9" do
+        expect {click_link '删除'}.to change(ReportRecord,:count).by(-9)
       end
     end
   end

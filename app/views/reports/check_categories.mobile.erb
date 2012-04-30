@@ -1,4 +1,4 @@
-<% if @report.status_is_new? %>
+<% if @report.status_is_new? and @report.committer == current_user %>
 <%= link_to '编辑',edit_report_path(@report,format: :mobile) %>
 <%= link_to '删除',report_path(@report), method: :delete,confirm:"确定删除自查报告吗?" %>
 <% end %>

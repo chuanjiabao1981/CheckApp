@@ -47,7 +47,8 @@ class SessionsController < ApplicationController
     worker = Worker.find_by_name(params[:session][:name])
     if worker && worker.authenticate(params[:session][:password])
       sign_in(worker)
-      redirect_to root_path
+      #redirect_to root_path
+      redirect_to worker_organization_reports_path(worker.organization,format: :mobile)
     else
       flash.now[:error] = '账号密码错误'
       render 'worker_new'

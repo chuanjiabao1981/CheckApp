@@ -1,10 +1,11 @@
 class ReportsController < ApplicationController
   before_filter :singed_in_user,only:[:worker_report,:check_categories]
-  before_filter :user_can_visit_worker_report,only:[:worker_report]
-  before_filter :user_can_visit_report_check_categories,only:[:check_categories]
-  before_filter :user_can_visit_report_check_points,only:[:check_points]
-  before_filter :user_can_create_new_report,only:[:new,:create]
-  before_filter :can_use_the_template,only:[:create]
+  before_filter :validate_organization_visitor,           only:[:worker_report]
+  before_filter :validate_report_visitor,                 only:[:check_categories]
+  before_filter :validate_report_check_points_visitor,  only:[:check_points]
+  before_filter :validate_report_creater,                 only:[:new,:create]
+  before_filter :validate_report_template_when_create,    only:[:create]
+  before_filter :validate_report_edit_and_update_and_destroy,         only:[:edit,:update,:destroy]
   def worker_report
     @worker_reports = Report.where('organization_id=? and committer_type=?',params[:organization_id],'Worker')
     respond_to do |format|
@@ -35,11 +36,6 @@ class ReportsController < ApplicationController
     if @report.save
       redirect_to check_categories_report_path(@report)
     else
-      logger.debug(params[:report])
-      @report.errors.each do |e|
-        logger.debug(e)
-        logger.debug(@report.errors[e])
-      end
       if current_user.session.worker?
         @template_list = Template.where(for_worker:true,zone_admin_id:@organization.zone.zone_admin_id)
       elsif current_user.session.zone_supervisor?
@@ -49,37 +45,63 @@ class ReportsController < ApplicationController
     end
   end
 
-private
-  def can_use_the_template
-    return root_path if params[:report][:template_id].nil?
-    @template = Template.find_by_id(params[:report][:template_id])
-    if current_user.session.zone_supervisor?
-      return root_path unless @template.zone_admin == current_user.zone_admin
+
+  def edit
+  end
+  def update
+    if @report.update_attributes(reporter_name:params[:report][:reporter_name])
+      redirect_to check_categories_report_path(@report,format: :mobile)
     else
-      return root_path unless @template.zone_admin == current_user.organization.zone.zone_admin
+      render 'edit.mobile'
     end
   end
-  def user_can_create_new_report
+
+  def destroy
+    @report.destroy
+    return redirect_to worker_organization_reports_path(@report.organization,format: :mobile) if @report.worker_report?
+    return redirect_to zone_supervisor_organization_reports(@report.organization,format: :mobile) if @report.supervisor_report?
+  end
+
+private
+  #just for reportor_name
+  def validate_report_edit_and_update_and_destroy
+    @report = Report.find_by_id(params[:id]) 
+    return redirect_to root_path if @report.nil?
+    return redirect_to root_path unless @report.committer == current_user
+  end
+  def validate_report_template_when_create
+    return root_path if params[:report][:template_id].nil?
+    @template       = Template.find_by_id(params[:report][:template_id])
+    #@organization 在validate_organization_visitor中已经计算过了
+    if current_user.session.zone_supervisor?
+      return root_path unless @template.zone_admin == current_user.zone_admin
+      return root_path unless @current_user.zone_ids.include?(@organization.id)
+    else
+      return root_path unless @template.zone_admin == current_user.organization.zone.zone_admin
+      return root_path unless @organization == current_user.organization
+    end
+  end
+  def validate_report_creater
     #只有worker 和 zone_supervisor才能访问这个 controller
     #否则无法设置 report 的committer
     return root_path unless current_user.session.worker? or current_user.session.zone_supervisor?
-    validate_visit_user(params[:organization_id])
+    check_current_user_can_visit_the_organization(params[:organization_id])
   end
-  def user_can_visit_report_check_points
+  def validate_report_check_points_visitor
     @report = Report.find_by_id(params[:id])
     return redirect_to root_path if @report.nil?
     return redirect_to root_path unless @report.template.check_category_ids.include?(params[:check_category_id].to_i)
-    validate_visit_user(@report.organization_id)
+    check_current_user_can_visit_the_organization(@report.organization_id)
   end
-  def user_can_visit_report_check_categories
+  def validate_report_visitor
     @report = Report.find_by_id(params[:id]) 
     return redirect_to root_path if @report.nil?
-    validate_visit_user(@report.organization.id)
+    check_current_user_can_visit_the_organization(@report.organization.id)
   end
-  def user_can_visit_worker_report
-    validate_visit_user(params[:organization_id])
+  def validate_organization_visitor
+    check_current_user_can_visit_the_organization(params[:organization_id])
   end
-  def validate_visit_user(organization_id)
+  def check_current_user_can_visit_the_organization(organization_id)
     @organization = Organization.find_by_id(organization_id)
     return redirect_to root_path if @organization.nil?
     if current_user.session.zone_admin?

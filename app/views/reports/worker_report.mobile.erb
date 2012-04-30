@@ -4,7 +4,7 @@
 <% @worker_reports.each do |report| %>
   <tr>
       <td> <%= link_to report.template.name ,check_categories_report_path(report,format: :mobile) %> </td>
-      <td> <%= link_to report.created_at %> </td>
+      <td> <%= report.created_at %> </td>
       <td>
         <% if report.status_is_new? %>
           进行中

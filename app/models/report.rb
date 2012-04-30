@@ -58,6 +58,9 @@ class Report < ActiveRecord::Base
   def status_is_new?
     return true if self.status == 'new'
   end
+  def get_finished_check_points_num
+    self.report_records.size
+  end
   def get_finished_check_points_num_by_check_category(check_category_id)
     s = 0
     self.report_records.each do |rr|

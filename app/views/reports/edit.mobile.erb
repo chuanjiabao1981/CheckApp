@@ -1,0 +1,11 @@
+<ul>
+  <li><%= @report.template.name %></li>
+  <li><%= @report.created_at %></li>
+</ul>
+<%= form_for(@report,url:report_path(@reporte)) do |f| %>
+  <%= render 'shared/error_messages' ,:object => f.object%>
+  <%= f.label :reporter_name,"提交人员" %>
+  <%= f.text_field :reporter_name %>
+  <%= f.submit '保存' %> 
+<% end %>
+
