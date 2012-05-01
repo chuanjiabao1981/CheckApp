@@ -1,7 +1,7 @@
 class ReportsController < ApplicationController
   before_filter :singed_in_user
-  before_filter :validate_format,                         only:[:worker_report,:check_categories,:check_points,:new,:edit]
-  before_filter :validate_organization_visitor,           only:[:worker_report]
+  before_filter :validate_format,                         only:[:worker_report,:check_categories,:check_points,:new,:edit,:supervisor_report]
+  before_filter :validate_organization_visitor,           only:[:worker_report,:supervisor_report]
   before_filter :validate_report_visitor,                 only:[:check_categories]
   before_filter :validate_report_check_points_visitor,  only:[:check_points]
   before_filter :validate_report_creater,                 only:[:new,:create]
@@ -12,6 +12,16 @@ class ReportsController < ApplicationController
       @worker_reports = Report.where('organization_id=? and committer_type=?',params[:organization_id],'Worker')
     elsif
       @worker_reports = Report.where('organization_id=? and committer_type=? and status = ?',params[:organization_id],'Worker','finished')
+    end
+    respond_to do |format|
+      format.mobile
+    end
+  end
+  def supervisor_report
+    if current_user.session.checker? or current_user.session.worker?
+      @supervisor_reports = Report.where('organization_id=? and committer_type=? and status = ?',params[:organization_id],'ZoneSupervisor','finished')
+    elsif
+      @supervisor_reports = Report.where('organization_id=? and committer_type=?',params[:organization_id],'ZoneSupervisor')
     end
     respond_to do |format|
       format.mobile
@@ -64,11 +74,11 @@ class ReportsController < ApplicationController
   def destroy
     if @report.status_is_new?
       @report.destroy
-    elsif current_user.session.site_admin? or current_user.session.checker? or current_user.zone_supervisor?
+    elsif current_user.session.site_admin? or current_user.session.checker? or current_user.session.zone_supervisor?
       @report.destroy
     end
     return redirect_to worker_organization_reports_path(@report.organization,format: :mobile) if @report.worker_report?
-    return redirect_to zone_supervisor_organization_reports(@report.organization,format: :mobile) if @report.supervisor_report?
+    return redirect_to zone_supervisor_organization_reports_path(@report.organization,format: :mobile) if @report.supervisor_report?
   end
 
 private
