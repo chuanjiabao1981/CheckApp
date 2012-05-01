@@ -546,12 +546,127 @@ def normal_supervisor_report_destroy
   end
 
 end
+def unnormal_supervisor_report_index
+  describe "zone_supervisor 报告的异常测试" do
+    describe "zone supervisor index view test" do
+      describe "非负责的 zone supervisor 看不到" do
+        before do
+          sign_in b_zone_supervisor
+          get zone_supervisor_organization_reports_path(a_zone_org_1,format: :mobile)
+        end
+        specify do
+          response.should redirect_to root_path
+        end
+      end
+      describe "org的worker 看到,但是没创建 " do
+        before do
+          sign_in a_zone_org_1_worker
+          visit zone_supervisor_organization_reports_path(a_zone_org_1,format: :mobile)
+        end
+        specify do
+          page.should_not have_link('新建督察报告',href:new_organization_report_path(a_zone_org_1))
+        end
+      end
+    end
+  end
+end
+def unnormal_supervisor_report_edit
+  describe "只有report的创建者才能调用report的edit" do
+    describe "status 为new [功能] get" do
+      before do
+        sign_in b_zone_supervisor
+        get edit_report_path(a_zone_org_1_report_6,format: :mobile)
+      end
+      specify do
+        a_zone_org_1_report_6.should be_supervisor_report
+        a_zone_org_1_report_6.should be_status_is_new
+        response.should redirect_to root_path
+      end
+    end
+    describe "status 为finished [功能] get" do
+      before do
+        sign_in a_zone_supervisor
+        get edit_report_path(a_zone_org_1_report_4,format: :mobile)
+      end
+      specify do
+        a_zone_org_1_report_4.should be_supervisor_report
+        a_zone_org_1_report_4.should be_status_is_finished
+        a_zone_org_1_report_4.committer == a_zone_supervisor
+        response.should redirect_to root_path
+      end
+    end
+    describe "status 为new[功能]put" do
+      before do
+        sign_in b_zone_supervisor
+        put report_path(a_zone_org_1_report_6,format: :mobile)
+      end
+      specify do
+        a_zone_org_1_report_6.should be_supervisor_report
+        a_zone_org_1_report_6.should be_status_is_new
+        response.should redirect_to root_path
+      end
+    end
+    describe "status 为finished[功能]put" do
+      before do
+        sign_in a_zone_supervisor
+        put report_path(a_zone_org_1_report_4,format: :mobile)
+      end
+      specify do
+        a_zone_org_1_report_4.should be_supervisor_report
+        a_zone_org_1_report_4.should be_status_is_finished
+        a_zone_org_1_report_4.committer == a_zone_supervisor
+        response.should redirect_to root_path
+      end
+    end
+  end
+end
+def unnormal_supervisor_report_new
+  describe "非worker 和 supervisor 都不能调用new 和 create" do
+    describe "zone_admin" do
+      before do
+        sign_in a_zone_admin
+        get new_organization_report_path(a_zone_org_1)
+      end
+      specify do
+        response.should redirect_to root_path
+      end
+    end
+  end
+end
+def unnormal_supervisor_report_destroy
+  describe "destroy zone supervisor status new 非owner" do
+    before do
+      sign_in b_zone_supervisor
+      delete report_path(a_zone_org_1_report_6)
+    end
+    specify do
+      a_zone_org_1_report_6.should be_supervisor_report
+      a_zone_org_1_report_6.should be_status_is_new
+      a_zone_org_1_report_6.committer.should_not == b_zone_supervisor
+      response.should redirect_to root_path
+    end
+  end
+  describe "describe zone supervisor status finished owner" do
+    before do
+      sign_in a_zone_supervisor
+      delete report_path(a_zone_org_1_report_4)
+    end
+    specify do
+      a_zone_org_1_report_4.should be_supervisor_report
+      a_zone_org_1_report_4.should be_status_is_finished
+      a_zone_org_1_report_6.committer.should == a_zone_supervisor
+      response.should redirect_to root_path
+    end
+  end
+
+end
 describe "Reports" do
   let(:the_site_admin){FactoryGirl.create(:site_admin_with_two_zone_admin)}
   let(:a_zone_admin)  {the_site_admin.zone_admins.first }
   let(:b_zone_admin)  {the_site_admin.zone_admins.last  }
   let(:a_zone)        {a_zone_admin.zones.first}
   let(:a_zone_supervisor) { a_zone_admin.zone_supervisors.first }
+  let(:b_zone_supervisor) { a_zone_admin.zone_supervisors.last  }
   let(:a_zone_org_1)      {a_zone.organizations.first}
   let(:a_zone_org_2)      {a_zone.organizations.last}
   let(:a_zone_org_1_worker)   {a_zone_org_1.worker}
@@ -585,6 +700,9 @@ describe "Reports" do
   before do
     a_zone_org_1_worker.password = 'foobar'
     a_zone_supervisor.password   = 'foobar'
+    b_zone_supervisor.password   = 'foobar'
+    a_zone_admin.password        = 'foobar'
+    the_site_admin.password      = 'foobar'
   end
 
 
@@ -613,6 +731,123 @@ describe "Reports" do
       normal_supervisor_report_new
       normal_supervisor_report_edit
       normal_supervisor_report_destroy
+      
+    end
+    unnormal_supervisor_report_index
+    unnormal_supervisor_report_edit
+    unnormal_supervisor_report_new
+    unnormal_supervisor_report_destroy
+    describe "zone_supervisor index html报告" do
+      before do
+        sign_in a_zone_admin
+        visit zone_supervisor_organization_reports_path(a_zone_org_1)
+      end
+      specify do
+        new_report_num        = 0
+        finished_report_num   = 0
+        worker_report_num     = 0
+        a_zone_org_1.reports.each do |report|
+          if report.supervisor_report?
+            page.should have_link(report.template.name,href:report_detail_report_path(report))
+            if report.status_is_new?
+              page.should have_selector('td',text:'进行中') 
+              new_report_num = new_report_num + 1
+            elsif report.status_is_finished?
+              page.should have_selector('td',text:'通过')
+              finished_report_num = finished_report_num + 1
+            else
+              "1".should == "2"
+            end
+          elsif report.worker_report?
+            page.should_not have_link(report.template.name,href:report_detail_report_path(report))
+            worker_report_num = worker_report_num + 1
+          end
+        end
+        new_report_num.should == 1
+        finished_report_num.should == 2
+        worker_report_num.should == 3
+      end
+    end
+    describe "zone_supervisor detail html报告" do
+      before do
+        sign_in a_zone_admin
+        visit report_detail_report_path(a_zone_org_1_report_6)
+      end
+      specify do
+        #TODO::视频和图片
+        #page.should have_css('th[style*="display:none"]',text:"dddd")
+        #rowspan="4"
+        #page.should have_css("th[rowspan=\"#{rowspan}\"]",text:"dddd")
+        test_template = a_zone_org_1_report_6.template
+        if test_template.check_value.has_boolean_name?
+          page.should have_selector('th',text:test_template.check_value.boolean_name)
+        else
+          page.should have_css('th[style*="display:none"]',text:test_template.check_value.boolean_name)
+        end 
+        if test_template.check_value.has_int_name?
+          page.should have_selector('th',text:test_template.check_value.int_name)
+        else
+          page.should have_css('th[style*="display:none"]',text:test_template.check_value.int_name)
+        end
+        if test_template.check_value.has_float_name?
+          page.should have_selector('th',text:test_template.check_value.float_name)
+        else
+          page.should have_css('th[style*="display:none"]',text:test_template.check_value.float_name)
+        end
+        if test_template.check_value.has_date_name?
+          page.should have_selector('th',text:test_template.check_value.date_name)
+        else
+          page.should have_css('th[style*="display:none"]',text:test_template.check_value.date_name)
+        end
+        if test_template.check_value.has_text_name?
+          page.should have_selector('th',text:test_template.check_value.text_name)
+        else
+          page.should have_css('th[style*="display:none"]',text:test_template.check_value.text_name)
+        end
+        #page.should have_selector('th','图片')
+        #page.should have_selector('th','视频')
+
+        a_zone_org_1_report_6.template.check_categories.each do |cc|
+          cp_num = cc.check_points.size().to_s
+          page.should have_css("th[rowspan=\"#{cp_num}\"]",text:cc.category)
+          cc.check_points.each do |cp|
+            page.should have_selector("td",text:cp.content)
+            rr = a_zone_org_1_report_6.get_report_record_by_check_point_id(cp.id)
+            if rr.nil?
+              css_selector = "td[style*=\"display:none\"]"
+              value        = "未完成"
+            else
+              css_selector = "td"
+              if test_template.check_value.has_boolean_name?
+                value        = rr.get_boolean_value
+              else
+                value        = "未配置"
+              end
+              if test_template.check_value.has_int_name?
+                value       = rr.get_int_value
+              else
+                value       = "未配置"
+              end
+              if test_template.check_value.has_float_name?
+                value       = rr.get_boolean_value
+              else
+                value       = "未配置"
+              end
+              if test_template.check_value.has_date_name?
+                value       = rr.get_date_value
+              else
+                value       = "未配置"
+              end
+              if test_template.check_value.has_text_name?
+                value       = rr.get_text_value
+              else
+                value       = "未配置"
+              end
+            end
+            page.should have_css(css_selector,text:value)
+          end
+        end
+      end
     end
   end
 end

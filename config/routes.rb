@@ -28,6 +28,9 @@ CheckApp::Application.routes.draw do
         get 'check_category/:check_category_id/check_points',defaults:{format:'mobile'},as:'check_category_check_point_reports',action:'check_points'
         #把报告的内容一次性展示出来，主要对zone_admin和checker使用,格式仅html
         get 'report_detail'
+        #
+        post 'pass'
+        post 'reject' 
       end
     end
   end

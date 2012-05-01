@@ -1,0 +1,19 @@
+<% provide(:title, "全部的督察报告|"+@organization.name) %> 
+<%= render 'shared/home_left' %>
+<table>
+<% @supervisor_reports.each do |report| %>
+  <tr>
+      <td> <%= link_to report.template.name ,report_detail_report_path(report) %> </td>
+      <td> <%= report.created_at %> </td>
+      <td>
+        <% if report.status_is_new? %>
+          进行中
+        <% elsif report.status_is_finished? %>
+          通过
+        <% else %>
+          N/A
+        <% end %>
+      </td>
+  </tr>
+<% end %>
+</table>

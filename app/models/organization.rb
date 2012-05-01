@@ -23,5 +23,18 @@ class Organization < ActiveRecord::Base
     a.set_status_new
     return a
   end
+  def get_all_worker_report
+    Report.where('organization_id=? and committer_type=?',self.id,'Worker')
+  end
+  def get_all_finished_worker_report
+    Report.where('organization_id=? and committer_type=? and status = ?',self.id,'Worker','finished')
+  end
+
+  def get_all_supervisor_report
+    Report.where('organization_id=? and committer_type=?',self.id,'ZoneSupervisor')
+  end
+  def get_all_finished_supervisor_report
+    Report.where('organization_id=? and committer_type=? and status = ?',self.id,'ZoneSupervisor','finished')
+  end
 
 end

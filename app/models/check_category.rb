@@ -20,5 +20,6 @@ class CheckCategory < ActiveRecord::Base
   validates :des,length:{maximum:600}
   validates :template_id,presence:true
 
+  
 
 end

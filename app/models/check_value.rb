@@ -41,4 +41,25 @@ class CheckValue < ActiveRecord::Base
   def as_json
     super(only:[:boolean_name,:int_name,:float_name,:date_name,:text_name])
   end
+
+  def has_boolean_name?
+    return true if not real_empty?(self.boolean_name)
+  end
+  def has_int_name?
+    return true if not real_empty?(self.int_name)
+  end
+  def has_float_name?
+    return true if not real_empty?(self.float_name)
+  end
+  def has_date_name?
+    return true if not real_empty?(self.date_name)
+  end
+  def has_text_name?
+    return true if not real_empty?(self.text_name)
+  end
+private 
+  def real_empty?(v)
+    return true if v.nil? or v.strip.empty?
+  end
+
 end
