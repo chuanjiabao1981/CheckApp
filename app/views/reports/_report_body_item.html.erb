@@ -1,0 +1,46 @@
+<td><%= check_point.content %></td>
+<% if check_value.has_boolean_name? %>
+  <% if report_record.nil? %>
+    <td>未完成</td>
+  <% else %>
+    <td><%=report_record.get_boolean_value%></td>
+  <% end %>
+<% else %>
+  <td style="display:none">未设置</td>
+<% end %>
+<% if check_value.has_int_name? %>
+  <% if report_record.nil? %>
+    <td>未完成</td>
+  <% else %>
+    <td><%= report_record.get_int_value %></td>
+  <% end %>
+<% else %>
+  <td style="display:none">未设置</td>
+<% end %>
+<% if check_value.has_float_name? %>
+  <% if report_record.nil? %>
+    <td>未完成</td>
+  <% else %>
+    <td><%= report_record.get_float_value %></td>
+  <% end %>
+<% else %>
+  <td style="display:none">未设置</td>
+<% end %>
+<% if check_value.has_date_name? %>
+  <% if report_record.nil? %>
+    <td>未完成</td>
+  <% else %>
+    <td><%= report_record.get_date_value %></td>
+  <% end %>
+<% else %>
+  <td style="display:none">未设置</td>
+<% end %>
+<% if check_value.has_text_name? %>
+  <% if report_record.nil? %>
+    <td>未完成</td>
+  <% else %>
+    <td><%= report_record.get_text_value %></td>
+  <% end %>
+<% else %>
+  <td style="display:none">未设置</td>
+<% end %>

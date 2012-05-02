@@ -1,0 +1,5 @@
+<% if item.nil? or item.strip.empty? %>
+  <th style="display:none">未设置</th>
+<% else %>
+  <th><%= item.strip %></th>
+<% end %>

@@ -1,6 +1,36 @@
 <table>
   <tr>
-    <th style="display:none">dddd</th>
-    <th rowspan="4">dddd</th>
-  </tr>
+    <th>检查类型</th>
+    <th>检查内容</th>
+    <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.boolean_name}%>
+    <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.int_name}%>
+    <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.float_name}%>
+    <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.date_name}%>
+    <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.text_name}%>
+  <tr>
+  <% @report.template.check_categories.each do |cc| %>
+    <% check_points_array = cc.check_points %>
+    <% check_points_num   = check_points_array.size %>
+    <% first_check_ponit  = check_points_array.shift %>
+    <tr>
+      <th rowspan="<%=check_points_num%>">
+        <%= cc.category %>
+      </th>
+      <%= render partial:'reports/report_body_item',locals:{check_value:@report.template.check_value,
+                                                           check_point:first_check_ponit,
+                                                           report_record:@report.get_report_record_by_check_point_id(first_check_ponit.id)}
+      %>
+    </tr>
+    <% check_points_array.each do |cp| %>
+      <tr>
+        <%logger.info(@report.get_report_record_by_check_point_id(cp.id).class) %>
+        <%= render partial:'reports/report_body_item',
+                   locals:{check_value:@report.template.check_value,
+                           check_point:cp,
+                           report_record:@report.get_report_record_by_check_point_id(cp.id)
+                          }
+        %>
+      </tr>
+    <% end %>
+  <% end %>
 </table>

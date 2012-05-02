@@ -123,13 +123,13 @@ FactoryGirl.define do
     end
     factory :template_with_check_valud do |template|
       after_create do |template|
-        Factory.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期")
+        Factory.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期",float_name:"检查值")
       end
     end
     factory :template_with_all_required do |template|
       sequence(:name)  {|n| "template_#{n}"}
       after_create do |template|
-        FactoryGirl.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期",text_name:"备注" )
+        FactoryGirl.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期",text_name:"备注",float_name:"检查值" )
         3.times do |n|
           FactoryGirl.create(:check_category_five_check_points,template:template)
         end

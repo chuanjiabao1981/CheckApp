@@ -72,11 +72,13 @@ class Report < ActiveRecord::Base
     self.report_records.each do|rr|
       return rr.id if rr.check_point_id == check_point_id
     end
+    return 
   end
   def get_report_record_by_check_point_id(check_point_id)
     self.report_records.each do|rr|
       return rr if rr.check_point_id == check_point_id
     end
+    return
   end
   def check_point_is_done?(check_point_id)
     self.report_records.each do |rr|

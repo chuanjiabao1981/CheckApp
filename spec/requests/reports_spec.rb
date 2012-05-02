@@ -778,31 +778,34 @@ describe "Reports" do
         #page.should have_css('th[style*="display:none"]',text:"dddd")
         #rowspan="4"
         #page.should have_css("th[rowspan=\"#{rowspan}\"]",text:"dddd")
+        no_set_text         = "未设置"
+        no_complete_text    = "未完成" 
+        print page.html
         test_template = a_zone_org_1_report_6.template
         if test_template.check_value.has_boolean_name?
           page.should have_selector('th',text:test_template.check_value.boolean_name)
         else
-          page.should have_css('th[style*="display:none"]',text:test_template.check_value.boolean_name)
+          page.should have_css('th[style*="display:none"]',text:no_set_text)
         end 
         if test_template.check_value.has_int_name?
           page.should have_selector('th',text:test_template.check_value.int_name)
         else
-          page.should have_css('th[style*="display:none"]',text:test_template.check_value.int_name)
+          page.should have_css('th[style*="display:none"]',text:no_set_text)
         end
         if test_template.check_value.has_float_name?
           page.should have_selector('th',text:test_template.check_value.float_name)
         else
-          page.should have_css('th[style*="display:none"]',text:test_template.check_value.float_name)
+          page.should have_css('th[style*="display:none"]',text:no_set_text)
         end
         if test_template.check_value.has_date_name?
           page.should have_selector('th',text:test_template.check_value.date_name)
         else
-          page.should have_css('th[style*="display:none"]',text:test_template.check_value.date_name)
+          page.should have_css('th[style*="display:none"]',text:no_set_text)
         end
         if test_template.check_value.has_text_name?
           page.should have_selector('th',text:test_template.check_value.text_name)
         else
-          page.should have_css('th[style*="display:none"]',text:test_template.check_value.text_name)
+          page.should have_css('th[style*="display:none"]',text:no_set_text)
         end
         #page.should have_selector('th','图片')
         #page.should have_selector('th','视频')
@@ -813,36 +816,65 @@ describe "Reports" do
           cc.check_points.each do |cp|
             page.should have_selector("td",text:cp.content)
             rr = a_zone_org_1_report_6.get_report_record_by_check_point_id(cp.id)
-            if rr.nil?
-              css_selector = "td[style*=\"display:none\"]"
-              value        = "未完成"
-            else
+            if test_template.check_value.has_boolean_name?
               css_selector = "td"
-              if test_template.check_value.has_boolean_name?
+              if rr.nil?
+                value        = no_complete_text
+              else
                 value        = rr.get_boolean_value
-              else
-                value        = "未配置"
               end
-              if test_template.check_value.has_int_name?
-                value       = rr.get_int_value
-              else
-                value       = "未配置"
+            else
+              css_selector = "td[style*=\"display:none\"]"
+              value        = no_set_text 
+            end
+            page.should have_css(css_selector,text:value)
+
+            if test_template.check_value.has_int_name?
+              css_selector    = "td"
+              if rr.nil?
+                value           = no_complete_text
+              else 
+                value           = rr.get_int_value
               end
-              if test_template.check_value.has_float_name?
-                value       = rr.get_boolean_value
+            else
+              css_selector  = "td[style*=\"display:none\"]"
+              value         = no_set_text
+            end
+            page.should have_css(css_selector,text:value)
+
+            if test_template.check_value.has_float_name?
+              css_selector  = "td"
+              if rr.nil?
+                value       = no_complete_text
               else
-                value       = "未配置"
+                value       = rr.get_float_value
               end
-              if test_template.check_value.has_date_name?
+            else
+              value         = no_set_text 
+            end
+            page.should have_css(css_selector,text:value)
+
+            if test_template.check_value.has_date_name?
+              css_selector  = "td"
+              if rr.nil?
+                value       = no_complete_text
+              else
                 value       = rr.get_date_value
-              else
-                value       = "未配置"
               end
-              if test_template.check_value.has_text_name?
+            else
+              value         = no_set_text
+            end
+            page.should have_css(css_selector,text:value)
+
+            if test_template.check_value.has_text_name?
+              css_selector  = "td"
+              if rr.nil?
+                value       = no_complete_text
+              else
                 value       = rr.get_text_value
-              else
-                value       = "未配置"
               end
+            else
+              value         = no_set_text
             end
             page.should have_css(css_selector,text:value)
           end

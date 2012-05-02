@@ -1,9 +1,9 @@
 class ReportsController < ApplicationController
   before_filter :singed_in_user
-  before_filter :validate_format,                         only:[:worker_report,:check_categories,:check_points,:new,:edit,:supervisor_report]
+  before_filter :validate_format,                         only:[:worker_report,:check_categories,:check_points,:new,:edit,:supervisor_report,:report_detail]
   before_filter :validate_organization_visitor,           only:[:worker_report,:supervisor_report]
-  before_filter :validate_report_visitor,                 only:[:check_categories]
-  before_filter :validate_report_check_points_visitor,  only:[:check_points]
+  before_filter :validate_report_visitor,                 only:[:check_categories,:report_detail]
+  before_filter :validate_report_check_points_visitor,    only:[:check_points]
   before_filter :validate_report_creater,                 only:[:new,:create]
   before_filter :validate_report_template_when_create,    only:[:create]
   before_filter :validate_report_edit_and_update_and_destroy,         only:[:edit,:update,:destroy]
