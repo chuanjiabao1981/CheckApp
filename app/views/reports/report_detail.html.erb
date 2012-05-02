@@ -1,3 +1,23 @@
+<% provide(:title, "报告详情") %> 
+<%= render 'shared/home_left' %>
+
+<table>
+    <tr><td>报告类型     </td> <td><%= @report.template.name%></td></tr>
+    <tr><td>检查点个数   </td> <td><%= @report.template.get_check_ponits_num %>个</td></tr>
+    <tr><td>已完成检查点 </td> <td><%= @report.get_finished_check_points_num %>个</td></tr>
+    <tr><td>提交人       </td> <td><%= @report.reporter_name %></td></tr>
+    <tr><td>提交时间     </td> <td><%= @report.created_at %></td></tr>
+</table>
+
+<% if not current_user.session.checker? %>
+  <% if @report.status_is_new? %>
+    <%= render partial:'reports/pass_report',locals:{report:@report} %>
+  <% elsif @report.status_is_finished? %>
+    <%= render partial:'reports/reject_report',locals:{report:@report} %>
+  <% end %>
+  <%= link_to '删除',report_path(@report),method: :delete,confirm:'确定要删除这个报告吗?' %>
+<% end %>
+
 <table>
   <tr>
     <th>检查类型</th>
@@ -23,7 +43,6 @@
     </tr>
     <% check_points_array.each do |cp| %>
       <tr>
-        <%logger.info(@report.get_report_record_by_check_point_id(cp.id).class) %>
         <%= render partial:'reports/report_body_item',
                    locals:{check_value:@report.template.check_value,
                            check_point:cp,

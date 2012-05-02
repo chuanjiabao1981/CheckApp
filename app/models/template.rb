@@ -29,4 +29,12 @@ class Template < ActiveRecord::Base
   
   accepts_nested_attributes_for :check_value
 
+  def get_check_ponits_num
+    n = 0
+    self.check_categories.each do |cc|
+      n += cc.check_points.size
+    end
+    return n
+  end
+
 end

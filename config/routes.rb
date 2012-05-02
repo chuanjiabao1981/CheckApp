@@ -29,8 +29,8 @@ CheckApp::Application.routes.draw do
         #把报告的内容一次性展示出来，主要对zone_admin和checker使用,格式仅html
         get 'report_detail'
         #
-        post 'pass'
-        post 'reject' 
+        put 'pass'
+        put 'reject' 
       end
     end
   end

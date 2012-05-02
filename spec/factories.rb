@@ -91,6 +91,15 @@ FactoryGirl.define do
         end
       end
     end
+    factory :report_with_all_records do
+      after_create do |report| 
+        report.template.check_categories.each do |cc|
+          cc.check_points.each do |cp|
+            Factory.create(:report_record,report:report,check_category:cp.check_category,check_point:cp)
+          end
+        end
+      end
+    end
   end
 
 

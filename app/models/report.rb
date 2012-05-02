@@ -89,4 +89,14 @@ class Report < ActiveRecord::Base
   def set_status_new
     self.status = 'new'
   end
+  def set_status_finished
+    self.status = 'finished'
+  end
+  def finished_check_points_num
+    n = 0
+    self.template.check_categories.each do |cc|
+      n += get_finished_check_points_num_by_check_category(cc.id)
+    end
+    return n
+  end
 end

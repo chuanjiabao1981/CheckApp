@@ -658,6 +658,246 @@ def unnormal_supervisor_report_destroy
       response.should redirect_to root_path
     end
   end
+end
+def test_report_detail_page(test_template,test_report,see_other_action)
+
+  #specify do
+    #TODO::视频和图片
+    no_set_text         = "未设置"
+    no_complete_text    = "未完成" 
+    #print page.html
+    #print "--------------------------------------------------------------"
+    #test_template       = a_zone_org_1_report_6.template
+    #test_report         = a_zone_org_1_report_6
+    check_points_num    = 0
+    CheckCategory.where('template_id=?',test_template.id).each do |cc|
+      check_points_num  +=cc.check_points.size
+    end
+
+    finished_check_points_num = ReportRecord.find_all_by_report_id(test_report.id).size
+    page.should have_selector('td',text:"报告类型")
+    page.should have_selector('td',text:test_template.name)
+    page.should have_selector('td',text:"检查点个数")
+    page.should have_selector('td',text:"#{check_points_num}个")
+    page.should have_selector('td',text:"已完成检查点")
+    page.should have_selector('td',text:"#{finished_check_points_num}个")
+    page.should have_selector('td',text:"提交人")
+    page.should have_selector('td',text:"#{test_report.reporter_name}")
+    page.should have_selector('td',text:"提交时间")
+    page.should have_selector('td',text:"#{test_report.created_at}")
+    if see_other_action
+      if test_report.status_is_new?
+        page.has_css?('input[value="审核通过"]').should == true
+      else
+        page.has_css?('input[value="重新修改"]').should == true
+      end
+      page.should have_link('删除',href:report_path(test_report))
+    else
+      page.should_not have_selector('input',value:'审核通过')
+      page.should_not have_selector('input',value:'重新修改')
+      page.should_not have_selector('删除',href:report_path(test_report))
+    end
+
+    
+    if test_template.check_value.has_boolean_name?
+      page.should have_selector('th',text:test_template.check_value.boolean_name)
+    else
+      page.should have_css('th[style*="display:none"]',text:no_set_text)
+    end 
+    if test_template.check_value.has_int_name?
+      page.should have_selector('th',text:test_template.check_value.int_name)
+    else
+      page.should have_css('th[style*="display:none"]',text:no_set_text)
+    end
+    if test_template.check_value.has_float_name?
+      page.should have_selector('th',text:test_template.check_value.float_name)
+    else
+      page.should have_css('th[style*="display:none"]',text:no_set_text)
+    end
+    if test_template.check_value.has_date_name?
+      page.should have_selector('th',text:test_template.check_value.date_name)
+    else
+      page.should have_css('th[style*="display:none"]',text:no_set_text)
+    end
+    if test_template.check_value.has_text_name?
+      page.should have_selector('th',text:test_template.check_value.text_name)
+    else
+      page.should have_css('th[style*="display:none"]',text:no_set_text)
+    end
+
+    test_report.template.check_categories.each do |cc|
+      cp_num = cc.check_points.size().to_s
+      page.should have_css("th[rowspan=\"#{cp_num}\"]",text:cc.category)
+      cc.check_points.each do |cp|
+        page.should have_selector("td",text:cp.content)
+        rr = test_report.get_report_record_by_check_point_id(cp.id)
+        if test_template.check_value.has_boolean_name?
+          css_selector = "td"
+          if rr.nil?
+            value        = no_complete_text
+          else
+            value        = rr.get_boolean_value
+          end
+        else
+          css_selector = "td[style*=\"display:none\"]"
+          value        = no_set_text 
+        end
+        page.should have_css(css_selector,text:value)
+
+        if test_template.check_value.has_int_name?
+          css_selector    = "td"
+          if rr.nil?
+            value           = no_complete_text
+          else 
+            value           = rr.get_int_value
+          end
+        else
+          css_selector  = "td[style*=\"display:none\"]"
+          value         = no_set_text
+        end
+        page.should have_css(css_selector,text:value)
+
+        if test_template.check_value.has_float_name?
+          css_selector  = "td"
+          if rr.nil?
+            value       = no_complete_text
+          else
+            value       = rr.get_float_value
+          end
+        else
+          value         = no_set_text 
+        end
+        page.should have_css(css_selector,text:value)
+
+        if test_template.check_value.has_date_name?
+          css_selector  = "td"
+          if rr.nil?
+            value       = no_complete_text
+          else
+            value       = rr.get_date_value
+          end
+        else
+          value         = no_set_text
+        end
+        page.should have_css(css_selector,text:value)
+
+        if test_template.check_value.has_text_name?
+          css_selector  = "td"
+          if rr.nil?
+            value       = no_complete_text
+          else
+            value       = rr.get_text_value
+          end
+        else
+          value         = no_set_text
+        end
+        page.should have_css(css_selector,text:value)
+      end
+    end
+  #end
+
+end
+def normal_supervisor_report_detail
+    describe "zone_admin登陆访问supervisor report detail html报告" do
+      before do
+        sign_in a_zone_admin
+        visit report_detail_report_path(a_zone_org_1_report_6)
+      end
+      specify do
+        test_report_detail_page(a_zone_org_1_report_6.template,a_zone_org_1_report_6,true)
+      end
+    end
+    describe "site admin登陆访问supervisor report detail html报告" do
+      before do
+        sign_in the_site_admin
+        visit report_detail_report_path(a_zone_org_1_report_6)
+      end
+      specify do
+        test_report_detail_page(a_zone_org_1_report_6.template,a_zone_org_1_report_6,true)
+      end
+    end
+    describe "checker登陆访问supervisor report detail html报告" do
+      before do
+        sign_in a_zone_org_1_checker
+        visit report_detail_report_path(a_zone_org_1_report_4) 
+      end
+      specify do
+        test_report_detail_page(a_zone_org_1_report_4.template,a_zone_org_1_report_4,false)
+      end
+    end
+
+end
+def test_supervisor_report_index(singin_user,test_org)
+  #print page.html
+
+  new_report_num        = 0
+  finished_report_num   = 0
+  worker_report_num     = 0
+  test_org.reports.each do |report|
+    apath         = report_detail_report_path(report)
+    css_selector = "a[href=\"#{apath}\"]"
+
+    if report.supervisor_report?
+      if singin_user.session.checker?
+        if report.status_is_new?
+          page.has_css?(css_selector,text:report.template.name).should == false
+        else
+          page.has_css?(css_selector,text:report.template.name).should == true
+        end
+      else
+        page.has_css?(css_selector,text:report.template.name).should == true
+      end
+      if report.status_is_new?
+        if singin_user.session.checker?
+          page.should_not have_selector('td',text:'进行中')
+        else
+          page.should have_selector('td',text:'进行中') 
+        end
+        new_report_num = new_report_num + 1
+      elsif report.status_is_finished?
+        page.should have_selector('td',text:'通过')
+        finished_report_num = finished_report_num + 1
+      else
+        "1".should == "2"
+      end
+    elsif report.worker_report?
+      page.should_not have_link(report.template.name,href:report_detail_report_path(report))
+      worker_report_num = worker_report_num + 1
+    end
+  end
+  new_report_num.should == 1
+  finished_report_num.should == 2
+  worker_report_num.should == 3
+
+end
+def normal_supervisor_report_index_html
+  describe "zone_admin 登陆访问一个org的supervisor report 的index html报告" do
+    before do
+      sign_in a_zone_admin
+      visit zone_supervisor_organization_reports_path(a_zone_org_1)
+    end
+    specify do
+      test_supervisor_report_index(a_zone_admin,a_zone_org_1)
+    end
+  end
+  describe "site_admin 登陆访问一个org的supervisor report的index html报告" do
+    before do
+      sign_in the_site_admin
+      visit zone_supervisor_organization_reports_path(a_zone_org_1)
+    end
+    specify do
+      test_supervisor_report_index(the_site_admin,a_zone_org_1)
+    end
+  end
+  describe "checker 登陆访问一个org的supervisor report的indexl html报告" do
+    before do
+      sign_in a_zone_org_1_checker
+      visit zone_supervisor_organization_reports_path(a_zone_org_1)
+    end
+    specify do
+      test_supervisor_report_index(a_zone_org_1_checker,a_zone_org_1)
+    end
+  end
 
 end
 describe "Reports" do
@@ -670,6 +910,7 @@ describe "Reports" do
   let(:a_zone_org_1)      {a_zone.organizations.first}
   let(:a_zone_org_2)      {a_zone.organizations.last}
   let(:a_zone_org_1_worker)   {a_zone_org_1.worker}
+  let(:a_zone_org_1_checker)  {a_zone_org_1.checker}
   let(:a_zone_org_2_worker)   {a_zone_org_2.worker}
   let!(:a_template)      {FactoryGirl.create(:template_with_all_required,zone_admin:a_zone_admin,for_worker:true,for_supervisor:true)}
   let!(:a_zone_org_1_report_1)      {FactoryGirl.create(:report_with_some_records,
@@ -689,7 +930,11 @@ describe "Reports" do
                                                          template:a_template,
                                                          committer:a_zone_supervisor,
                                                          status:"finished")}
-  let!(:a_zone_org_1_report_5)      {FactoryGirl.create(:report,organization:a_zone_org_1,template:a_template,committer:a_zone_supervisor,status:"finished")}
+  let!(:a_zone_org_1_report_5)      {FactoryGirl.create(:report_with_all_records,
+                                                         organization:a_zone_org_1,
+                                                         template:a_template,
+                                                         committer:a_zone_supervisor,
+                                                         status:"finished")}
   let!(:a_zone_org_1_report_6)      {FactoryGirl.create(:report_with_some_records,
                                                          organization:a_zone_org_1,
                                                          template:a_template,
@@ -698,7 +943,8 @@ describe "Reports" do
 
 
   before do
-    a_zone_org_1_worker.password = 'foobar'
+    a_zone_org_1_worker.password  = 'foobar'
+    a_zone_org_1_checker.password = 'foobar'
     a_zone_supervisor.password   = 'foobar'
     b_zone_supervisor.password   = 'foobar'
     a_zone_admin.password        = 'foobar'
@@ -737,149 +983,21 @@ describe "Reports" do
     unnormal_supervisor_report_edit
     unnormal_supervisor_report_new
     unnormal_supervisor_report_destroy
-    describe "zone_supervisor index html报告" do
+    normal_supervisor_report_index_html
+    normal_supervisor_report_detail
+    describe "zone_admin 登陆 通过 supervisor report" do
       before do
         sign_in a_zone_admin
-        visit zone_supervisor_organization_reports_path(a_zone_org_1)
+        a_zone_org_1_report_5.set_status_new
+        a_zone_org_1_report_5.save
+        visit report_detail_report_path(a_zone_org_1_report_5)
+        click_button '审核通过'
       end
       specify do
-        new_report_num        = 0
-        finished_report_num   = 0
-        worker_report_num     = 0
-        a_zone_org_1.reports.each do |report|
-          if report.supervisor_report?
-            page.should have_link(report.template.name,href:report_detail_report_path(report))
-            if report.status_is_new?
-              page.should have_selector('td',text:'进行中') 
-              new_report_num = new_report_num + 1
-            elsif report.status_is_finished?
-              page.should have_selector('td',text:'通过')
-              finished_report_num = finished_report_num + 1
-            else
-              "1".should == "2"
-            end
-          elsif report.worker_report?
-            page.should_not have_link(report.template.name,href:report_detail_report_path(report))
-            worker_report_num = worker_report_num + 1
-          end
-        end
-        new_report_num.should == 1
-        finished_report_num.should == 2
-        worker_report_num.should == 3
+        #print page.html
+        page.has_css?('input[value="重新修改"]').should == true
       end
     end
-    describe "zone_supervisor detail html报告" do
-      before do
-        sign_in a_zone_admin
-        visit report_detail_report_path(a_zone_org_1_report_6)
-      end
-      specify do
-        #TODO::视频和图片
-        #page.should have_css('th[style*="display:none"]',text:"dddd")
-        #rowspan="4"
-        #page.should have_css("th[rowspan=\"#{rowspan}\"]",text:"dddd")
-        no_set_text         = "未设置"
-        no_complete_text    = "未完成" 
-        print page.html
-        test_template = a_zone_org_1_report_6.template
-        if test_template.check_value.has_boolean_name?
-          page.should have_selector('th',text:test_template.check_value.boolean_name)
-        else
-          page.should have_css('th[style*="display:none"]',text:no_set_text)
-        end 
-        if test_template.check_value.has_int_name?
-          page.should have_selector('th',text:test_template.check_value.int_name)
-        else
-          page.should have_css('th[style*="display:none"]',text:no_set_text)
-        end
-        if test_template.check_value.has_float_name?
-          page.should have_selector('th',text:test_template.check_value.float_name)
-        else
-          page.should have_css('th[style*="display:none"]',text:no_set_text)
-        end
-        if test_template.check_value.has_date_name?
-          page.should have_selector('th',text:test_template.check_value.date_name)
-        else
-          page.should have_css('th[style*="display:none"]',text:no_set_text)
-        end
-        if test_template.check_value.has_text_name?
-          page.should have_selector('th',text:test_template.check_value.text_name)
-        else
-          page.should have_css('th[style*="display:none"]',text:no_set_text)
-        end
-        #page.should have_selector('th','图片')
-        #page.should have_selector('th','视频')
-
-        a_zone_org_1_report_6.template.check_categories.each do |cc|
-          cp_num = cc.check_points.size().to_s
-          page.should have_css("th[rowspan=\"#{cp_num}\"]",text:cc.category)
-          cc.check_points.each do |cp|
-            page.should have_selector("td",text:cp.content)
-            rr = a_zone_org_1_report_6.get_report_record_by_check_point_id(cp.id)
-            if test_template.check_value.has_boolean_name?
-              css_selector = "td"
-              if rr.nil?
-                value        = no_complete_text
-              else
-                value        = rr.get_boolean_value
-              end
-            else
-              css_selector = "td[style*=\"display:none\"]"
-              value        = no_set_text 
-            end
-            page.should have_css(css_selector,text:value)
-
-            if test_template.check_value.has_int_name?
-              css_selector    = "td"
-              if rr.nil?
-                value           = no_complete_text
-              else 
-                value           = rr.get_int_value
-              end
-            else
-              css_selector  = "td[style*=\"display:none\"]"
-              value         = no_set_text
-            end
-            page.should have_css(css_selector,text:value)
-
-            if test_template.check_value.has_float_name?
-              css_selector  = "td"
-              if rr.nil?
-                value       = no_complete_text
-              else
-                value       = rr.get_float_value
-              end
-            else
-              value         = no_set_text 
-            end
-            page.should have_css(css_selector,text:value)
-
-            if test_template.check_value.has_date_name?
-              css_selector  = "td"
-              if rr.nil?
-                value       = no_complete_text
-              else
-                value       = rr.get_date_value
-              end
-            else
-              value         = no_set_text
-            end
-            page.should have_css(css_selector,text:value)
-
-            if test_template.check_value.has_text_name?
-              css_selector  = "td"
-              if rr.nil?
-                value       = no_complete_text
-              else
-                value       = rr.get_text_value
-              end
-            else
-              value         = no_set_text
-            end
-            page.should have_css(css_selector,text:value)
-          end
-        end
-      end
-    end
+    #TODO::未完成点"审核通过"
   end
 end

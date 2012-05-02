@@ -1,8 +1,8 @@
 class ReportsController < ApplicationController
   before_filter :singed_in_user
-  before_filter :validate_format,                         only:[:worker_report,:check_categories,:check_points,:new,:edit,:supervisor_report,:report_detail]
+  before_filter :validate_format,                         only:[:worker_report,:check_categories,:check_points,:new,:edit,:supervisor_report,:report_detail,:pass]
   before_filter :validate_organization_visitor,           only:[:worker_report,:supervisor_report]
-  before_filter :validate_report_visitor,                 only:[:check_categories,:report_detail]
+  before_filter :validate_report_visitor,                 only:[:check_categories,:report_detail,:pass]
   before_filter :validate_report_check_points_visitor,    only:[:check_points]
   before_filter :validate_report_creater,                 only:[:new,:create]
   before_filter :validate_report_template_when_create,    only:[:create]
@@ -83,6 +83,15 @@ class ReportsController < ApplicationController
   end
 
   def report_detail
+  end
+  def pass
+    @report.set_status_finished
+    if @report.save
+      redirect_to report_detail_report_path(@report)
+    else
+      ##flash
+      render 'report_detail'
+    end
   end
 
 private
