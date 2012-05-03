@@ -1,12 +1,13 @@
+#encoding:utf-8
 class ReportsController < ApplicationController
   before_filter :singed_in_user
-  before_filter :validate_format,                         only:[:worker_report,:check_categories,:check_points,:new,:edit,:supervisor_report,:report_detail,:pass]
+  before_filter :validate_format,                         only:[:worker_report,:check_categories,:check_points,:new,:edit,:supervisor_report,:report_detail,:pass,:reject]
   before_filter :validate_organization_visitor,           only:[:worker_report,:supervisor_report]
-  before_filter :validate_report_visitor,                 only:[:check_categories,:report_detail,:pass]
+  before_filter :validate_report_visitor,                 only:[:check_categories,:report_detail,:pass,:reject,:destroy,:edit,:update]
   before_filter :validate_report_check_points_visitor,    only:[:check_points]
   before_filter :validate_report_creater,                 only:[:new,:create]
   before_filter :validate_report_template_when_create,    only:[:create]
-  before_filter :validate_report_edit_and_update_and_destroy,         only:[:edit,:update,:destroy]
+  before_filter :validate_report_edit_and_update_and_destroy,         only:[:edit,:update,:destroy,:pass,:reject]
   def worker_report
     if current_user.session.checker? or current_user.session.worker?
       @worker_reports = @organization.get_all_worker_report
@@ -75,31 +76,52 @@ class ReportsController < ApplicationController
   def destroy
     if @report.status_is_new?
       @report.destroy
-    elsif current_user.session.site_admin? or current_user.session.checker? or current_user.session.zone_supervisor?
+    elsif current_user.session.site_admin? or current_user.session.checker? or current_user.session.zone_admin?
       @report.destroy
     end
-    return redirect_to worker_organization_reports_path(@report.organization,format: :mobile) if @report.worker_report?
-    return redirect_to zone_supervisor_organization_reports_path(@report.organization,format: :mobile) if @report.supervisor_report?
+    respond_to do |format|
+      format.html do
+        return redirect_to worker_organization_reports_path(@report.organization) if @report.worker_report?
+        return redirect_to zone_supervisor_organization_reports_path(@report.organization) if @report.supervisor_report?
+      end
+      format.mobile do
+        return redirect_to worker_organization_reports_path(@report.organization,format: :mobile) if @report.worker_report?
+        return redirect_to zone_supervisor_organization_reports_path(@report.organization,format: :mobile) if @report.supervisor_report?
+      end
+    end
+    
   end
 
   def report_detail
   end
   def pass
-    @report.set_status_finished
+    if @report.finished?
+      @report.set_status_finished
+      @report.save
+      redirect_to report_detail_report_path(@report)
+    else
+      flash[:error] = '报告未完成不能审核通过!'
+      render 'report_detail'
+    end
+  end
+  def reject
+    @report.set_status_new
     if @report.save
       redirect_to report_detail_report_path(@report)
     else
-      ##flash
-      render 'report_detail'
+      logger.error("report status change error")
     end
   end
 
 private
   #just for reportor_name
   def validate_report_edit_and_update_and_destroy
-    @report = Report.find_by_id(params[:id]) 
-    return redirect_to root_path if @report.nil?
-    return redirect_to root_path unless @report.committer == current_user
+    if @report.supervisor_report?
+      return redirect_to root_path unless @report.committer == current_user or current_user.session.zone_admin? or current_user.session.site_admin?
+    end
+    if @report.worker_report?
+      return redirect_to root_path unless @report.committer == current_user or current_user.session.checker? or current_user.session.site_admin?
+    end
     return redirect_to root_path if @report.committer == current_user and @report.status_is_finished?
   end
   def validate_report_template_when_create

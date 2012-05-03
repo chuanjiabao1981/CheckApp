@@ -99,4 +99,7 @@ class Report < ActiveRecord::Base
     end
     return n
   end
+  def finished?
+    return true if self.finished_check_points_num == self.template.get_check_ponits_num
+  end
 end
