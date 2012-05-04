@@ -828,7 +828,6 @@ def normal_supervisor_report_detail
 
 end
 def test_supervisor_report_index(singin_user,test_org)
-  #print page.html
 
   new_report_num        = 0
   finished_report_num   = 0
@@ -946,8 +945,6 @@ def normal_supervisor_report_pass_and_reject
       page.has_css?('input[value="审核通过"]').should == true
     end
   end
-
-
 end
 
 def normal_supervisor_report_destroy_html
@@ -987,7 +984,6 @@ def normal_supervisor_report_destroy_html
       expect{ click_link '删除'}.to change(Report,:count).by(-1)
     end
   end
-
 end
 def unnormal_supervisor_report_destroy_html
   describe "非org所在zoneadmin 无法删除supervisor report" do
@@ -1065,7 +1061,6 @@ def unnormal_supervisor_report_pass_and_reject
     end
     it_should_behave_like "unnormal unfinished report can't pass"
   end
-
 end
 def unnormal_supervisor_report_detail 
   shared_examples_for "redirect_to root_path" do
@@ -1094,7 +1089,6 @@ def unnormal_supervisor_report_detail
     end
     it_should_behave_like "redirect_to root_path"
   end
-
 end
 
 def unnormal_supervisor_report_index_html
@@ -1134,8 +1128,368 @@ def unnormal_supervisor_report_index_html
         response.should redirect_to root_path
       end
     end
+end
+def normal_worker_report_index_html
+  shared_examples_for "worker index html" do
+    specify do
+      #print page.html
+      test_org.reports.each do |report| 
+        apath           = report_detail_report_path(report)  
+        css_selector    = "a[href=\"#{apath}\"]"
+        if report.worker_report?
+          if user.session.zone_admin?
+            if report.status_is_new?
+              page.has_css?(css_selector,text:report.template.name).should == false
+              page.should_not have_selector('td',text:'进行中')
+            else
+              page.has_css?(css_selector,text:report.template.name).should == true
+              page.should have_selector('td',text:'通过')
+            end
+          elsif user.session.checker? or user.session.site_admin?
+            page.has_css?(css_selector,text:report.template.name).should == true
+            page.should have_selector('td',text:'通过')
+          end
+        end
+      end
+    end
+  end
+  describe "a_zone admin sigin 访问worker report index html" do
+    before do
+      sign_in a_zone_admin
+      visit worker_organization_reports_path(a_zone_org_1)
+    end
+    it_should_behave_like "worker index html" do
+      let(:user) {a_zone_admin}
+      let(:test_org) { a_zone_org_1 }
+    end
+  end
+  describe "site admin sigin 访问worker report index html" do
+    before do
+      sign_in the_site_admin
+      visit worker_organization_reports_path(a_zone_org_1)
+    end
+    it_should_behave_like "worker index html" do
+      let(:user) {the_site_admin}
+      let(:test_org) { a_zone_org_1 }
+    end
+  end
+  describe "cheker sigin 访问worker report index html" do
+    before do
+      sign_in a_zone_org_1_checker
+      visit worker_organization_reports_path(a_zone_org_1)
+    end
+    it_should_behave_like "worker index html" do
+      let(:user) {a_zone_org_1_checker}
+      let(:test_org) { a_zone_org_1 }
+    end
+  end
 
 end
+def normal_worker_report_detail
+    describe "zone_admin登陆访问worker report detail html报告" do
+      before do
+        sign_in a_zone_admin
+        visit report_detail_report_path(a_zone_org_1_report_1)
+        #print page.html
+      end
+      specify do
+        test_report_detail_page(a_zone_org_1_report_1.template,a_zone_org_1_report_1,false)
+      end
+    end
+    describe "site admin登陆访问worker report detail html报告" do
+      before do
+        sign_in the_site_admin
+        visit report_detail_report_path(a_zone_org_1_report_1)
+      end
+      specify do
+        test_report_detail_page(a_zone_org_1_report_1.template,a_zone_org_1_report_1,true)
+      end
+    end
+    describe "checker登陆访问worker report detail html报告" do
+      before do
+        sign_in a_zone_org_1_checker
+        visit report_detail_report_path(a_zone_org_1_report_3) 
+        #print page.html
+      end
+      specify do
+        test_report_detail_page(a_zone_org_1_report_3.template,a_zone_org_1_report_3,true)
+      end
+    end
+
+end
+def normal_worker_report_pass_and_reject
+  describe "checker 登陆 通过 worker report" do
+    before do
+      sign_in a_zone_org_1_checker
+      a_zone_org_1_report_3.set_status_new
+      a_zone_org_1_report_3.save
+      visit report_detail_report_path(a_zone_org_1_report_3)
+      click_button '审核通过'
+    end
+    specify do
+      page.has_css?('input[value="重新修改"]').should == true
+    end
+  end
+  describe "site_admin 登陆 通过 worker report" do
+    before do
+      sign_in the_site_admin
+      a_zone_org_1_report_3.set_status_new
+      a_zone_org_1_report_3.save
+      visit report_detail_report_path(a_zone_org_1_report_3)
+      click_button '审核通过'
+    end
+    specify do
+      page.has_css?('input[value="重新修改"]').should == true
+    end
+  end
+  describe "checker 登陆 重新修改 worker report" do
+    before do
+      sign_in a_zone_org_1_checker
+      visit report_detail_report_path(a_zone_org_1_report_3)
+      click_button '重新修改'
+    end
+    specify do
+      page.has_css?('input[value="审核通过"]').should == true
+    end
+  end
+  describe "site_admin 登陆 重新修改 worker report" do
+    before do
+      sign_in the_site_admin
+      visit report_detail_report_path(a_zone_org_1_report_3)
+      click_button '重新修改'
+    end
+    specify do
+      #print page.html
+      page.has_css?('input[value="审核通过"]').should == true
+    end
+  end
+end
+def normal_worker_report_destroy_html
+  describe "checker 删除 worker  report status is finished" do
+    before do
+      sign_in a_zone_org_1_checker
+      visit report_detail_report_path(a_zone_org_1_report_3)
+    end
+    it "-1" do
+      expect{ click_link '删除'}.to change(Report,:count).by(-1)
+    end
+  end
+  describe "checker 删除 worker report status is new" do
+    before do
+      sign_in a_zone_org_1_checker
+      visit report_detail_report_path(a_zone_org_1_report_1)
+    end
+    it "-1" do
+      expect{ click_link '删除'}.to change(Report,:count).by(-1)
+    end
+  end
+  describe "site_admin 删除 worker_report status is finished" do
+    before do
+      sign_in the_site_admin 
+      visit report_detail_report_path(a_zone_org_1_report_3)
+    end
+    it "-1" do
+      expect{ click_link '删除'}.to change(Report,:count).by(-1)
+    end
+  end
+  describe "site_admin 删除 worker_report status is new" do
+    before do
+      sign_in the_site_admin 
+      visit report_detail_report_path(a_zone_org_1_report_1)
+    end
+    it "-1" do
+      expect{ click_link '删除'}.to change(Report,:count).by(-1)
+    end
+  end
+end
+
+def unnormal_worker_report_destroy_html
+  describe "非org的checker 无法删除worker report" do
+    before do
+      sign_in a_zone_org_2_checker
+      delete report_path(a_zone_org_1_report_1)
+    end
+    specify do
+      response.should redirect_to root_path
+      a_zone_org_1_report_1.should be_worker_report
+    end
+  end
+  describe "zone admin 无法删除worker report" do
+    before do
+      sign_in a_zone_admin
+      delete report_path(a_zone_org_1_report_1)
+    end
+    specify do
+      response.should redirect_to root_path
+    end
+  end
+  describe "supervisor 无法删除worker report" do
+    before do
+      a_zone_org_1.zone.zone_supervisors<<a_zone_supervisor
+      sign_in a_zone_supervisor
+      delete report_path(a_zone_org_1_report_3)
+    end
+    specify do
+      response.should redirect_to root_path
+    end
+  end
+
+end
+def unnormal_worker_report_detail 
+  shared_examples_for "worker redirect_to root_path" do
+    specify do
+      response.should redirect_to root_path
+    end
+  end
+  describe "非org的zoneadmin 无法访问worker report" do
+    before do
+      sign_in b_zone_admin
+      get report_detail_report_path(a_zone_org_1_report_1)
+    end
+    it_should_behave_like "worker redirect_to root_path"
+  end
+  describe "非org的checker无法访问worker report" do
+    before do
+      sign_in a_zone_org_2_checker   
+      get report_detail_report_path(a_zone_org_1_report_1)
+    end
+    it_should_behave_like "worker redirect_to root_path"
+  end
+  describe "supervisor 无法访问worker的report的html" do
+    before do
+      a_zone_org_1.zone.zone_supervisors<<a_zone_supervisor
+      sign_in a_zone_supervisor
+      get report_detail_report_path(a_zone_org_1_report_1)
+    end
+    it_should_behave_like "worker redirect_to root_path"
+  end
+end
+def unnormal_worker_report_pass_and_reject
+  shared_examples_for "unnormal reject or pass worker report" do
+    specify do
+      put pass_report_path(a_zone_org_1_report_1)
+      response.should redirect_to root_path
+    end
+    specify do
+      put reject_report_path(a_zone_org_1_report_3)
+      response.should redirect_to root_path
+    end
+  end
+  shared_examples_for "unnormal unfinished worker report can't pass" do
+    it "has flash info" do
+      #print page.html
+      page.should have_selector('div.alert.alert-error', text: '报告未完成不能审核通过!')
+      page.has_css?('input[value="审核通过"]').should == true
+    end
+  end
+  describe "org的zoneadmin 无法reject或者pass worker report ." do
+    before do
+      sign_in a_zone_admin
+    end
+    it_should_behave_like "unnormal reject or pass worker report"
+  end
+  describe "非org的checker无法rejct或者pass worker report" do
+    before do
+      sign_in a_zone_org_2_checker
+    end
+    it_should_behave_like "unnormal reject or pass worker report"
+  end
+  describe "checker 登陆未完成的report不能通过" do
+    before do
+      sign_in a_zone_org_1_checker
+      visit report_detail_report_path(a_zone_org_1_report_1)
+      click_button '审核通过'
+    end
+    it_should_behave_like "unnormal unfinished worker report can't pass"
+  end
+  describe "site_admin 登陆未完成的report不能通过" do
+    before do
+      sign_in the_site_admin
+      visit report_detail_report_path(a_zone_org_1_report_1)
+      click_button '审核通过'
+    end
+    it_should_behave_like "unnormal unfinished worker report can't pass"
+  end
+end
+def unnormal_worker_report_index_html
+    describe "非org所在zone的zoneadmin 无法访问zonesupervisor index" do
+      before do
+        sign_in b_zone_admin
+        get zone_supervisor_organization_reports_path(a_zone_org_1)
+      end
+      specify do
+        response.should redirect_to root_path
+      end
+    end
+    describe "非org的checker 无法访问zonesupervisor index" do
+      before do
+        sign_in a_zone_org_2_checker
+        get zone_supervisor_organization_reports_path(a_zone_org_1)
+      end
+      specify do
+        response.should redirect_to root_path
+      end
+    end
+    describe "worker 无法访问zonesupervisor index" do
+      before do
+        sign_in a_zone_org_1_worker
+        get zone_supervisor_organization_reports_path(a_zone_org_1)
+      end
+      specify do
+        response.should redirect_to root_path
+      end
+    end
+    describe "supervisor 无法访问zonesupervisor index" do
+      before do
+        sign_in a_zone_supervisor
+        get zone_supervisor_organization_reports_path(a_zone_org_1)
+      end
+      specify do
+        response.should redirect_to root_path
+      end
+    end
+
+end
+def unnormal_worker_report_index_html
+    describe "非org所在zone的zoneadmin 无法访问worker report index" do
+      before do
+        sign_in b_zone_admin
+        get worker_organization_reports_path(a_zone_org_1)
+      end
+      specify do
+        response.should redirect_to root_path
+      end
+    end
+    describe "非org的checker 无法访问worker report index" do
+      before do
+        sign_in a_zone_org_2_checker
+        get worker_organization_reports_path(a_zone_org_1)
+      end
+      specify do
+        response.should redirect_to root_path
+      end
+    end
+    describe "worker 无法访问worker report index" do
+      before do
+        sign_in a_zone_org_1_worker
+        get worker_organization_reports_path(a_zone_org_1)
+      end
+      specify do
+        response.should redirect_to root_path
+      end
+    end
+    describe "supervisor 无法访问worker report index" do
+      before do
+        sign_in a_zone_supervisor
+        get worker_organization_reports_path(a_zone_org_1)
+      end
+      specify do
+        response.should redirect_to root_path
+      end
+    end
+end
+
+
 describe "Reports" do
   let(:the_site_admin){FactoryGirl.create(:site_admin_with_two_zone_admin)}
   let(:a_zone_admin)  {the_site_admin.zone_admins.first }
@@ -1160,7 +1514,11 @@ describe "Reports" do
                                               template:a_template,
                                               committer:a_zone_org_1.worker,
                                               status:"finished")}
-  let!(:a_zone_org_1_report_3)      {FactoryGirl.create(:report,organization:a_zone_org_1,template:a_template,committer:a_zone_org_1.worker,status:"finished")}
+  let!(:a_zone_org_1_report_3)      {FactoryGirl.create(:report_with_all_records,
+                                                         organization:a_zone_org_1,
+                                                         template:a_template,
+                                                         committer:a_zone_org_1.worker,
+                                                         status:"finished")}
 
   let!(:a_zone_org_1_report_4)      {FactoryGirl.create(:report_with_some_records,
                                                          organization:a_zone_org_1,
@@ -1231,8 +1589,16 @@ describe "Reports" do
     unnormal_supervisor_report_pass_and_reject
     unnormal_supervisor_report_detail
     unnormal_supervisor_report_index_html
+    
 
-
+    normal_worker_report_index_html
+    normal_worker_report_detail
+    normal_worker_report_pass_and_reject
+    normal_worker_report_destroy_html
+    unnormal_worker_report_destroy_html
+    unnormal_worker_report_pass_and_reject
+    unnormal_worker_report_detail
+    unnormal_worker_report_index_html
 
   end
 end

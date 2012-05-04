@@ -1,0 +1,4 @@
+<% provide(:title, "全部的自查报告|"+@organization.name) %> 
+<%= render 'shared/home_left' %>
+<%= render partial:'reports/reports_index',locals:{reports:@worker_reports} %>
+

@@ -9,13 +9,14 @@ class ReportsController < ApplicationController
   before_filter :validate_report_template_when_create,    only:[:create]
   before_filter :validate_report_edit_and_update_and_destroy,         only:[:edit,:update,:destroy,:pass,:reject]
   def worker_report
-    if current_user.session.checker? or current_user.session.worker?
-      @worker_reports = @organization.get_all_worker_report
-    elsif
+    if current_user.session.zone_admin? or current_user.session.zone_supervisor?
       @worker_reports = @organization.get_all_finished_worker_report
+    elsif
+      @worker_reports = @organization.get_all_worker_report
     end
     respond_to do |format|
       format.mobile
+      format.html
     end
   end
   def supervisor_report

@@ -9,7 +9,10 @@
     <tr><td>提交时间     </td> <td><%= @report.created_at %></td></tr>
 </table>
 
-<% if not current_user.session.checker? %>
+<% if (@report.supervisor_report? and @current_user.session.zone_admin?) or 
+      (@report.worker_report? and current_user.session.checker?) or 
+      current_user.session.site_admin?
+%>
   <% if @report.status_is_new? %>
     <%= render partial:'reports/pass_report',locals:{report:@report} %>
   <% elsif @report.status_is_finished? %>
