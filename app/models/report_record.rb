@@ -1,6 +1,8 @@
 #encoding:utf-8
 class ReportRecord < ActiveRecord::Base
-  attr_accessible :check_point_id,:int_value,:float_value,:text_value,:boolean_value
+  require 'carrierwave/orm/activerecord'
+
+  attr_accessible :check_point_id,:int_value,:float_value,:text_value,:boolean_value,:photo_path
   belongs_to :report
   belongs_to :check_point#,inverse_of: :report_records
   belongs_to :check_category
@@ -12,6 +14,7 @@ class ReportRecord < ActiveRecord::Base
   validates :check_point,presence:true
   validates :check_category,presence:true
   #validates :report,presence:true
+  mount_uploader :photo_path,CheckPhotoUploader
 
   def get_boolean_value
     return "是" if self.boolean_value

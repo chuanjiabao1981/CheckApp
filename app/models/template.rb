@@ -36,5 +36,4 @@ class Template < ActiveRecord::Base
     end
     return n
   end
-
 end

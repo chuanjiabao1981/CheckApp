@@ -146,4 +146,40 @@ describe "StaticPages" do
       end
     end
   end
+  describe "Mobile 首页" do
+    before do
+      visit root_path(format: :mobile)
+    end
+    specify do  
+      page.should have_link('督察员登陆',href:zone_supervisor_signin_path)
+      page.should have_link('巡查员登陆',href:worker_signin_path)
+      page.should have_link('登陆',href:root_path(format: :mobile))
+    end
+  end
+  describe "Mobile 首页 worker 正确登陆" do
+    let(:a_worker) {FactoryGirl.create(:worker)}
+    before do
+      visit root_path(format: :mobile)
+      click_link '巡查员登陆'
+      fill_in '账号',with:a_worker.name
+      fill_in '密码',with:a_worker.password
+      click_button '登陆'
+    end
+    specify do
+      page.should have_link('退出',href:signout_path)
+    end
+  end
+  describe "Mobile 首页 worker错误登陆" do
+    before do
+      visit root_path(format: :mobile)
+      click_link '巡查员登陆'
+      fill_in '账号',with:"xxxxx"
+      fill_in '密码',with:"1234"
+      click_button '登陆'
+    end
+    specify do
+      #print page.html
+      page.should have_selector('div.alert.alert-error', text: '账号密码错误')
+    end
+  end
  end

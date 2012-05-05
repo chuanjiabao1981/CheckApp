@@ -1,0 +1,8 @@
+<%= form_for(@report_record,url:create_report_record_path(@report,@check_point)) do |f| %>
+  <%= render 'shared/error_messages' ,:object => f.object%>
+  <% if @report_record.check_point.can_photo? %>
+  	<%= f.label :photo_path,"现场图像" %>
+  	<%= f.file_field :photo_path %>
+  	<%= f.submit '新增' %> 
+  <% end %>
+<% end %>

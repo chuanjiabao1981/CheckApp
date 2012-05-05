@@ -35,8 +35,17 @@ CheckApp::Application.routes.draw do
     end
   end
 
-  resources :report_records,only:[:edit,:update,:show,:destroy,:create]
-  match '/report/:id/id/check_point/:check_point_id/records',to:'report_records#new_report_record',via: :get,as:'new_report_record'
+  match '/report/:id/check_point/:check_point_id/records/new',
+        to:'report_records#new_report_record',
+        defaults:{format:'mobile'},
+        via: :get,
+        as:'new_report_record'
+  match '/report/:id/check_point/:check_point_id/records/create',
+        to:'report_records#create_report_record',
+        defaults:{format:'mobile'},
+        via: :post,
+        as:'create_report_record'
+  resources :report_records,only:[:edit,:update,:show,:destroy]
   
   
 

@@ -64,25 +64,27 @@ class Report < ActiveRecord::Base
   def get_finished_check_points_num_by_check_category(check_category_id)
     s = 0
     self.report_records.each do |rr|
-      s = s+1 if rr.check_category_id == check_category_id
+      s = s+1 if rr.check_category_id.to_s == check_category_id.to_s
     end
     return s
   end
   def get_report_record_id_by_check_point_id(check_point_id)
     self.report_records.each do|rr|
-      return rr.id if rr.check_point_id == check_point_id
+      return rr.id if rr.check_point_id.to_s == check_point_id.to_s
     end
     return 
   end
   def get_report_record_by_check_point_id(check_point_id)
     self.report_records.each do|rr|
-      return rr if rr.check_point_id == check_point_id
+      return rr if rr.check_point_id.to_s == check_point_id.to_s
     end
     return
   end
   def check_point_is_done?(check_point_id)
     self.report_records.each do |rr|
-      return true if rr.check_point_id == check_point_id
+      logger.debug("rr_id\t"+rr.check_point_id.to_s+"\t"+check_point_id.to_s)
+      return true if rr.check_point_id.to_s == check_point_id.to_s
+      logger.debug("finished")
     end
     return false
   end
