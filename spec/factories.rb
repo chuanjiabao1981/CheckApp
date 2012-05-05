@@ -64,6 +64,8 @@ FactoryGirl.define do
     report
     check_category  
     check_point
+    video_path      {Faker::Lorem::words(1)}
+    photo_path      {Faker::Lorem::words(1)}
     boolean_value   {rand(2) == 1}
     float_value     {rand(1000.0)}
     int_value       {rand(2000)}
@@ -132,13 +134,13 @@ FactoryGirl.define do
     end
     factory :template_with_check_valud do |template|
       after_create do |template|
-        Factory.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期",float_name:"检查值")
+        Factory.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期",float_name:"检查值",int_name:"设备温度",text_name:"备注")
       end
     end
     factory :template_with_all_required do |template|
       sequence(:name)  {|n| "template_#{n}"}
       after_create do |template|
-        FactoryGirl.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期",text_name:"备注",float_name:"检查值" )
+        FactoryGirl.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期",text_name:"备注",float_name:"检查值",int_name:"设备高度")
         3.times do |n|
           FactoryGirl.create(:check_category_five_check_points,template:template)
         end

@@ -29,10 +29,10 @@ class ReportRecord < ActiveRecord::Base
   def get_text_value
     return self.text_value
   end
-  def get_video_value
+  def get_video_path
     return self.video_path
   end
-  def get_photo_value
+  def get_photo_path
     return self.photo_path
   end
 end
