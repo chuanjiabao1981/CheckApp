@@ -7,6 +7,7 @@ def login_worker_visit_organization_reports
     a_zone_org_1_report_1.should be_valid
     a_template.should be_valid
     page.should have_link('新建自检报告',href:new_organization_report_path(a_zone_org_1,format: :mobile))
+    page.should have_selector('li',text:a_zone_org_1_report_1.organization.name)
     a_zone_org_1.reports.each do |report|
       if report.supervisor_report?
         page.should_not have_link(report.template.name,href:check_categories_report_path(report,format: :mobile))

@@ -1,4 +1,4 @@
-<table>
+<table class="table table-bordered">
 <% reports.each do |report| %>
   <tr>
       <td> <%= link_to report.template.name ,report_detail_report_path(report) %> </td>

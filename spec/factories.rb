@@ -71,6 +71,12 @@ FactoryGirl.define do
     int_value       {rand(2000)}
     date_value      {rand(10.years).ago.strftime("%Y-%m-%d")  }
     text_value      {Faker::Lorem::sentence(20)}
+    factory :report_record_with_photo do
+      photo_path    {File.open(File.join(Rails.root, 'spec', 'support', 'report_record', 'photo', 'test.jpg')) }
+    end
+    factory :report_record_with_9m_photo do
+      photo_path    {File.open(File.join(Rails.root, 'spec', 'support', 'report_record', 'photo', '9m.jpg')) }
+    end
   end
 
   factory :report do

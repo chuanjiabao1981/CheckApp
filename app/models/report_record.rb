@@ -1,4 +1,6 @@
 #encoding:utf-8
+require 'file_size_validator' 
+
 class ReportRecord < ActiveRecord::Base
   require 'carrierwave/orm/activerecord'
 
@@ -13,8 +15,10 @@ class ReportRecord < ActiveRecord::Base
   validates :text_value,length:{maximum:1200}
   validates :check_point,presence:true
   validates :check_category,presence:true
-  #validates :report,presence:true
   mount_uploader :photo_path,CheckPhotoUploader
+
+  #这个留给video用
+  #validates :photo_path,file_size:{:maximum => 1.5.megabytes.to_i}
 
   def get_boolean_value
     return "是" if self.boolean_value

@@ -26,9 +26,6 @@
       </div>
     </div>
   </header>
-  <% if signed_in? %>
-    <%= link_to '退出',signout_path ,method: "delete"%>
-  <% end %>
 
   <div class="container">
     <% flash.each do |key,value| %>

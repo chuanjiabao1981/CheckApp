@@ -16,8 +16,9 @@ describe ReportRecord do
                                                             check_value_attributes:{boolean_name:"b1",date_name:"d1"}
                                                           )
                             }
-  let!(:a_check_category)     {a_template.check_categories.create(category:"手续检查",des:"测试水平")}
-  let!(:a_check_point)        {a_check_category.check_points.create(content:"是否建立了培训制度") }
+  let!(:a_check_category)           {a_template.check_categories.create(category:"手续检查",des:"测试水平")}
+  let!(:a_check_point)              {a_check_category.check_points.create(content:"是否建立了培训制度") }
+  let!(:a_check_point_with_photo)   {a_check_category.check_points.create(content:"执照",can_photo:true)}
 
 
   let!(:b_template)          { b_zone_admin.templates.create(
@@ -38,8 +39,17 @@ describe ReportRecord do
     @report = a_organization.reports.build({reporter_name:"dddd",template_id:a_template.id})#,committer:a_zone_supervisor)
     @report.committer = a_zone_supervisor
     @report.status = 'new'
+    @report.save
     @report_record = @report.report_records.build(check_point_id:a_check_point.id,boolean_value:false)
     @report_record.check_category_id = a_check_point.check_category.id
+    @report_record_with_photo        = FactoryGirl.create(:report_record_with_photo,
+                                                           report:@report,
+                                                           check_category:a_check_point_with_photo.check_category,
+                                                           check_point:a_check_point_with_photo)
+    #@report_record_with_9m_photo   = FactoryGirl.build(:report_record_with_9m_photo,
+                                                           #report:@report,
+                                                           #check_category:a_check_point_with_photo.check_category,
+                                                           #check_point:a_check_point_with_photo)
   end
   subject {@report_record}
 
@@ -65,6 +75,21 @@ describe ReportRecord do
     end
     it {should_not be_valid }
   end
-
+  describe "测试photo path" do
+    specify do
+      @report_record_with_photo.should be_valid
+      file_path = @report_record_with_photo.photo_path.current_path
+      File.exist?(file_path).should == true
+      @report_record_with_photo.destroy
+      File.exist?(file_path).should == false
+    end
+  end
+  #describe "测试photo大小" do
+  # specify do
+  #   @report_record_with_9m_photo.save
+  #   @report_record_with_9m_photo.photo_path = File.open(File.join(Rails.root, 'spec', 'support', 'report_record', 'photo', '1_1M.jpg'))
+  #   @report_record_with_9m_photo.save 
+  # end
+  #end
   
 end
