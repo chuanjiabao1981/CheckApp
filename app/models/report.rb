@@ -82,9 +82,7 @@ class Report < ActiveRecord::Base
   end
   def check_point_is_done?(check_point_id)
     self.report_records.each do |rr|
-      logger.debug("rr_id\t"+rr.check_point_id.to_s+"\t"+check_point_id.to_s)
       return true if rr.check_point_id.to_s == check_point_id.to_s
-      logger.debug("finished")
     end
     return false
   end

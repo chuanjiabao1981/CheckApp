@@ -26,6 +26,7 @@ describe CheckValue do
   it { should respond_to(:int_name) }
   it { should respond_to(:date_name)}
   it { should respond_to(:float_name)}
+  it { should respond_to(:text_name) }
   it { should respond_to(:template)}
   it { should respond_to(:template_id) }
   it { should be_valid }
@@ -47,6 +48,7 @@ describe CheckValue do
       before do
         @the_check_value.boolean_name = @the_check_value.int_name = nil
         @the_check_value.date_name    = @the_check_value.float_name = nil
+        @the_check_value.text_name    = nil
       end
       it { should_not be_valid }
     end
@@ -65,6 +67,10 @@ describe CheckValue do
     describe "date 名字太长" do
       before { @the_check_value.date_name = "b" * 100 }
       it { should_not be_valid }
+    end
+    describe "text_name名字太长" do
+      before {@the_check_value.text_name = "b"*100}
+      it {should_not be_valid}
     end
   end
 end

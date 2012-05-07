@@ -70,7 +70,10 @@ describe Template do
   end
 
   describe "测试关联关系" do
-    let!(:a_template)      {a_zone_admin.templates.create(name:'test_template2',for_supervisor:true,for_worker:false,check_value_attributes:{boolean_name:"b1",date_name:"d1"})}
+    let!(:a_template)      {a_zone_admin.templates.create(name:'test_template2',
+                            for_supervisor:true,
+                            for_worker:false,
+                            check_value_attributes:{boolean_name:"b1",date_name:"d1",text_name:"备注"})}
     let!(:a_category1)     { FactoryGirl.create(:check_category,template:a_template,category:"类型一")}
     let!(:b_category2)     { FactoryGirl.create(:check_category,template:a_template,category:"类型二")}
     let!(:a_value)         { FactoryGirl.create(:check_value,template:a_template,boolean_name:"是否铜鼓",date_name:"整改日期",float_name:"搞毛",int_name:"测试")}

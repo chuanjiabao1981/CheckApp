@@ -9,6 +9,7 @@ class ReportRecordsController < ApplicationController
     @report_record = @report.report_records.build
     @report_record.check_point_id    = params[:check_point_id]
     @report_record.check_category_id = @check_point.check_category.id
+    @report_record.date_value        = nil
   end
   def create_report_record
     @report_record = @report.report_records.build(params[:report_record])

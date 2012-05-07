@@ -26,6 +26,9 @@
     <% if @template.check_value.date_name and @template.check_value.date_name != "" %>
       <li><%= @template.check_value.date_name %></li>
     <% end %>
+    <% if @template.check_value.has_text_name? %>
+      <li><%= @template.check_value.text_name %>
+    <% end %>
    <% end %>
 </ul>
 

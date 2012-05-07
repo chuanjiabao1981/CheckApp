@@ -9,7 +9,13 @@ describe "Templates" do
   let!(:a_template)      { FactoryGirl.create(:template,zone_admin:a_zone_admin,name:"静心")}
   let!(:a_category1)     { FactoryGirl.create(:check_category,template:a_template,category:"类型一")}
   let!(:b_category2)     { FactoryGirl.create(:check_category,template:a_template,category:"类型二")}
-  let!(:a_value)         { FactoryGirl.create(:check_value,template:a_template,boolean_name:"是否铜鼓",date_name:"整改日期",float_name:"搞毛",int_name:"测试")}
+  let!(:a_value)         { FactoryGirl.create(:check_value,
+                                                template:a_template,
+                                                boolean_name:"是否铜鼓",
+                                                date_name:"整改日期",
+                                                float_name:"搞毛",
+                                                int_name:"测试",
+                                                text_name:"备注")}
   let!(:b_template)      { FactoryGirl.create(:template,zone_admin:b_zone_admin,name:"和顺")}
   let!(:b_value)          { FactoryGirl.create(:check_value,template:b_template,float_name:"指数")}
   describe "index 页面" do
@@ -53,7 +59,9 @@ describe "Templates" do
             fill_in '日期',   with:"整改日期"
             fill_in '整数',   with:"长度"
             fill_in '小数',   with:"温度"
+            fill_in '文字',   with:"备注"
           end
+
           it "摸板数增加" do
             expect { click_button '新增模板'}.to change(Template,:count).by(1)
             page.should have_content(temp_name)
@@ -133,6 +141,7 @@ describe "Templates" do
         it { should have_selector('li',text:a_value.date_name)                                   }
         it { should have_selector('li',text:a_value.float_name)                                   }
         it { should have_selector('li',text:a_value.int_name)                                     }
+        it { should have_selector('li',text:a_value.text_name)                                    }
       end
     end
   end

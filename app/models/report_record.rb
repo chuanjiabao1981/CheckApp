@@ -4,7 +4,7 @@ require 'file_size_validator'
 class ReportRecord < ActiveRecord::Base
   require 'carrierwave/orm/activerecord'
 
-  attr_accessible :check_point_id,:int_value,:float_value,:text_value,:boolean_value,:photo_path
+  attr_accessible :check_point_id,:int_value,:float_value,:text_value,:boolean_value,:photo_path,:date_value
   belongs_to :report
   belongs_to :check_point#,inverse_of: :report_records
   belongs_to :check_category

@@ -7,7 +7,7 @@ class CreateReportRecords < ActiveRecord::Migration
       t.boolean :boolean_value,default:false
       t.integer :int_value,default:0
       t.float :float_value,default:0.0
-      t.date :date_value,default:'2011-12-03'
+      t.date :date_value
       t.text :text_value,default:''
       t.string :photo_path
       t.string :video_path
