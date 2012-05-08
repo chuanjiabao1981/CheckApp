@@ -1,5 +1,12 @@
-<%= link_to '返回',check_category_check_point_reports_report_path(@report_record.report_id,@report_record.check_category_id) %>
-<table>
+<p>
+<%= link_to '返回',check_category_check_point_reports_report_path(@report_record.report_id,@report_record.check_category_id),class:"btn btn-success" %>
+</p>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th colspan="2"><center>检查详情</center></th>
+    </tr>
+  </thead>
   <tr>
     <td colspan="2">
       <%= @report_record.check_point.content %>
@@ -7,8 +14,7 @@
   </tr>
   <% if @report_record.check_point.can_photo? %>
     <tr>
-      <td>图像</td>
-      <td><img src="<%= @report_record.get_photo_path %>"/></td>
+      <td colspan="2"><img src="<%= @report_record.get_photo_path %>"/></td>
     </tr>
   <% end %>
   <% if @report_record.check_point.can_video? %>

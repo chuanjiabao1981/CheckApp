@@ -1,28 +1,40 @@
-<table>
+<p>
+  <%= link_to "返回", check_categories_report_path(@report),class:"btn btn-success"%>
+</p>
+<table class="table table-bordered table-striped">
+  <tr>
+    <th>检查点</th>
+    <th colspan="2">操作</th>
+  </tr>
   <% @check_category.check_points.each do |cp| %>
     <tr>
-        <td><%= cp.content %></td>
+        <td width="50%"><%= cp.content %></td>
         <% if @report.check_point_is_done?(cp.id) %>
           <% if @report.status_is_new? %>
             <% if @report.committer == current_user %>
-              <td><%= link_to '编辑', edit_report_record_path(@report.get_report_record_by_check_point_id(cp.id),format: :mobile) %></td>
+              <td><%= link_to '编辑', edit_report_record_path(@report.get_report_record_by_check_point_id(cp.id),format: :mobile),class:"btn btn-danger" %></td>
+              <td>
+               <%= link_to '查看',report_record_path(@report.get_report_record_by_check_point_id(cp.id),format: :mobile) ,class:"btn btn-info"%> </td>
             <% else %>
-              <td> <%= link_to '查看',report_record_path(@report.get_report_record_by_check_point_id(cp.id),format: :mobile) %> <td>
+              <td> <%= link_to '查看',report_record_path(@report.get_report_record_by_check_point_id(cp.id),format: :mobile) ,class:"btn btn-info"%> <td>
             <% end %>
           <% end %>
           <% if @report.status_is_finished? %>
-            <td> <%= link_to '查看',report_record_path(@report.get_report_record_by_check_point_id(cp.id),format: :mobile) %> <td>
+           <td><%= link_to '编辑','#',class:"btn btn-danger disabled" %></td>
+              <td>
+            <td> <%= link_to '查看',report_record_path(@report.get_report_record_by_check_point_id(cp.id),format: :mobile),class:"btn btn-info"%> </td>
           <% end %>
         <% else %>
           <% if @report.status_is_new? %>
             <% if @report.committer == current_user %>
-              <td><%= link_to '新建',new_report_record_path(@report,cp,format: :mobile)%></td>
+              <td><%= link_to '新建',new_report_record_path(@report,cp,format: :mobile),class:"btn btn-primary"%></td>
+              <td> <%= link_to '查看','#',class:"btn btn-info disabled"%> </td>
             <% else %>
-              <td>未完成</td>
+              <td colspan="2">未完成</td>
             <% end %>
           <% end %>
           <% if @report.status_is_finished? %>
-            <td>未完成</td>
+            <td colspan="2">未完成</td>
           <% end %>
         <% end %>
     </tr>

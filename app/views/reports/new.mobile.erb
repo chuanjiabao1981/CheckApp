@@ -1,3 +1,5 @@
+<%= render partial:'reports/nav',locals:{action_name:"新增报告",organization:@organization} %>
+
 <%= form_for(@report,url:organization_reports_path(@organization)) do |f| %>
   <%= render 'shared/error_messages' ,:object => f.object%>
 
@@ -5,6 +7,6 @@
   <%= f.collection_select(:template_id,@template_list,:id,:name) %>
   <%= f.label :reporter_name,"提交人员" %>
   <%= f.text_field :reporter_name %>
-  <%= f.submit '新增' %> 
+  <%= f.submit '新增' ,class: "btn btn-small"%> 
 <% end %>
 

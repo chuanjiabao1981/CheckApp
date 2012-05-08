@@ -1,11 +1,10 @@
-<ul>
-  <li><%= @report.template.name %></li>
-  <li><%= @report.created_at %></li>
-</ul>
+<p>
+	<%= link_to "返回", check_categories_report_path(@report),class:"btn btn-success"%>
+</p>
 <%= form_for(@report,url:report_path(@reporte)) do |f| %>
   <%= render 'shared/error_messages' ,:object => f.object%>
-  <%= f.label :reporter_name,"提交人员" %>
+  <%= f.label :reporter_name,"提交者" %>
   <%= f.text_field :reporter_name %>
-  <%= f.submit '保存' %> 
+  <%= f.submit '保存' ,class:"btn btn-small"%> 
 <% end %>
 

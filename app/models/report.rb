@@ -48,15 +48,19 @@ class Report < ActiveRecord::Base
 
   def supervisor_report?
     return true if self.committer_type == 'ZoneSupervisor'
+    return false
   end
   def worker_report?
     return true if self.committer_type == 'Worker'
+    return false
   end
   def status_is_finished?
     return true if self.status == 'finished'
+    return false
   end
   def status_is_new?
     return true if self.status == 'new'
+    return false
   end
   def get_finished_check_points_num
     self.report_records.size

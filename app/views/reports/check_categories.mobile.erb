@@ -1,18 +1,28 @@
+<%= render partial:'reports/nav',locals:{action_name:"报告详情",organization:@organization} %>
 <% if @report.status_is_new? and @report.committer == current_user %>
-<%= link_to '编辑',edit_report_path(@report,format: :mobile) %>
-<%= link_to '删除',report_path(@report), method: :delete,confirm:"确定删除自查报告吗?" %>
+<p>
+<%= link_to '编辑',edit_report_path(@report,format: :mobile) ,class:"btn btn-small"%>
+<%= link_to '删除',report_path(@report), method: :delete,confirm:"确定删除自查报告吗?" ,class:"btn btn-small"%>
+</p>
 <% end %>
-<ul>
-  <li><%= @report.template.name%></li>
-  <li><%= @report.reporter_name%></li>
-  <li><%= @report.created_at %></li>
-</ul>
-<table>
-    <tr>
-      <td>检查类型</td>
-      <td>检查点个数</td>
-      <td>已完成个数</td>
-    </tr>
+<table class="table table-bordered table-striped">
+  <tr>
+    <th>名称</th>
+    <td colspan="2"><%= @report.template.name%></td>
+  </tr>
+  <tr>
+    <th>提交者</th>
+    <td colspan="2"><%= @report.reporter_name%></td>
+  </tr>
+  <tr>
+    <th>提交时间</th>
+    <td colspan="2"><%= @report.created_at %></td>
+  </tr>
+  <tr>
+    <th> 检查类型</th>
+    <th> 检查点个数</th>
+    <th> 已完成个数</th>
+  </tr>
   <% @report.template.check_categories.each do |cc| %>
     <tr>
       <td><%= link_to cc.category,check_category_check_point_reports_report_path(@report,cc,format: :mobile) %> </td>
@@ -21,3 +31,17 @@
     </tr>
   <% end %>
 </table>
+<!--table class="table table-bordered table-bordered">
+    <tr>
+      <td>检查类型</td>
+      <td>检查点个数</td>
+      <td>已完成个数</td>
+    </tr>  
+  <% @report.template.check_categories.each do |cc| %>
+    <tr>
+      <td><%= link_to cc.category,check_category_check_point_reports_report_path(@report,cc,format: :mobile) %> </td>
+      <td><%= cc.check_points.size %> </td>
+      <td><%= @report.get_finished_check_points_num_by_check_category(cc.id) %></td>
+    </tr>
+  <% end %>
+</table-->

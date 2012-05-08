@@ -18,9 +18,15 @@ class CheckPhotoUploader < CarrierWave::Uploader::Base
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
+  # 如下两个目录方法修改一定要小心
+  # 在测试完成后，删除这两个目录下所有文件，这个是写死在 spec_helpler文件中的
   def store_dir
-    #"uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-    "report_record_photo/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    #{}"uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    "report_record_photo/#{Rails.env}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+  end
+
+  def cache_dir
+    "#{Rails.root}/tmp/uploads/#{Rails.env}/report_record_photo/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
