@@ -1,6 +1,19 @@
 <ul class="breadcrumb">
-  <li>
-    <a href="<%= worker_organization_reports_path(organization) %>"><%= organization.name%></a> <span class="divider">/</span>
-  </li>
+  <% if current_user.session.zone_supervisor? %>
+  	<li>
+  		<%= link_to '机构列表',zone_supervisor_home_path(format: :mobile) %>
+  		<span class="divider">/</span>
+  	</li>
+  	<li>
+  		<%= link_to organization.name,zone_supervisor_organization_reports_path(organization,format: :mobile) %>
+  		<span class="divider">/</span>
+  	</li>
+  <% end %>
+  <% if current_user.session.worker? %>
+  	<li>
+  	  <%= link_to organization.name,worker_organization_reports_path(organization,format: :mobile) %>
+	  <span class="divider">/</span>
+  	</li>
+  <% end %>
   <li class="active"><%= action_name%></li>
 </ul>

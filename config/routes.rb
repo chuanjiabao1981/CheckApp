@@ -68,8 +68,8 @@ CheckApp::Application.routes.draw do
   match '/zone_supervisor/sessions'       ,to:'sessions#zone_supervisor_create',via: :post,format:'mobile'
 
 
-  match '/signout', to: 'sessions#destroy', via: :delete
-
+  match '/signout'                        ,to:'sessions#destroy', via: :delete
+  match '/zone_supervisor_home'           ,to:'main#zone_supervisor_home',via: :get,format:'mobile'
   root  to:'main#home'
 
   resources :zone_supervisors,shallow:true,only:[] do

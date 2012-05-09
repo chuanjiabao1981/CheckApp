@@ -1,20 +1,13 @@
-<% if current_user.session.zone_supervisor? and @organization.zone.zone_supervisor_ids.include?(current_user.id) %>
-<%= link_to '新建督察报告',new_organization_report_path(@organization,format: :mobile) %>
-<% end %>
-<table>
-<% @supervisor_reports.each do |report| %>
-  <tr>
-      <td> <%= link_to report.template.name ,check_categories_report_path(report,format: :mobile) %> </td>
-      <td> <%= report.created_at %> </td>
-      <td>
-        <% if report.status_is_new? %>
-          进行中
-        <% elsif report.status_is_finished? %>
-          通过
-        <% else %>
-          N/A
-        <% end %>
-      </td>
-  </tr>
-<% end %>
-</table>
+<ul class="breadcrumb">
+    <li>
+      <%= link_to '机构列表',zone_supervisor_home_path(format: :mobile) %>
+      <span class="divider">/</span>
+    </li>
+  <li class="active"><%= @organization.name %></li>
+</ul>
+<p>
+  <% if current_user.session.zone_supervisor? and @organization.zone.zone_supervisor_ids.include?(current_user.id) %>
+    <%= link_to '新建督察报告',new_organization_report_path(@organization,format: :mobile) ,class: "btn btn-small"%>
+  <% end %>
+</p>
+<%= render partial:'reports/reports_index',locals:{reports:@supervisor_reports} %>

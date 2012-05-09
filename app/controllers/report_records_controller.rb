@@ -36,36 +36,41 @@ class ReportRecordsController < ApplicationController
 
 private
   def validate_user_new
-    return redirect_to root_path unless current_user.session.worker? or current_user.session.zone_supervisor?
+    return redirect_to root_path(format: :mobile) unless current_user.session.worker? or current_user.session.zone_supervisor?
     @report         = Report.find_by_id(params[:id])
-    return redirect_to root_path if @report.nil?
+    return redirect_to root_path(format: :mobile) if @report.nil?
     logger.debug("before check_point is finished test")
-    return redirect_to root_path if @report.check_point_is_done?(params[:check_point_id])
+    return redirect_to root_path(format: :mobile) if @report.check_point_is_done?(params[:check_point_id])
     logger.debug("after check_point is finished test")
     logger.debug("before report is finished test")
-    return redirect_to root_path if @report.status_is_finished?
+    return redirect_to root_path(format: :mobile) if @report.status_is_finished?
     logger.debug("after report is finished test")
     @check_point    = CheckPoint.find_by_id(params[:check_point_id])
-    return redirect_to root_path if @check_point.nil?
+    return redirect_to root_path(format: :mobile) if @check_point.nil?
     @check_category = @check_point.check_category
-    return redirect_to root_path if @check_category.nil?
-    return redirect_to root_path unless @report.template == @check_category.template
+    return redirect_to root_path(format: :mobile) if @check_category.nil?
+    return redirect_to root_path(format: :mobile) unless @report.template == @check_category.template
     logger.debug("before user check")
-    return redirect_to root_path unless @report.committer == current_user
+    return redirect_to root_path(format: :mobile) unless @report.committer == current_user
     logger.debug("after user check")
   end
   def validate_user_visitor
-    return redirect_to root_path unless current_user.session.worker? or current_user.session.zone_supervisor?
+    return redirect_to root_path(format: :mobile) unless current_user.session.worker? or current_user.session.zone_supervisor?
     @report_record     = ReportRecord.find_by_id(params[:id])
-    return redirect_to root_path if @report_record.nil?
+    return redirect_to root_path(format: :mobile) if @report_record.nil?
     @report            = @report_record.report
-    return redirect_to root_path if @report.nil?
-    return redirect_to root_path unless @report.committer == current_user
+    return redirect_to root_path(format: :mobile) if @report.nil?
+    logger.debug("before report owner test")
+    return redirect_to root_path(format: :mobile) unless @report.committer == current_user
+    logger.debug("after report owner test")
+    logger.debug("before report status finished")
+    return redirect_to root_path(format: :mobile) if @report.status_is_finished?
+    logger.debug("after report status finished")
     @organization      = @report.organization
-    return redirect_to root_path if @organization.nil?
+    return redirect_to root_path(format: :mobile) if @organization.nil?
     @template          = @report.template
-    return redirect_to root_path if @template.nil?
+    return redirect_to root_path(format: :mobile) if @template.nil?
     @check_value       = @template.check_value
-    return redirect_to root_path if @check_value.nil?
+    return redirect_to root_path(format: :mobile) if @check_value.nil?
   end
 end

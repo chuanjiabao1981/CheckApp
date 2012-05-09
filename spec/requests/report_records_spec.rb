@@ -29,6 +29,9 @@ describe "ReportRecords" do
                                               template:a_template,
                                               committer:a_zone_org_1.worker,
                                               status:"finished")}
+  let!(:a_zone_org_1_report_2_a_record) {
+                                            a_zone_org_1_report_2.report_records.first
+                                        }
   let!(:a_zone_org_1_report_3)      {FactoryGirl.create(:report_with_all_records,
                                                          organization:a_zone_org_1,
                                                          template:a_template,
@@ -45,6 +48,9 @@ describe "ReportRecords" do
                                                          template:a_template,
                                                          committer:a_zone_supervisor,
                                                          status:"finished")}
+  let(:a_zone_org_1_report_5_a_record) {
+                                        a_zone_org_1_report_5.report_records.first
+  }
   let!(:a_zone_org_1_report_6)      {FactoryGirl.create(:report_with_some_records,
                                                          organization:a_zone_org_1,
                                                          template:a_template,
@@ -289,7 +295,7 @@ describe "ReportRecords" do
         get report_record_path(test_record,format: :mobile)
       end
       specify do
-        response.should redirect_to root_path
+        response.should redirect_to root_path(format: :mobile)
       end
     end
     describe "not signin" do
@@ -302,7 +308,7 @@ describe "ReportRecords" do
         get report_record_path(1203,format: :mobile)
       end
       specify do
-        response.should redirect_to root_path
+        response.should redirect_to root_path(format: :mobile)
       end
     end
   end
@@ -353,7 +359,7 @@ describe "ReportRecords" do
         get new_report_record_path(test_report,test_check_point)
       end
       specify do
-        response.should redirect_to root_path
+        response.should redirect_to root_path(format: :mobile)
       end
     end
     describe "post request" do
@@ -362,7 +368,7 @@ describe "ReportRecords" do
         post create_report_record_path(test_report,test_check_point)
       end
       specify do
-        response.should redirect_to root_path
+        response.should redirect_to root_path(format: :mobile)
       end
     end
   end
@@ -377,7 +383,7 @@ describe "ReportRecords" do
         get new_report_record_path(test_report,test_check_point)
       end
       specify do
-        response.should redirect_to root_path
+        response.should redirect_to root_path(format: :mobile)
       end
     end
     describe "post request" do
@@ -386,7 +392,7 @@ describe "ReportRecords" do
         post create_report_record_path(test_report,test_check_point)
       end
       specify do
-        response.should redirect_to root_path
+        response.should redirect_to root_path(format: :mobile)
       end
     end
   end
@@ -405,7 +411,7 @@ describe "ReportRecords" do
         get new_report_record_path(test_report,test_check_point)
       end
       specify do
-        response.should redirect_to root_path
+        response.should redirect_to root_path(format: :mobile)
       end
     end
     describe "post request" do
@@ -414,7 +420,7 @@ describe "ReportRecords" do
         post create_report_record_path(test_report,test_check_point)
       end
       specify do
-        response.should redirect_to root_path
+        response.should redirect_to root_path(format: :mobile)
       end
     end
   end
@@ -471,6 +477,122 @@ describe "ReportRecords" do
       let(:wrong_user)            {a_zone_org_1_worker}
       let(:test_report)           {a_zone_org_1_report_6}
       let(:test_check_point)      {a_template.check_categories[1].check_points.first}
+    end
+  end
+  shared_examples_for "invalid user update report record" do
+
+    specify do
+      test_report_record.report.should be_status_is_new
+    end
+    describe "get request" do
+      before do
+        sign_in wrong_user
+        get edit_report_record_path(test_report_record)
+      end
+      specify do
+        response.should redirect_to root_path(format: :mobile)
+      end
+    end
+    describe "put request" do
+      before do
+        sign_in wrong_user
+        put report_record_path(test_report_record)
+      end
+      specify do
+        response.should redirect_to root_path(format: :mobile)
+      end
+    end
+    describe "no exist report get" do
+      before do
+        sign_in wrong_user
+        get edit_report_record_path(1203)
+      end
+      specify do
+        response.should redirect_to root_path(format: :mobile)
+      end
+    end
+    describe "no exist report put" do
+      before do
+        sign_in wrong_user
+        put report_record_path(1203)
+      end
+      specify do
+        response.should redirect_to root_path(format: :mobile)
+      end
+    end
+  end
+  shared_examples_for "valid user update the record of a finished report" do
+    specify do
+      test_report_record.report.should be_status_is_finished
+      test_report_record.report.committer.should == user
+    end
+    describe "get request" do
+      before do
+        sign_in user
+        get edit_report_record_path(test_report_record,format: :mobile)
+      end
+      specify {response.should redirect_to root_path(format: :mobile)}
+    end
+    describe "put request" do
+      before do
+        sign_in user
+        put report_record_path(test_report_record,format: :mobile)
+      end
+      specify do
+        response.should redirect_to root_path(format: :mobile)
+      end
+    end
+    describe "not exist report get" do
+      before do
+        sign_in user
+        get edit_report_record_path(1000,format: :mobile)
+      end
+      specify {response.should redirect_to root_path(format: :mobile)}
+    end
+    describe "not exist report put" do
+      before do
+        sign_in user
+        put report_record_path(1000,format: :mobile)
+      end
+      specify do
+        response.should redirect_to root_path(format: :mobile)
+      end     
+    end
+  end
+  describe "invalid update worker report" do
+    it_should_behave_like "valid user update the record of a finished report" do
+      let(:user)                {a_zone_org_1_worker}
+      let(:test_report_record)  {a_zone_org_1_report_2_a_record}
+    end
+    it_should_behave_like "invalid user update report record" do
+      let(:wrong_user) {a_zone_org_2_worker}
+      let(:test_report_record){a_zone_org_1_report_1_a_record}
+    end
+    it_should_behave_like "invalid user update report record" do
+      let(:wrong_user) {a_zone_supervisor}
+      let(:test_report_record) {a_zone_org_1_report_1_a_record}
+    end
+    it_should_behave_like "invalid user update report record" do
+      let(:wrong_user) {a_zone_admin}
+      let(:test_report_record) {a_zone_org_1_report_1_a_record}
+    end
+  end
+  describe "invalid update supervisor report" do
+    it_should_behave_like "valid user update the record of a finished report" do
+      let(:user)                {a_zone_supervisor}
+      let(:test_report_record)  {a_zone_org_1_report_5_a_record}
+    end
+    it_should_behave_like "invalid user update report record" do
+      let(:wrong_user) {b_zone_supervisor}
+      let(:test_report_record) {a_zone_org_1_report_6_a_record}
+    end
+    it_should_behave_like "invalid user update report record" do
+      let(:wrong_user) {a_zone_org_1_worker}
+      let(:test_report_record) {a_zone_org_1_report_6_a_record}
+    end
+    it_should_behave_like "invalid user update report record" do
+      let(:wrong_user) {a_zone_admin}
+      let(:test_report_record) {a_zone_org_1_report_6_a_record}
     end
   end
 end
