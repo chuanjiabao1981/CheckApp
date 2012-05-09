@@ -1,5 +1,6 @@
-<h1>ZoneSupervisorr登陆</h1>
-<div class="row">
+<h1>督察员登陆</h1>
+<%= render partial:'sessions/login',locals:{post_url:zone_supervisor_sessions_path} %>
+<!--div class="row">
   <div class="span6 offset3">
     <%= form_for(:session, :url => zone_supervisor_sessions_path) do |f| %>
 
@@ -12,5 +13,5 @@
       <%= f.submit "登陆", :class => "btn btn-large btn-primary" %>
     <% end %>
   </div>
-</div>  
+</div-->  
 
