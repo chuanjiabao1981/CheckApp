@@ -1,13 +1,38 @@
 <% provide(:title, "全部的Zone") %>
-<%= render 'shared/home_left' %>
+<%= render partial:'zones/nav',locals:{action_name:'分区列表'} %>
+<p>
+	<button class="btn"><%= link_to '新增Zone',new_zone_admin_zone_path(@zone_admin) %></button>
+</p>
 
-<%= link_to '新增Zone',new_zone_admin_zone_path(@zone_admin) %>
-<table>
-  <% @zones.each do |z| %>
-    <tr>
-        <td><%= link_to z.name,zone_path(z) %></td>
-        <td><%= link_to "编辑", edit_zone_path(z)%>
-        <td><%= link_to "删除", zone_path(z), method: :delete, confirm: "确定删除这个zone以及下属全部信息吗？" %>
-    </tr>
-  <% end %>
-</table>
+<div class="box">
+
+	<div class="row">
+	<div class="span10 offset1">
+	<legend>全部分区列表</legend>
+	<table class="table table-striped table-bordered">
+		<!--caption>全部分区列表</caption-->
+		<thead>
+			<th width="10%">编号</th>
+			<th width="20%">区域名称</th>
+			<th width="25%">创建时间</th>
+			<th width="12%">下属机构数</th>
+			<th width="12%">督察员人数</th>
+			<th colspan="2"><center>操作</center></th>
+		</thead>
+	  <% n = 0 %>
+	  <% @zones.each do |z| %>
+	  	<%n=n+1%>
+	    <tr>
+	    	<td><%= n %></td>
+	        <td><%= link_to z.name,zone_path(z) %></td>
+	        <td><%= z.created_at %></td>
+	        <td><%= z.organizations.size %></td>
+	        <td><%= z.zone_supervisors.size %></td>
+	        <td><%= link_to "编辑", edit_zone_path(z)%></td>
+	        <td><%= link_to "删除", zone_path(z), method: :delete, confirm: "确定删除这个zone以及下属全部信息吗？" %></td>
+	    </tr>
+	  <% end %>
+	</table>
+	</div>
+	</div>
+</div>

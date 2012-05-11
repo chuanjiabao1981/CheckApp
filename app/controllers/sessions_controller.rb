@@ -2,6 +2,7 @@
 class SessionsController < ApplicationController
 
   def site_admin_new
+    render layout:'application_one_column'
   end
   def site_admin_create
     site_admin = SiteAdmin.find_by_name(params[:session][:name])
@@ -10,11 +11,12 @@ class SessionsController < ApplicationController
       redirect_to root_path
     else
       flash.now[:error] = '账号或密码错误'
-      render 'site_admin_new'
+      render 'site_admin_new',layout:'application_one_column'
     end
   end
 
   def zone_admin_new
+    render layout:'application_one_column'
   end
 
   def zone_admin_create
@@ -24,11 +26,12 @@ class SessionsController < ApplicationController
       redirect_to root_path
     else
       flash.now[:error] = '账号或密码错误'
-      render 'zone_admin_new'
+      render 'zone_admin_new',layout:'application_one_column'
     end
   end
 
   def checker_new
+    render layout:'application_one_column'
   end
   def checker_create
     checker = Checker.find_by_name(params[:session][:name])
@@ -37,7 +40,7 @@ class SessionsController < ApplicationController
       redirect_to root_path
     else
       flash.now[:error] = '账号或密码错误'
-      render 'checker_new'
+      render 'checker_new',layout:'application_one_column'
     end
   end
   def worker_new

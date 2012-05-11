@@ -32,12 +32,12 @@ describe "AuthenticationPages" do
 
     before { visit site_admin_signin_path }
     describe "登陆页面" do
-      it { should have_selector('h1', text:'SiteAdmin登陆') }
+      it { should have_selector('h2', text:'系统管理员登陆') }
       it { should have_selector('title',text:'登陆') }
     end
     describe "错误登陆" do
       before { click_button "登陆" }
-      it { should have_selector('h1',text:"SiteAdmin登陆") }
+      it { should have_selector('h2',text:"系统管理员登陆") }
       it { should have_selector('div.alert.alert-error',text:'账号或密码错误')}
     end
     describe "正常登陆" do

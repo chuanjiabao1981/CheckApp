@@ -1,0 +1,33 @@
+<header class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <ul class="nav">
+        <li><a class="brand" href="#">“云”检</a></li>
+        <li><%= link_to "首页", root_path %></li>
+        <li><%= link_to "关于", root_path %></li>
+      </ul>
+      <ul class="nav pull-right">
+        <% if signed_in? %>
+          <li><%= link_to "退出",signout_path ,method: "delete" %></li>
+        <% else %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+             登陆 <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                  <%= link_to '系统管理员登陆',site_admin_signin_path %>
+                </li>
+                <li>
+                  <%= link_to '分区管理员登陆',zone_admin_signin_path %>
+                </li>
+                <li>
+                  <%= link_to '机构管理员登陆',checker_signin_path %>
+                </li>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</header>

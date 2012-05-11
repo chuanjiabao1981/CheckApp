@@ -38,8 +38,10 @@ def sigin_visit_zone_new
     before do
       fill_in 'Zone名称',with:new_zone_name
       fill_in '备注',    with:new_zone_des
-      check a_zone_supervisor_1.name
-      check a_zone_supervisor_2.name
+      page.find('css', "#zone_zone_supervisor_ids_[value='#{a_zone_supervisor_1.id}']").set(true)
+      page.find('css', "#zone_zone_supervisor_ids_[value='#{a_zone_supervisor_2.id}']").set(true)
+      #check a_zone_supervisor_1.name
+      #check a_zone_supervisor_2.name
     end
     it "zone增加1" do
       expect{ click_button '新增Zone'}.to change(Zone,:count).by(1)
@@ -64,8 +66,10 @@ def sign_in_visit_zone_edit
     let(:a_zone_supervisor_2)     { a_zone_admin.zone_supervisors.last }
     before do
       fill_in 'Zone名称',with:new_zone_name
-      uncheck a_zone_supervisor_1.name
-      check a_zone_supervisor_2.name
+      page.find('css', "#zone_zone_supervisor_ids_[value='#{a_zone_supervisor_1.id}']").set(false)
+      #uncheck a_zone_supervisor_1.name
+      page.find('css', "#zone_zone_supervisor_ids_[value='#{a_zone_supervisor_2.id}']").set(true)
+      #check a_zone_supervisor_2.name
       click_button '保存'
     end
     specify do

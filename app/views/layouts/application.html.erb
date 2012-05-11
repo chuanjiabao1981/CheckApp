@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>维幄通达 | <%= yield(:title) %></title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
+  <%= render partial:'layouts/header'%>
 </head>
 <body>
-
-<% if signed_in? %>
-  <%= link_to '退出',signout_path ,method: "delete"%>
-<% else %>
-  <%= link_to 'SiteAdmin登陆',site_admin_signin_path %>
-  <%= link_to 'ZoneAdmin登陆',zone_admin_signin_path %>
-  <%= link_to 'Checker登陆',checker_signin_path %>
-<% end %>
-
-  <div class="container">
-    <% flash.each do |key,value| %>
-      <div class="alert alert-<%= key %>"><%= value %></div>
-    <% end %>
-    <%= yield %>
-    <%= debug(params) if Rails.env.development? %>
+  <%= render partial:'layouts/top_menu'%>
+  <div class="Wrapper">
+    <div class="sep20"></div>
+      <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="span3">
+            <%= render partial:'shared/home_left' %>
+          </div>
+          <div class="span9">
+            <% flash.each do |key,value| %>
+              <div class="alert alert-<%= key %>"><%= value %></div>
+            <% end %>
+            <%= yield %>
+          </div>
+        </div>
+      </div>
   </div>
-
+  <%= debug(params) if Rails.env.development? %>
 </body>
 </html>

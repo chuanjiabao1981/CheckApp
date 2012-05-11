@@ -7,7 +7,7 @@ describe "StaticPages" do
 
   describe "非登陆用户" do
     before { visit root_path }
-    it { should have_link('ZoneAdmin登陆',href:zone_admin_signin_path) }
+    it { should have_link('分区管理员登陆',href:zone_admin_signin_path) }
     it { should_not have_link('退出',href:signout_path) }
     it { should_not have_link('zone管理员') }
     it { should_not have_link('模板管理')  }
@@ -31,7 +31,7 @@ describe "StaticPages" do
       it {should_not have_link('登陆',href:site_admin_signin_path)}
       describe "退出" do
         before  { click_link "退出" }
-        it { should have_link('SiteAdmin登陆',href:site_admin_signin_path) }
+        it { should have_link('系统管理员登陆',href:site_admin_signin_path) }
         it { should have_content('首页') }
       end
     end
@@ -66,13 +66,13 @@ describe "StaticPages" do
       it {should have_link('设置')      }
       describe "退出" do
         before  { click_link "退出" }
-        it { should have_link('ZoneAdmin登陆',href:zone_admin_signin_path) }
+        it { should have_link('分区管理员登陆',href:zone_admin_signin_path) }
         it { should_not have_link('设置')      }
         it { should have_content('首页') }
       end
     end
 
-    #describe "非zoneadmin登陆用户" do
+    #describe "非分区管理员登陆用户" do
     #  let(:zoneadmin_user)  { FactoryGirl.create(:zone_admin,name:"test_for")}
     #  let(:supervisor_user) { FactoryGirl.create(:supervisor,admin:zoneadmin_user) }
     #  before do 
@@ -137,10 +137,10 @@ describe "StaticPages" do
       it { should have_link('机构') }
       it {should have_link('设置')      }
       it {should have_link('退出',href:signout_path)}
-      it {should_not have_link('Checker登陆',href:checker_signin_path)}
+      it {should_not have_link('机构管理员登陆',href:checker_signin_path)}
       describe "退出" do
         before  { click_link "退出" }
-        it { should have_link('Checker登陆',href:checker_signin_path) }
+        it { should have_link('机构管理员登陆',href:checker_signin_path) }
         it { should_not have_link('设置')      }
         it { should have_content('首页') }
       end

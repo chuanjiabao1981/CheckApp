@@ -1,12 +1,7 @@
 <% provide(:title, "首页") %>
-
-<% if signed_in? %>
-  <% if current_user.session.site_admin? %>
-    <%= render 'shared/home_left' %>
-  <% elsif current_user.session.zone_admin? %>
-    <%= render 'shared/home_left' %>
-  <% elsif current_user.session.checker? %>
-    <%= render 'main/org_checker_home' %>
-  <% end %>
-<% else %>
-<% end %>
+<div class="box">
+	<div class="content">
+		<p>ooooooooooooooooooo
+		</p>
+	</div>
+</div>

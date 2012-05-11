@@ -1,0 +1,20 @@
+<!--div style="width:960px;margin-left: auto;margin-right: auto;"-->
+<div class="box">
+	<div class="content">
+		<h2><%= login_title %></h2>
+      <div class="row">
+  			<div class="span6 offset3">
+    			<%= form_for(:session, :url => post_url) do |f| %>
+      				<%= f.label :name,"账号" %>
+      				<%= f.text_field :name %>
+
+      				<%= f.label :password ,"密码"%>
+      				<%= f.password_field :password %>
+
+      				<%= f.submit "登陆", :class => "btn btn-large btn-primary" %>
+   		 		<% end %>
+  			</div>
+		</div>
+	</div>  
+</div>
+<!--/div-->

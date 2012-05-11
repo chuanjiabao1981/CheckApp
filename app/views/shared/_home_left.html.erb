@@ -1,12 +1,31 @@
-<% if signed_in? and current_user.session.site_admin? %>
-<%= link_to 'zone管理员',zone_admins_path %>
-<% end %>
-<% if signed_in? and current_user.session.zone_admin? %>
-<%= link_to 'zone管理',zone_admin_zones_path(current_user) %>
-<%= link_to '督察员',zone_admin_zone_supervisors_path(current_user) %>
-<%= link_to '模板', zone_admin_templates_path(current_user) %>
-<% end %>
-<%= link_to '设置','#' %>
-<% if signed_in? %>
-<%= link_to '退出',signout_path ,method: "delete"%>
-<% end %>
+<div class="box">
+	<ul class="nav nav-pills nav-stacked">
+		<% if signed_in? and current_user.session.site_admin? %>
+			<li>
+				<%= link_to 'zone管理员',zone_admins_path %>
+			</li>
+		<% end %>
+		<% if signed_in? and current_user.session.zone_admin? %>
+			<li>
+				<%= link_to 'zone管理',zone_admin_zones_path(current_user) %>
+			</li>
+			<li>
+				<%= link_to '督察员',zone_admin_zone_supervisors_path(current_user) %>
+			</li>
+			<li>
+				<%= link_to '模板', zone_admin_templates_path(current_user) %>
+			</li>
+		<% end %>
+		<% if signed_in? and current_user.session.checker? %>
+			<%= link_to '机构','#'%>
+		<% end %>
+		<% if signed_in? %>
+		<li>
+			<%= link_to '设置','#' %>
+		</li>
+			<li>
+				<%= link_to '退出',signout_path ,method: "delete"%>
+			</li>
+		<% end %>
+	</ul>
+</div>

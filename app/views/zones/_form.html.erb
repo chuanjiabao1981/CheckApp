@@ -1,10 +1,8 @@
-<% provide(:title, "新增Zone") %> 
-<%= render partial:'zones/nav',locals:{action_name:'新增分区'} %>
 <div class="box">
   <div class="row">
     <div class="span10 offset1">
-      <%= form_for(@zone,url:zone_admin_zones_path(@zone_admin),html:{class:"form-horizontal"}) do |f| %>
-        <legend>新增分区</legend>
+      <%= form_for(zone,url:post_url,html:{class:"form-horizontal"}) do |f| %>
+        <legend><%= legend_name %></legend>
         <fieldset>
           <%= render 'shared/error_messages' ,:object => f.object%>
           <div class="control-group">
@@ -22,16 +20,16 @@
 
           <div class="control-group">
             <label class="control-label" for="zone_supervisor_name">督察员账号</label>
-              <% @zone_admin.zone_supervisors.each do |supervisor| %>
+              <% zone_admin.zone_supervisors.each do |supervisor| %>
                 <div class="controls">
                   <%= check_box_tag "zone[zone_supervisor_ids][]", 
-                    supervisor.id, @zone.zone_supervisor_ids.include?(supervisor.id)%>
-                  <%= supervisor.name%>
+                    supervisor.id, zone.zone_supervisor_ids.include?(supervisor.id)%>
+                  <%= supervisor.name%></label>
                 </div>
               <% end %>
           </div>
           <div class="form-actions">
-             <%= f.submit '新增Zone' ,class:"btn btn-primary"%>
+             <%= f.submit action_name ,class:"btn btn-primary"%>
           </div>
         </fieldset>
       <% end %>

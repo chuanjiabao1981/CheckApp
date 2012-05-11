@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%= render partial:'layouts/header'%>
+</head>
+<body>
+  <%= render partial:'layouts/top_menu'%>
+  <div class="Wrapper">
+    <div class="sep20"></div>
+      <div class="container">
+        <div class="row">
+          <% flash.each do |key,value| %>
+            <div class="alert alert-<%= key %>"><%= value %></div>
+          <% end %>
+          <%= yield %>
+        </div>
+      </div>
+  </div>
+  <%= debug(params) if Rails.env.development? %>
+</body>
+</html>
