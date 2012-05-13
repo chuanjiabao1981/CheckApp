@@ -1,4 +1,11 @@
-<td><%= check_point.content %></td>
+<td>
+  <%= check_point.content %>
+  <% if not report_record.nil? and check_point.can_photo? %>
+    <%= link_to(report_record.photo_path.to_s,id:"single_image") do %>
+      <span class="label label-info">图</span>
+    <% end %>
+  <% end %>
+</td>
 <% if check_value.has_boolean_name? %>
   <% if report_record.nil? %>
     <td>未完成</td>

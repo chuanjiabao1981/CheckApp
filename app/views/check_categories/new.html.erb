@@ -1,4 +1,4 @@
 <% provide(:title, "新增检查类型") %> 
-<%= render partial:'check_categories/nav',locals:{template:@category.template,action_name:'新增检查类型'} %>
+<%= render partial:'check_categories/nav',locals:{zone_admin:@zone_admin,template:@category.template,action_name:'新增检查类型'} %>
 
 <%= render partial:'check_categories/form',locals:{check_category:@category,post_url:template_check_categories_path(@template),action_name:'新增检查类型',legend_name:"新增检查类型"} %>

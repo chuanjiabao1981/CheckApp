@@ -1,3 +1,18 @@
 <% provide(:title, "全部的督察报告|"+@organization.name) %> 
-<%= render partial:'reports/reports_index',locals:{reports:@supervisor_reports} %>
+<ul class="breadcrumb">
+  <li>
+    <%= link_to '分区报告列表', zone_admin_home_path(@zone_admin)%>
+    <span class="divider">/</span>
+  </li>
+  <li class="active"><%= "#{@organization.name}督察报告" %></li>
+</ul>
+<% if current_user.session.zone_admin? or current_user.session.site_admin? %>
+	<% new_reports_num = @organization.get_all_new_supervisor_report.size %>
+<% else %>
+	<% new_reports_num = nil %>
+<% end %>
+<%= render partial:'reports/reports_index',
+			locals: { legend_name:"#{@organization.name} 全部督察报告",
+					   new_reports_num:new_reports_num,
+					  reports:@supervisor_reports} %>
 

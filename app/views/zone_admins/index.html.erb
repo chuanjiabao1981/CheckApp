@@ -1,13 +1,36 @@
 <% provide(:title, "全部的管理员") %>
-<%= link_to '新增',new_zone_admin_path %>
-<table>
-  <% @zone_admin_users.each do |u| %>
-    <tr>
-        <td><%= link_to u.name,zone_admin_path(u) %></td>
-        <td><%= u.des %></td>
-        <td><%= link_to "编辑", edit_zone_admin_path(u)%>
-        <td><%= link_to "删除", zone_admin_path(u), method: :delete, confirm: "确定删除这个zone管理员吗？" %>
+<%= render partial:'zone_admins/nav',locals:{action_name:nil} %>
 
-    </tr>
-  <% end %>
-</table>
+<p>
+	<button class="btn"><%= link_to '新增',new_zone_admin_path %></button>
+</p>
+<div class="box">
+	<div class="row">
+		<div class="span10 offset1">
+			<legend>分区管理员</legend>	
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>账号</th>
+						<th colspan="4">基本信息</th>
+						<th colspan="2">操作</th>
+					</tr>
+				</thead>
+			  <% @zone_admin_users.each_with_index do |u,i| %>
+			    <tr>
+			    	<td><%=i%></td>
+			        <td><%= link_to u.name,zone_admin_path(u) %></td>
+			        <td><%= link_to "报告",zone_admin_home_path(u) %></td>
+			        <td><%= link_to "分区管理",zone_admin_path(u) %></td>
+			        <td><%= link_to "摸板",zone_admin_templates_path(u) %> </td>
+			        <td><%= link_to "督察员",zone_admin_zone_supervisors_path(u) %> </td>
+			
+			        <td><%= link_to "编辑", edit_zone_admin_path(u)%>
+			        <td><%= link_to "删除", zone_admin_path(u), method: :delete, confirm: "确定删除这个zone管理员吗？" %>
+			    </tr>
+			  <% end %>
+			</table>
+		</div>
+	</div>
+</div>

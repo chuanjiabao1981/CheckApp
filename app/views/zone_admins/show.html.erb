@@ -1,7 +1,19 @@
 <% provide(:title, @zone_admin_user.name) %> 
-<table>
-    <tr>
-        <td><%= @zone_admin_user.name %></td>
-        <td><%= @zone_admin_user.des  %></td>
-    <tr>
-</table>
+<%= render partial:'zone_admins/nav',locals:{action_name:@zone_admin_user.name} %>
+<div class="box">
+	<div class="row">
+		<div class="span10 offset1">
+			<legend>管理员详情</legend>
+			<table class="table table-striped table-bordered">
+				<tr>
+					<th>账号</th>
+					<td><%= @zone_admin_user.name %></td>
+				</tr>
+			    <tr>
+			        <th>备注</th>
+			        <td><%= @zone_admin_user.des  %></td>
+			    <tr>
+			</table>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,11 @@
+<ul class="breadcrumb">
+  <li>
+    <%= link_to '分区管理员列表',zone_admins_path%>
+    <% if not action_name.nil? %>
+    	<span class="divider">/</span>
+    <% end %>
+  </li>
+  <% if not action_name.nil? %>
+  	<li class="active"><%= action_name %></li>
+  <% end %>
+</ul>

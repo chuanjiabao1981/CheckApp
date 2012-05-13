@@ -1,18 +1,41 @@
 <div class="box">
 	<ul class="nav nav-pills nav-stacked">
+			<li class="nav-header">
+				<i class="icon-th-list"></i>
+    			功能导航	
+  			</li>
 		<% if signed_in? and current_user.session.site_admin? %>
 			<li>
 				<%= link_to 'zone管理员',zone_admins_path %>
 			</li>
 		<% end %>
 		<% if signed_in? and current_user.session.zone_admin? %>
-			<li>
-				<%= link_to 'zone管理',zone_admin_zones_path(current_user) %>
+			<% if controller_name == 'main' %>
+				<li class="active">
+			<% else %>
+				<li>
+			<% end %>
+				<%= link_to "分区报告列表",zone_admin_home_path(current_user)%>
 			</li>
-			<li>
+			<% if controller_name == 'zones' %>
+				<li class="active">
+			<% else %>
+				<li>
+			<% end %>
+				<%= link_to '分区管理',zone_admin_zones_path(current_user) %>
+			</li>
+			<% if controller_name == 'zone_supervisors' %>
+				<li class="active">
+			<% else %>
+				<li>
+			<% end %>
 				<%= link_to '督察员',zone_admin_zone_supervisors_path(current_user) %>
 			</li>
-			<li>
+			<% if controller_name == 'templates' %>
+				<li class= "active">
+			<% else %>
+				<li>
+			<% end %>
 				<%= link_to '模板', zone_admin_templates_path(current_user) %>
 			</li>
 		<% end %>

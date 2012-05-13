@@ -1,3 +1,3 @@
 <% provide(:title, "编辑|"+@category.category) %> 
-<%= render partial:'check_categories/nav',locals:{template:@category.template,action_name:'编辑'} %>
+<%= render partial:'check_categories/nav',locals:{zone_admin:@zone_admin,template:@category.template,action_name:'编辑'} %>
 <%= render partial:'check_categories/form',locals:{check_category:@category,post_url:check_category_path(@category),action_name:'保存',legend_name:"编辑"} %>

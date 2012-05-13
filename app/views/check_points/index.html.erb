@@ -1,5 +1,5 @@
 <% provide(:title, "全部检查点") %> 
-<%= render partial:'check_points/nav',locals:{template:@template,check_category:@category,action_name:'全部检查点'} %>
+<%= render partial:'check_points/nav',locals:{zone_admin:@zone_admin,template:@template,check_category:@category,action_name:'全部检查点'} %>
 <p>
   <button class="btn"><%= link_to '新增检查点',new_check_category_check_point_path(@category) %></button>
 </p>

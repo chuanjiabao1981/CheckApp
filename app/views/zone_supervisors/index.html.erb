@@ -1,5 +1,5 @@
 <% provide(:title, "全部督察员") %> 
-<%= render partial:'zone_supervisors/nav',locals:{action_name:'全部督察员'} %>
+<%= render partial:'zone_supervisors/nav',locals:{zone_admin:@zone_admin,action_name:'全部督察员'} %>
 <p>
 	<button class="btn"><%= link_to '添加督察员',new_zone_admin_zone_supervisor_path(@zone_admin) %></button>
 </p>

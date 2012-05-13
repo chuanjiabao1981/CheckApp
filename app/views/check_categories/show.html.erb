@@ -1,5 +1,5 @@
 <% provide(:title, "检查类型|"+@category.category) %> 
-<%= render partial:'check_categories/nav',locals:{template:@category.template,action_name:@category.category} %>
+<%= render partial:'check_categories/nav',locals:{zone_admin:@zone_admin,template:@category.template,action_name:@category.category} %>
 <p>
   <button class="btn"><%= link_to '编辑',edit_check_category_path(@category) %></button>
   <button class="btn"><%= link_to '新增检查点',new_check_category_check_point_path(@category) %></button>

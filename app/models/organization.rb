@@ -29,12 +29,17 @@ class Organization < ActiveRecord::Base
   def get_all_finished_worker_report
     Report.where('organization_id=? and committer_type=? and status = ?',self.id,'Worker','finished')
   end
-
+  def get_all_new_worker_report
+    Report.where('organization_id=? and committer_type=? and status = ?',self.id,'Worker','new')
+  end
   def get_all_supervisor_report
     Report.where('organization_id=? and committer_type=?',self.id,'ZoneSupervisor')
   end
   def get_all_finished_supervisor_report
     Report.where('organization_id=? and committer_type=? and status = ?',self.id,'ZoneSupervisor','finished')
+  end
+  def get_all_new_supervisor_report
+    Report.where('organization_id=? and committer_type=? and status = ?',self.id,'ZoneSupervisor','new')
   end
 
 end

@@ -1,5 +1,5 @@
 <% provide(:title, "全部模板") %> 
-<%= render partial:'templates/nav',locals:{action_name:'摸板列表'} %>
+<%= render partial:'templates/nav',locals:{zone_admin:@zone_admin,action_name:'摸板列表'} %>
 <p>
 	<button class="btn"> <%= link_to '新增模板',new_zone_admin_template_path(@zone_admin) %></button>
 </p>

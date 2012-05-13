@@ -1,5 +1,5 @@
 <% provide(:title, "全部检查类别") %> 
-<%= render partial:'check_categories/nav',locals:{template:@template,action_name:'全部检查类别'} %>
+<%= render partial:'check_categories/nav',locals:{zone_admin:@zone_admin,template:@template,action_name:'全部检查类别'} %>
 <p>
 	<button class="btn"><%= link_to '新增检查类型',new_template_check_category_path(@template) %></button>
 </p>

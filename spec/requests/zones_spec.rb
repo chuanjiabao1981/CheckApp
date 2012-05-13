@@ -159,7 +159,7 @@ describe "Zones" do
         a_zone_1.zone_supervisors<<a_zone_admin.zone_supervisors.first
         a_zone_1.zone_supervisors<<a_zone_admin.zone_supervisors.last
         sign_in a_zone_admin
-        click_link 'zone管理'
+        click_link '分区管理'
         click_link a_zone_1.name
       end
       signin_visit_zone_show
@@ -196,7 +196,7 @@ describe "Zones" do
     describe "正常登陆" do
       before do
         sign_in a_zone_admin
-        click_link 'zone管理'
+        click_link '分区管理'
         click_link '新增分区'
       end
       sigin_visit_zone_new
@@ -217,7 +217,7 @@ describe "Zones" do
       before do
         a_zone_1.zone_supervisors<<a_zone_supervisor_1
         sign_in a_zone_admin
-        click_link 'zone管理'
+        click_link '分区管理'
         click_link '编辑'
       end
       sign_in_visit_zone_edit
@@ -236,7 +236,7 @@ describe "Zones" do
     describe "正常登陆" do
       before do
         sign_in a_zone_admin
-        click_link 'zone管理'
+        click_link '分区管理'
         click_link '删除'
       end
       it '减少1' do

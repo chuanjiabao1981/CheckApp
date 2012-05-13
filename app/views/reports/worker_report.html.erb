@@ -1,3 +1,13 @@
 <% provide(:title, "全部的自查报告|"+@organization.name) %> 
-<%= render partial:'reports/reports_index',locals:{reports:@worker_reports} %>
-
+<ul class="breadcrumb">
+  <li class="active"><%= "#{@organization.name}巡查报告" %></li>
+</ul>
+<% if current_user.session.checker? or current_user.session.site_admin? %>
+	<% new_reports_num = @organization.get_all_new_worker_report.size %>
+<% else %>
+	<% new_reports_num = nil %>
+<% end %>
+<%= render partial:'reports/reports_index',locals:{
+				legend_name:"#{@organization.name} 全部巡查报告",
+				new_reports_num:new_reports_num,
+				reports:@worker_reports} %>

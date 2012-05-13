@@ -1,4 +1,22 @@
 <% provide(:title, "报告详情") %> 
+<ul class="breadcrumb">
+  <li>
+    <%= link_to '分区报告列表', zone_admin_home_path(@zone_admin)%>
+    <span class="divider">/</span>
+  </li>
+    <li>
+      <% if  @report.supervisor_report? %> 
+        <%= link_to "#{@organization.name}督察报告", zone_supervisor_organization_reports_path(@organization)%>
+      <% else %>
+        <%= link_to "#{@organization.name}巡查报告",worker_organization_reports_path(@organization)%>
+      <%end%>
+
+    <span class="divider">/</span>
+    </li>
+  <li class="active"><%= @report.template.name %></li>
+</ul>
+
+
 <div class="box">
   <div class="row">
     <div class="span10 offset1">
@@ -30,6 +48,7 @@
 <div class="box">
   <div class="row">
     <div class="span10 offset1">
+      <legend>报告详情</legend>
       <table class="table  table-striped table-bordered">
         <tr>
           <th>检查类型</th>
@@ -43,6 +62,7 @@
         <% @report.template.check_categories.each do |cc| %>
           <% check_points_array = cc.check_points %>
           <% check_points_num   = check_points_array.size %>
+          <% next if check_points_num == 0 %>
           <% first_check_ponit  = check_points_array.shift %>
           <tr>
             <th rowspan="<%=check_points_num%>"> <%= cc.category %> </th>

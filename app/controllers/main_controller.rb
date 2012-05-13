@@ -6,13 +6,25 @@ class MainController < ApplicationController
   	if signed_in? and current_user.session.zone_supervisor?
   		return redirect_to zone_supervisor_home_path(format: :mobile)
   	end
+    if signed_in? and current_user.session.zone_admin?
+      return redirect_to zone_admin_home_path(current_user)
+    end
   end
+
   def zone_supervisor_home
   	return redirect_to root_path(format: :mobile) unless current_user.session.zone_supervisor?
  	  @zones = current_user.zones
   end
+
   def zone_admin_home
-    return redirect_to root_path unless  current_user.session.zone_admin?
-    @zones = current_user.zones
+    if current_user.session.zone_admin?
+      @zone_admin = current_user
+    elsif current_user.session.site_admin?
+      @zone_admin = ZoneAdmin.find_by_id(params[:zone_admin_id])
+      return redirect_to root_path if @zone_admin.nil?
+    else
+      return redirect_to root_path
+    end
+    @zones = @zone_admin.zones
   end
 end

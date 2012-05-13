@@ -45,8 +45,14 @@ class TemplatesController < ApplicationController
 
   private
   def correct_user_for_member
-    @template = current_user.templates.find_by_id(params[:id])
-    redirect_to root_path if @template.nil? and not current_user.session.site_admin?
+    if current_user.session.site_admin?
+      @template = Template.find_by_id(params[:id])
+    else
+      @template = current_user.templates.find_by_id(params[:id])
+    end
+    return redirect_to root_path if @template.nil?
+    # redirect_to root_path if @template.nil? and not current_user.session.site_admin?
+    @zone_admin = @template.zone_admin
   end
   def correct_user_for_collection
     if current_user.session.zone_admin?

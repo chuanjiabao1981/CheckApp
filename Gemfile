@@ -6,6 +6,8 @@ gem 'faker', '1.0.1'
 gem 'carrierwave'
 gem 'rmagick'
 gem 'bootstrap-sass', '2.0.0'
+gem "fancybox-rails", "~> 0.1.4"
+gem 'will_paginate', '~> 3.0'
 
 
 

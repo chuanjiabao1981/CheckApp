@@ -164,7 +164,7 @@ describe "Organiztions" do
     describe "正常访问" do
       before do
         sign_in a_zone_admin
-        click_link 'zone管理'
+        click_link '分区管理'
         click_link a_zone_admin.zones.first.name
         click_link a_zone_admin.zones.first.name
       end
@@ -200,7 +200,7 @@ describe "Organiztions" do
     describe "正常访问" do
       before do
         sign_in a_zone_admin
-        click_link 'zone管理'
+        click_link '分区管理'
         click_link a_zone_admin.zones.first.name
         click_link a_zone_admin.zones.first.name
         click_link a_zone_a_org.name
@@ -254,7 +254,7 @@ describe "Organiztions" do
     describe "正常登陆" do
       before do 
         sign_in a_zone_admin
-        click_link 'zone管理'
+        click_link '分区管理'
         click_link a_zone_admin.zones.first.name
         click_link a_zone_admin.zones.first.name
         click_link '新增机构'
@@ -308,7 +308,7 @@ describe "Organiztions" do
     describe "正常登陆" do
       before do
         sign_in a_zone_admin
-        click_link 'zone管理'
+        click_link '分区管理'
         click_link a_zone_admin.zones.first.name
         click_link a_zone_admin.zones.first.name
         click_link '编辑'
@@ -342,7 +342,7 @@ describe "Organiztions" do
     describe "正常登陆" do
       before do
         sign_in a_zone_admin
-        click_link 'zone管理'
+        click_link '分区管理'
         click_link a_zone_admin.zones.first.name
         click_link a_zone_admin.zones.first.name
       end

@@ -59,7 +59,7 @@ describe "StaticPages" do
         click_button "登陆"
         cookies[:remember_token] = zoneadmin.session.remember_token
       end
-      it { should have_link('zone管理')}
+      it { should have_link('分区管理')}
       it { should have_link('督察员')}
       it {should have_link('退出',href:signout_path)}
       it {should_not have_link('登陆',href:zone_admin_signin_path)}

@@ -1,5 +1,5 @@
 <% provide(:title, "模板|"+@template.name) %> 
-<%= render partial:'templates/nav',locals:{action_name:@template.name} %>
+<%= render partial:'templates/nav',locals:{zone_admin:@zone_admin,action_name:@template.name} %>
 <p>
   <button class="btn"><%= link_to '编辑',edit_template_path(@template) %></button>
   <button class="btn"><%= link_to '新增检查类型',new_template_check_category_path(@template) %></button>

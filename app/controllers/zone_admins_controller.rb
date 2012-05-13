@@ -36,7 +36,6 @@ class ZoneAdminsController < ApplicationController
   def show
     @zone_admin_user = ZoneAdmin.find_by_id(params[:id])
     return redirect_to root_path unless  @zone_admin_user
-    #check_zone_admin_user(@zone_admin_user)
   end
 
   def index

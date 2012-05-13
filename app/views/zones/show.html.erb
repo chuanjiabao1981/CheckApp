@@ -1,5 +1,5 @@
 <% provide(:title, "Zone | "+@zone.name) %>
-<%= render partial:'zones/nav',locals:{action_name:@zone.name} %>
+<%= render partial:'zones/nav',locals:{zone_admin:@zone_admin,action_name:@zone.name} %>
 <p>
   <button class="btn">
     <%= link_to '新增机构',new_zone_organization_path(@zone) %>

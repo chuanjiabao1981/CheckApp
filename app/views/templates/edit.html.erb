@@ -1,3 +1,3 @@
 <% provide(:title, "编辑模板|"+@template.name) %> 
-<%= render partial:'templates/nav',locals:{action_name:'模板编辑'} %>
+<%= render partial:'templates/nav',locals:{zone_admin:@zone_admin,action_name:'模板编辑'} %>
 <%= render partial:'templates/form',locals:{template:@template,post_url:template_path(@template),action_name:'保存'} %>

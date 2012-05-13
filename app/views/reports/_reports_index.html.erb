@@ -1,7 +1,12 @@
 <div class="box">
   <div class="row">
     <div class="span10 offset1">
-      <legend>报告列表</legend>
+      <legend><%= legend_name %></legend>
+      <% if not new_reports_num.nil? %>
+        <p>
+          <span class="label label-info"> <%= new_reports_num %> 个报告等待审核</span>
+        </p>
+      <% end %>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -28,6 +33,8 @@
         </tr>
       <% end %>
       </table>
+      <%= will_paginate reports ,class:"apple_pagination"%>
     </div>
   </div>
+
 </div>
