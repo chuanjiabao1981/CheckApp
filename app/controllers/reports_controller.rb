@@ -128,18 +128,11 @@ private
   def validate_report_template_when_create
 
     return redirect_to root_path if params[:report][:template_id].nil?
-    logger.debug("1111111111111111111")
     @template       = Template.find_by_id(params[:report][:template_id])
-    logger.debug("2222222222222222222")
     #@organization 在validate_organization_visitor中已经计算过了
     if current_user.session.zone_supervisor?
-      logger.debug("33333333333333333")
       return redirect_to root_path unless @template.zone_admin == current_user.zone_admin
-      logger.debug('44444444444444444')
-      logger.debug(@current_user.zone_ids)
-      logger.debug(@organization.id)
       return redirect_to root_path unless @current_user.zone_ids.include?(@organization.zone.id)
-      logger.debug('55555555555555555')
     else
       return redirect_to root_path unless @template.zone_admin == current_user.organization.zone.zone_admin
       return redirect_to root_path unless @organization == current_user.organization

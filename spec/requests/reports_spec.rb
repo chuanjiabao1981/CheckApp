@@ -676,15 +676,15 @@ def test_report_detail_page(test_template,test_report,see_other_action)
     end
 
     finished_check_points_num = ReportRecord.find_all_by_report_id(test_report.id).size
-    page.should have_selector('td',text:"报告类型")
+    page.should have_selector('th',text:"报告类型")
     page.should have_selector('td',text:test_template.name)
-    page.should have_selector('td',text:"检查点个数")
+    page.should have_selector('th',text:"检查点个数")
     page.should have_selector('td',text:"#{check_points_num}个")
-    page.should have_selector('td',text:"已完成检查点")
+    page.should have_selector('th',text:"已完成检查点")
     page.should have_selector('td',text:"#{finished_check_points_num}个")
-    page.should have_selector('td',text:"提交人")
+    page.should have_selector('th',text:"提交人")
     page.should have_selector('td',text:"#{test_report.reporter_name}")
-    page.should have_selector('td',text:"提交时间")
+    page.should have_selector('th',text:"提交时间")
     page.should have_selector('td',text:"#{test_report.created_at}")
     if see_other_action
       if test_report.status_is_new?

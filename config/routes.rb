@@ -70,6 +70,7 @@ CheckApp::Application.routes.draw do
 
   match '/signout'                        ,to:'sessions#destroy', via: :delete
   match '/zone_supervisor_home'           ,to:'main#zone_supervisor_home',via: :get,format:'mobile'
+  match '/zone_admin_home'                ,to:'main#zone_admin_home',via: :get
   root  to:'main#home'
 
   resources :zone_supervisors,shallow:true,only:[] do

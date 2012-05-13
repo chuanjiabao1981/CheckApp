@@ -9,6 +9,10 @@ class MainController < ApplicationController
   end
   def zone_supervisor_home
   	return redirect_to root_path(format: :mobile) unless current_user.session.zone_supervisor?
- 	@zones = current_user.zones
+ 	  @zones = current_user.zones
+  end
+  def zone_admin_home
+    return redirect_to root_path unless  current_user.session.zone_admin?
+    @zones = current_user.zones
   end
 end

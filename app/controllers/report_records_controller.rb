@@ -64,7 +64,7 @@ private
     return redirect_to root_path(format: :mobile) unless @report.committer == current_user
     logger.debug("after report owner test")
     logger.debug("before report status finished")
-    return redirect_to root_path(format: :mobile) if @report.status_is_finished?
+    return redirect_to root_path(format: :mobile) if @report.status_is_finished? and action_name !='show'
     logger.debug("after report status finished")
     @organization      = @report.organization
     return redirect_to root_path(format: :mobile) if @organization.nil?

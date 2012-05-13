@@ -3,7 +3,7 @@ require 'spec_helper'
 
 def signin_visit_zone_index
   specify do
-    page.should have_link('新增Zone',href:new_zone_admin_zone_path(a_zone_admin))
+    page.should have_link('新增分区',href:new_zone_admin_zone_path(a_zone_admin))
     a_zone_admin.zones.each do |z|
       page.should have_link(z.name,href:zone_path(z))
       page.should have_link('编辑',href:edit_zone_path(z))
@@ -44,15 +44,15 @@ def sigin_visit_zone_new
       #check a_zone_supervisor_2.name
     end
     it "zone增加1" do
-      expect{ click_button '新增Zone'}.to change(Zone,:count).by(1)
+      expect{ click_button '新增分区'}.to change(Zone,:count).by(1)
     end
     it "zone supervisor relation增加1" do
-      expect { click_button '新增Zone'}.to change(ZoneSupervisorRelation,:count).by(2)
+      expect { click_button '新增分区'}.to change(ZoneSupervisorRelation,:count).by(2)
     end
   end
   describe "提供错误信息" do
     it "zone不增加" do
-      expect { click_button '新增Zone'}.not_to change(Zone,:count)
+      expect { click_button '新增分区'}.not_to change(Zone,:count)
     end
   end
 
@@ -197,7 +197,7 @@ describe "Zones" do
       before do
         sign_in a_zone_admin
         click_link 'zone管理'
-        click_link '新增Zone'
+        click_link '新增分区'
       end
       sigin_visit_zone_new
     end

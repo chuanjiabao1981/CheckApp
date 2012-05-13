@@ -9,7 +9,8 @@ class CheckCategoriesController < ApplicationController
   def show
   end
   def new
-    @category = CheckCategory.new
+    #@category = CheckCategory.new
+    @category = @template.check_categories.build
   end
   def create
     @category = @template.check_categories.build(params[:check_category])

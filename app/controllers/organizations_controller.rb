@@ -16,7 +16,7 @@ class OrganizationsController < ApplicationController
   def create
     @organization = @zone.organizations.build(params[:organization])
     if @organization.save
-      return redirect_to zone_organizations_path(@zone)
+      return redirect_to zone_path(@zone)
     else
       render 'new'
     end
@@ -25,14 +25,14 @@ class OrganizationsController < ApplicationController
   end
   def update
     if @organization.update_attributes(params[:organization])
-      return redirect_to zone_organizations_path(@zone)
+      return redirect_to zone_path(@zone)
     else
       render 'edit'
     end
   end
   def destroy
     @organization.destroy
-    return redirect_to zone_organizations_path(@zone)
+    return redirect_to zone_path(@zone)
   end
 
 private 
