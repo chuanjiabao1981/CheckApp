@@ -1,12 +1,29 @@
 <% provide(:title, "全部检查类别") %> 
-<%= render 'shared/home_left' %>
-<table>
-<%= link_to '新增检查类型',new_template_check_category_path(@template) %>
-<% @categories.each do |c| %>
-  <tr>
-      <td><%= link_to c.category,check_category_path(c) %></td>
-      <td><%= link_to '编辑',edit_check_category_path(c) %></td>
-      <td><%= link_to '删除',check_category_path(c),method: :delete,confirm:"确定删除这个检查类型，以及下属的检查点吗？" %></td>
-  </tr>
-<% end %>
-</table>
+<%= render partial:'check_categories/nav',locals:{template:@template,action_name:'全部检查类别'} %>
+<p>
+	<button class="btn"><%= link_to '新增检查类型',new_template_check_category_path(@template) %></button>
+</p>
+<div class="box">
+	<div class="row">
+		<div class="span10 offset1">
+			<legend>全部检查类别</legend>
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th width="50%">检查类别</th>
+						<th width="30%">创建时间</th>
+						<th colspan="2">操作</th>
+					</tr>
+				</thead>
+			<% @categories.each do |c| %>
+			  <tr>
+			      <td><%= link_to c.category,check_category_path(c) %></td>
+			      <td><%= c.created_at %></td>
+			      <td><%= link_to '编辑',edit_check_category_path(c) %></td>
+			      <td><%= link_to '删除',check_category_path(c),method: :delete,confirm:"确定删除这个检查类型，以及下属的检查点吗？" %></td>
+			  </tr>
+			<% end %>
+			</table>
+		</div>
+	</div>
+</div>

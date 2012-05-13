@@ -21,7 +21,6 @@
           <% end %>
           <% if @report.status_is_finished? %>
            <td><%= link_to '编辑','#',class:"btn btn-danger disabled" %></td>
-              <td>
             <td> <%= link_to '查看',report_record_path(@report.get_report_record_by_check_point_id(cp.id),format: :mobile),class:"btn btn-info"%> </td>
           <% end %>
         <% else %>

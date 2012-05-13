@@ -1,0 +1,27 @@
+<div class="box">
+	<div class="row">
+		<div class="span10 offset1">
+			<%= form_for(check_category,url:post_url,html:{class:"form-horizontal"}) do |f| %>
+			  <%= render 'shared/error_messages' ,:object => f.object%>
+			  <fieldset>			
+			  	<legend><%= legend_name %></legend>
+			  	<div class="control-group">
+			  		<%= f.label :category,"检查类型名称" ,class:"control-label"%>
+			  		<div class="controls">
+			  			<%= f.text_field :category %>
+			  		</div>
+			  	</div>
+			  	<div class="control-group">
+			  		<%= f.label :des,"备注",class:"control-label" %>
+			  		<div class="controls">
+			  			<%= f.text_area :des,rows:2%>
+			  		</div>
+			  	</div>
+			  	<div class="form-actions">
+			  		<%= f.submit action_name ,class:"btn btn-primary"%> 
+			  	</div>
+			  </fieldset>
+			<% end %>
+		</div>
+	</div>
+</div>

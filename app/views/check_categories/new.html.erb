@@ -1,12 +1,4 @@
 <% provide(:title, "新增检查类型") %> 
-<%= render 'shared/home_left' %>
-<%= form_for(@category,url:template_check_categories_path(@template)) do |f| %>
-  <%= render 'shared/error_messages' ,:object => f.object%>
+<%= render partial:'check_categories/nav',locals:{template:@category.template,action_name:'新增检查类型'} %>
 
-  <%= f.label :category,"检查类型名称" %>
-  <%= f.text_field :category %>
-  <%= f.label :des,"备注" %>
-  <%= f.text_field :des %>
-  <%= f.submit '新增检查类型' %> 
-<% end %>
-
+<%= render partial:'check_categories/form',locals:{check_category:@category,post_url:template_check_categories_path(@template),action_name:'新增检查类型',legend_name:"新增检查类型"} %>

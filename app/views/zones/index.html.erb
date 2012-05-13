@@ -1,7 +1,7 @@
-<% provide(:title, "全部的Zone") %>
+<% provide(:title, "全部分区") %>
 <%= render partial:'zones/nav',locals:{action_name:'分区列表'} %>
 <p>
-	<button class="btn"><%= link_to '新增Zone',new_zone_admin_zone_path(@zone_admin) %></button>
+	<button class="btn"><%= link_to '新增分区',new_zone_admin_zone_path(@zone_admin) %></button>
 </p>
 
 <div class="box">
@@ -29,7 +29,7 @@
 	        <td><%= z.organizations.size %></td>
 	        <td><%= z.zone_supervisors.size %></td>
 	        <td><%= link_to "编辑", edit_zone_path(z)%></td>
-	        <td><%= link_to "删除", zone_path(z), method: :delete, confirm: "确定删除这个zone以及下属全部信息吗？" %></td>
+	        <td><%= link_to "删除", zone_path(z), method: :delete, confirm: "确定删除这个分区以及下属全部信息吗？" %></td>
 	    </tr>
 	  <% end %>
 	</table>

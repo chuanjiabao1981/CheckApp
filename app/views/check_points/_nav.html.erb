@@ -1,0 +1,15 @@
+<ul class="breadcrumb">
+  <li>
+    <%= link_to '模板管理', zone_admin_templates_path(current_user)%>
+    <span class="divider">/</span>
+  </li>
+  <li>
+    <%= link_to template.name, template_path(template)%>
+    <span class="divider">/</span>
+  </li>
+  <li>
+    <%= link_to check_category.category, check_category_path(check_category)%>
+    <span class="divider">/</span>
+  </li>
+  <li class="active"><%= action_name %></li>
+</ul>

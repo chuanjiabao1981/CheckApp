@@ -1,12 +1,3 @@
 <% provide(:title, "编辑|"+@category.category) %> 
-<%= render 'shared/home_left' %>
-<%= form_for(@category,url:check_category_path(@category)) do |f| %>
-  <%= render 'shared/error_messages' ,:object => f.object%>
-
-  <%= f.label :category,"检查类型名称" %>
-  <%= f.text_field :category %>
-  <%= f.label :des,"描述" %>
-  <%= f.text_field :des %>
-  <%= f.submit '保存' %> 
-<% end %>
-
+<%= render partial:'check_categories/nav',locals:{template:@category.template,action_name:'编辑'} %>
+<%= render partial:'check_categories/form',locals:{check_category:@category,post_url:check_category_path(@category),action_name:'保存',legend_name:"编辑"} %>

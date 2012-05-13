@@ -1,21 +1,32 @@
 <% provide(:title, "检查类型|"+@category.category) %> 
-<%= render 'shared/home_left' %>
-
-
-<%= link_to '编辑',edit_check_category_path(@category) %>
-<%= link_to '新增检查点',new_check_category_check_point_path(@category) %>
-<table>
-  <tr>
-      <th>检查类型</th>
-      <td><%= link_to @category.category,check_category_check_points_path(@category) %></td>
-  </tr>
-  <tr>
-      <th>包含检查点</th>
-      <td><%= @category.check_points.size() %></td>
-  </tr>
-  <tr>
-      <th>说明</th>
-      <td><%= @category.des %></td>
-  </tr>
-</table>
+<%= render partial:'check_categories/nav',locals:{template:@category.template,action_name:@category.category} %>
+<p>
+  <button class="btn"><%= link_to '编辑',edit_check_category_path(@category) %></button>
+  <button class="btn"><%= link_to '新增检查点',new_check_category_check_point_path(@category) %></button>
+</p>
+<div class="box">
+  <div class="row">
+    <div class="span10 offset1">
+      <legend>检查类型详情</legend>
+      <table class="table table-striped table-bordered">
+        <tr>
+            <th width="20%">检查类型</th>
+            <td><%= link_to @category.category,check_category_check_points_path(@category) %></td>
+        </tr>
+        <tr>
+            <th>包含检查点</th>
+            <td><%= @category.check_points.size() %></td>
+        </tr>
+        <tr>
+          <th>创建时间</th>
+          <td><%=@category.created_at %></td>
+        </tr>
+        <tr>
+            <th>说明</th>
+            <td><%= @category.des %></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
 

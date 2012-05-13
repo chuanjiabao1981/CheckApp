@@ -1,0 +1,82 @@
+<div class="box">
+  <div class="row">
+    <div class="span10 offset1">
+      <%= form_for(organization,url:post_url,html:{class:"form-horizontal"}) do |f| %>
+        <%= render 'shared/error_messages' ,:object => f.object%>
+        <fieldset>
+          <legend>机构基本信息</legend>
+          <div class="control-group">
+            <%= f.label :name,"机构名" ,class:"control-label"%>
+            <div class="controls">
+              <%= f.text_field :name %>
+            </div>
+          </div>
+          <div class="control-group">
+            <%= f.label :contact,"联系人" ,class:"control-label"%>
+            <div class="controls">
+              <%= f.text_field :contact %>
+            </div>
+          </div>
+          <div class="control-group">
+            <%= f.label :address,"地址" ,class:"control-label"%>
+            <div class="controls">
+              <%= f.text_field :address %>
+            </div>
+          </div>
+          <div class="control-group">
+            <%= f.label :phone,"联系电话" ,class:"control-label"%>
+            <div class="controls">
+              <%= f.text_field :phone %>
+            </div>
+          </div>
+      
+          <%= f.fields_for :worker do |worker| %>
+            <legend>巡查员</legend>
+            <div class="control-group">
+              <%= worker.label :name,"自查员账号",class:"control-label"%>
+              <div class="controls">
+                <%= worker.text_field :name %>
+              </div>
+            </div>
+            <div class="control-group">
+              <%= worker.label :password,"自查员密码" ,class:"control-label"%>
+              <div class="controls">
+                <%= worker.password_field :password %>
+              </div>
+            </div>
+            <div class="control-group">
+              <%= worker.label :password_confirmation,"自查员密码确认" ,class:"control-label"%>
+              <div class="controls">
+                <%= worker.password_field :password_confirmation %>
+              </div>
+            </div>
+          <% end %>
+          <%= f.fields_for :checker do |checker| %>
+            <legend>审核员</legend>
+            <div class="control-group">
+              <%= checker.label :name,"审核员账号" ,class:"control-label"%>
+              <div class="controls">
+                <%= checker.text_field :name %>
+              </div>
+            </div>
+            <div class="control-group">
+              <%= checker.label :password,"审核员密码" ,class:"control-label"%>
+              <div class="controls">
+                <%= checker.password_field :password %>
+              </div>
+            </div>
+            <div class="control-group">
+              <%= checker.label :password_confirmation,"审核员密码确认",class:"control-label" %>
+              <div class="controls">
+                <%= checker.password_field :password_confirmation %>
+              </div>
+            </div>
+          <% end %>
+          <div class="form-actions">
+            <%= f.submit action_name ,class:"btn btn-primary"%> 
+          </div>
+        </fieldset>
+      <% end %>
+    </div>
+  </div> 
+</div>

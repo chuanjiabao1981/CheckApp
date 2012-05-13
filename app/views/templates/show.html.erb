@@ -1,35 +1,49 @@
 <% provide(:title, "模板|"+@template.name) %> 
-<%= render 'shared/home_left' %>
-<%= link_to '编辑',edit_template_path(@template) %>
-<%= link_to '新增检查类型',new_template_check_category_path(@template) %>
-<table>
-  <th>
-      <td>名称</td>
-      <td>检查类个数</td>
-  </th>
-  <tr>
-      <td><%= link_to @template.name,template_check_categories_path(@template) %></td>
-      <td><%= @template.check_categories.size() %></td>
-  </tr>
-</table>
-<ul>
-   <% if @template.check_value %>
-    <% if @template.check_value.boolean_name  and @template.check_value.boolean_name != "" %>
-      <li><%= @template.check_value.boolean_name %></li>
-    <% end%>
-    <% if @template.check_value.int_name  and @template.check_value.int_name != "" %>
-      <li><%= @template.check_value.int_name %></li>
-    <% end %>
-    <% if @template.check_value.float_name and @template.check_value.float_name != "" %>
-      <li><%= @template.check_value.float_name %></li>
-    <% end %>
-    <% if @template.check_value.date_name and @template.check_value.date_name != "" %>
-      <li><%= @template.check_value.date_name %></li>
-    <% end %>
-    <% if @template.check_value.has_text_name? %>
-      <li><%= @template.check_value.text_name %>
-    <% end %>
-   <% end %>
-</ul>
+<%= render partial:'templates/nav',locals:{action_name:@template.name} %>
+<p>
+  <button class="btn"><%= link_to '编辑',edit_template_path(@template) %></button>
+  <button class="btn"><%= link_to '新增检查类型',new_template_check_category_path(@template) %></button>
+</p>
+<div class="box">
+  <div class="row">
+    <div class="span10 offset1">
+      <legend>检查类别</legend>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th width="50%">模板名称</th>
+            <th width="15%">检查类别个数</th>
+            <th>创建时间</th>
+          </tr>
+        </thead>
+        <tr>
+            <td><%= link_to @template.name,template_check_categories_path(@template) %></td>
+            <td><%= @template.check_categories.size() %></td>
+            <td><%= @template.created_at %></td>
+        </tr>
+      </table>
+      <legend>检查项</legend>
+      <ul>
+         <% if @template.check_value %>
+          <% if @template.check_value.boolean_name  and @template.check_value.boolean_name != "" %>
+            <li><%= @template.check_value.boolean_name %></li>
+          <% end%>
+          <% if @template.check_value.int_name  and @template.check_value.int_name != "" %>
+            <li><%= @template.check_value.int_name %></li>
+          <% end %>
+          <% if @template.check_value.float_name and @template.check_value.float_name != "" %>
+            <li><%= @template.check_value.float_name %></li>
+          <% end %>
+          <% if @template.check_value.date_name and @template.check_value.date_name != "" %>
+            <li><%= @template.check_value.date_name %></li>
+          <% end %>
+          <% if @template.check_value.has_text_name? %>
+            <li><%= @template.check_value.text_name %>
+          <% end %>
+         <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
 
 

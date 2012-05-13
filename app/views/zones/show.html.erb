@@ -1,23 +1,60 @@
 <% provide(:title, "Zone | "+@zone.name) %>
+<%= render partial:'zones/nav',locals:{action_name:@zone.name} %>
+<p>
+  <button class="btn">
+    <%= link_to '新增机构',new_zone_organization_path(@zone) %>
+  </button>
+  <button class="btn">
+    <%= link_to '编辑',edit_zone_path(@zone) %>
+  </button>
+</p>
 
-<%= link_to '新增机构',new_zone_organization_path(@zone) %>
-<%= link_to '编辑',edit_zone_path(@zone) %>
-
-<table>
-    <tr>
-      <th>名称</th>
-      <td><%= link_to @zone.name,zone_organizations_path(@zone) %></td>
-    </tr>
-    <tr>
-      <th>简介</th>
-      <td><%= @zone.des %></td>
-    </tr>
-    <tr>
-      <th>负责人</th>
-      <td>
-        <% @zone.zone_supervisors.each do |zs| %>
-          <li><%= zs.name %></li>
-        <% end %>
-      </td>
-    </tr>
-</table>
+<div class="box">
+  <div class="row">
+    <div class="span10 offset1">
+      <legend>分区 • <%= @zone.name%></legend>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th width="20%">分区名称</th>
+            <th width="40%">分区简介</th>
+            <th>督察员</th>
+          </tr>
+        </thead>
+        <tr>
+          <td><%= link_to @zone.name,zone_organizations_path(@zone) %> </td>
+          <td> <%= @zone.des %></td>
+          <td>
+            <% @zone.zone_supervisors.each do |zs| %>
+            <li><%= zs.name %></li>
+            <% end %>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="box">
+  <div class="row">
+    <div class="span10 offset1">
+      <legend><%= @zone.name%> • 下属机构</legend>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th width="20%">机构名称</th>
+            <th width="40%">创建时间</th>
+            <th colspan="2">操作</th>
+          </tr>
+        </thead>
+        <% @zone.organizations.each do |o| %>
+          <tr>
+            <td><%= link_to o.name,organization_path(o) %></td>
+            <td><%= o.created_at %></td>
+            <td><%= link_to "编辑", edit_organization_path(o)%></td>
+            <td><%= link_to "删除", organization_path(o), method: :delete, confirm: "确定删除这个机构以及下属全部信息吗？" %>
+          </tr>
+        <%  end %>
+      </table>
+    </div>
+  </div>
+</div>

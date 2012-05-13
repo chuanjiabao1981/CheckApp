@@ -1,32 +1,40 @@
 <% provide(:title, "机构|"+@organization.name) %>
-<%= render 'shared/home_left' %>
-
-<%= link_to '编辑',edit_organization_path(@organization) %>
-<table>
-  <tr>
-      <td>名称</td>
-      <td><%= @organization.name %></td>
-  <tr>
-  <tr>
-      <td>联系人</td>
-      <td><%= @organization.contact %> </td>
-  </tr>
-  <tr>
-      <td>电话</td>
-      <td><%= @organization.phone %> </td>
-  </tr>
-  <tr>
-      <td>地址</td>
-      <td><%= @organization.address %> </td> 
-  </tr>
-  <tr>
-      <td>自查员账号</td>
-      <td><%= @organization.worker.name %> </td>
-  </tr>
-  <tr>
-      <td>审核员账号</td>
-      <td><%= @organization.checker.name %> </td>
-  </tr>
-</table>
+<%= render partial:'organizations/nav',locals:{organization:@organization,action_name:@organization.name} %>
+<p>
+  <button class="btn"><%= link_to '编辑',edit_organization_path(@organization) %></button>
+</p>
+<div class="box">
+  <div class="row">
+    <div class="span10 offset1">
+      <legend><%= @organization.name%> • 基本信息</legend>
+      <table class="table table-bordered">
+        <tr>
+            <td width="15%">名称</td>
+            <td><%= @organization.name %></td>
+        <tr>
+        <tr>
+            <td>联系人</td>
+            <td><%= @organization.contact %> </td>
+        </tr>
+        <tr>
+            <td>电话</td>
+            <td><%= @organization.phone %> </td>
+        </tr>
+        <tr>
+            <td>地址</td>
+            <td><%= @organization.address %> </td> 
+        </tr>
+        <tr>
+            <td>巡查员</td>
+            <td><%= @organization.worker.name %> </td>
+        </tr>
+        <tr>
+            <td>审核员账号</td>
+            <td><%= @organization.checker.name %> </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
 
 

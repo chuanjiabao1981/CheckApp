@@ -1,0 +1,11 @@
+<ul class="breadcrumb">
+  <li>
+    <%= link_to '分区管理', zone_admin_zones_path(organization.zone.zone_admin)%>
+    <span class="divider">/</span>
+  </li>
+  <li>
+    <%= link_to organization.zone.name, zone_path(organization.zone) %>
+    <span class="divider">/</span>
+  </li>
+  <li class="active"><%= action_name %></li>
+</ul>

@@ -1,4 +1,4 @@
-<% provide(:title, "编辑Zone | "+@zone.name) %> 
+<% provide(:title, "编辑 | "+@zone.name) %> 
 <%= render partial:'zones/nav',locals:{action_name:'信息编辑'} %>
 <%= render partial:'zones/form',locals:{zone:@zone,legend_name:'分区信息编辑',post_url:zone_path(@zone),zone_admin:@zone_admin,action_name:'保存'} %>
 

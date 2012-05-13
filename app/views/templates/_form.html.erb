@@ -1,0 +1,73 @@
+<div class="box">
+  <div class="row">
+    <div class="span10 offset1">
+      <%= form_for(template,url:post_url,html:{class:"form-horizontal"}) do |f| %>
+        <%= render 'shared/error_messages' ,:object => f.object%>
+        <fieldset>
+          <legend>模板名称和类型</legend>
+          <div class="control-group">
+            <%= f.label :name,"模板名" ,class:"control-label"%>
+            <div class="controls">
+              <%= f.text_field :name %>
+            </div>
+          </div>
+          <% if template.new_record? %>
+          <div class="control-group">
+            <%= f.label :for_supervisor,"督察模板" ,class:"control-label"%>
+            <div class="controls">
+              <%= f.check_box :for_supervisor %>
+            </div>
+          </div>
+          <div class="control-group">
+            <%= f.label :for_worker,"自查模板" ,class:"control-label"%>
+            <div class="controls">
+              <%= f.check_box :for_worker %>
+            </div>
+          </div>
+          <% end %>
+          <legend>报告检查项</legend>
+          <%= f.fields_for :check_value do |check_value| %>
+            <div class="control-group">
+              <%= check_value.label :boolean_name,"是否",class:"control-label"%>
+              <div class="controls">
+                <%= check_value.text_field :boolean_name %>
+                <p class="help-block">这个检查项，主要让用户填写：是、否。例如：环境是否干净、相应的设备是否到位等。</p>
+              </div>
+            </div>
+            <div class="control-group">
+              <%= check_value.label :date_name,"日期" ,class:"control-label"%>
+              <div class="controls">
+                <%= check_value.text_field :date_name %>
+                <p class="help-block">这个检查项，主要让工作人员填写：日期信息。例如：完成日期、复查期限等。</p>
+              </div>
+            </div>
+            <div class="control-group">
+              <%= check_value.label :int_name,"整数",class:"control-label" %>
+              <div class="controls">
+                <%= check_value.text_field :int_name %>
+                <p class="help-block">这个检查项，主要让工作人员填写：数字信息。例如：楼层、设备数量。</p>
+              </div>
+            </div>
+            <div class="control-group">
+              <%= check_value.label :float_name,"小数",class:"control-label" %>
+              <div class="controls">
+                <%= check_value.text_field :float_name %>
+                <p class="help-block">这个检查项，主要让工作人员填写：仪器读数。例如：温度、电压等。</p>
+              </div>
+            </div>
+            <div class="control-group">
+              <%= check_value.label :text_name,"文字" ,class:"control-label"%>
+              <div class="controls">
+                <%= check_value.text_field :text_name %>
+                <p class="help-block">这个检查项，主要让工作人员填写：检查过程中的备注信息。</p>
+              </div>
+            </div>
+          <% end %>
+          <div class="form-actions">
+            <%= f.submit  action_name,class:"btn btn-primary"%> 
+          </div>
+        </fieldset>
+      <% end %>
+    </div>
+  </div>
+</div>

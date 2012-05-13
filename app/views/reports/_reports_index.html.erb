@@ -1,17 +1,33 @@
-<table class="table table-bordered">
-<% reports.each do |report| %>
-  <tr>
-      <td> <%= link_to report.template.name ,report_detail_report_path(report) %> </td>
-      <td> <%= report.created_at %> </td>
-      <td>
-        <% if report.status_is_new? %>
-          进行中
-        <% elsif report.status_is_finished? %>
-          通过
-        <% else %>
-          N/A
-        <% end %>
-      </td>
-  </tr>
-<% end %>
-</table>
+<div class="box">
+  <div class="row">
+    <div class="span10 offset1">
+      <legend>报告列表</legend>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th width="40%">报告类型</th>
+            <th width="15%">提交报告人</th>
+            <th width="25%">提交时间</th>
+            <th>报告状态</th>
+          </tr>
+        </thead>
+      <% reports.each do |report| %>
+        <tr>
+            <td> <%= link_to report.template.name ,report_detail_report_path(report) %> </td>
+            <td> <%= report.reporter_name%> </td>
+            <td> <%= report.created_at %> </td>
+            <td>
+              <% if report.status_is_new? %>
+                 <span class="label label-info">进行中</span>
+              <% elsif report.status_is_finished? %>
+                 <span class="label label-success">通过</span>
+              <% else %>
+                N/A
+              <% end %>
+            </td>
+        </tr>
+      <% end %>
+      </table>
+    </div>
+  </div>
+</div>

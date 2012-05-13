@@ -1,58 +1,67 @@
 <% provide(:title, "报告详情") %> 
-<%= render 'shared/home_left' %>
-
-<table>
-    <tr><td>报告类型     </td> <td><%= @report.template.name%></td></tr>
-    <tr><td>检查点个数   </td> <td><%= @report.template.get_check_ponits_num %>个</td></tr>
-    <tr><td>已完成检查点 </td> <td><%= @report.get_finished_check_points_num %>个</td></tr>
-    <tr><td>提交人       </td> <td><%= @report.reporter_name %></td></tr>
-    <tr><td>提交时间     </td> <td><%= @report.created_at %></td></tr>
-</table>
+<div class="box">
+  <div class="row">
+    <div class="span10 offset1">
+      <legend>报告基本情况</legend>
+      <table class="table  table-striped table-bordered">
+          <tr><th width="20%">报告类型      </th> <td><%= @report.template.name%></td></tr>
+          <tr><th>检查点个数    </th> <td><%= @report.template.get_check_ponits_num %>个</td></tr>
+          <tr><th>已完成检查点  </th> <td><%= @report.get_finished_check_points_num %>个</td></tr>
+          <tr><th>提交人       </th> <td><%= @report.reporter_name %></td></tr>
+          <tr><th>提交时间     </th> <td><%= @report.created_at %></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
 
 <% if (@report.supervisor_report? and @current_user.session.zone_admin?) or 
       (@report.worker_report? and current_user.session.checker?) or 
       current_user.session.site_admin?
 %>
-  <% if @report.status_is_new? %>
-    <%= render partial:'reports/pass_report',locals:{report:@report} %>
-  <% elsif @report.status_is_finished? %>
-    <%= render partial:'reports/reject_report',locals:{report:@report} %>
-  <% end %>
-  <%= link_to '删除',report_path(@report),method: :delete,confirm:'确定要删除这个报告吗?' %>
+        <% if @report.status_is_new? %>
+          <%= render partial:'reports/pass_report',locals:{report:@report} %>
+        <% elsif @report.status_is_finished? %>
+          <%= render partial:'reports/reject_report',locals:{report:@report} %>
+        <% end %>
+        <p>
+          <%= link_to '删除',report_path(@report),method: :delete,confirm:'确定要删除这个报告吗?', class:"btn btn-danger"%>
+        </p>
 <% end %>
-
-<table>
-  <tr>
-    <th>检查类型</th>
-    <th>检查内容</th>
-    <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.boolean_name}%>
-    <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.int_name}%>
-    <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.float_name}%>
-    <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.date_name}%>
-    <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.text_name}%>
-  <tr>
-  <% @report.template.check_categories.each do |cc| %>
-    <% check_points_array = cc.check_points %>
-    <% check_points_num   = check_points_array.size %>
-    <% first_check_ponit  = check_points_array.shift %>
-    <tr>
-      <th rowspan="<%=check_points_num%>">
-        <%= cc.category %>
-      </th>
-      <%= render partial:'reports/report_body_item',locals:{check_value:@report.template.check_value,
+<div class="box">
+  <div class="row">
+    <div class="span10 offset1">
+      <table class="table  table-striped table-bordered">
+        <tr>
+          <th>检查类型</th>
+          <th>检查内容</th>
+          <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.boolean_name}%>
+          <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.int_name}%>
+          <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.float_name}%>
+          <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.date_name}%>
+          <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.text_name}%>
+        </tr>
+        <% @report.template.check_categories.each do |cc| %>
+          <% check_points_array = cc.check_points %>
+          <% check_points_num   = check_points_array.size %>
+          <% first_check_ponit  = check_points_array.shift %>
+          <tr>
+            <th rowspan="<%=check_points_num%>"> <%= cc.category %> </th>
+              <%= render partial:'reports/report_body_item',locals:{check_value:@report.template.check_value,
                                                            check_point:first_check_ponit,
                                                            report_record:@report.get_report_record_by_check_point_id(first_check_ponit.id)}
-      %>
-    </tr>
-    <% check_points_array.each do |cp| %>
-      <tr>
-        <%= render partial:'reports/report_body_item',
-                   locals:{check_value:@report.template.check_value,
-                           check_point:cp,
-                           report_record:@report.get_report_record_by_check_point_id(cp.id)
-                          }
-        %>
-      </tr>
-    <% end %>
-  <% end %>
-</table>
+                                                           %>
+          </tr>
+          <% check_points_array.each do |cp| %>
+          <tr>
+            <%= render partial:'reports/report_body_item',
+            locals:{check_value:@report.template.check_value,
+             check_point:cp,
+             report_record:@report.get_report_record_by_check_point_id(cp.id)
+              } %>
+          </tr>
+          <% end %>
+        <% end %>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<% @zones.each do |z|%>
+	<div class="box">
+		<div class="row">
+			<div class="span10 offset1">
+				<legend><%= z.name %></legend>
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th colspan="3"><center><%= z.name %><center></th>
+					</tr>
+					<tr>
+						<th width="75%">机构名</th>
+						<th>督察报告数</th>
+						<th>巡查报告数</th>
+					</tr>
+					<% z.organizations.each do |o| %>
+						<tr>
+							<td><%=o.name%></td>
+							<td><%=link_to o.get_all_supervisor_report.size,zone_supervisor_organization_reports_path(o) %>
+							<td><%=link_to o.get_all_worker_report.size,worker_organization_reports_path(o,format: :html) %>
+						</tr>		
+					<% end %>
+				</table>
+			</div>
+		</div>
+	</div>
+<% end %>
