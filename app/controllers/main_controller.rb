@@ -9,6 +9,9 @@ class MainController < ApplicationController
     if signed_in? and current_user.session.zone_admin?
       return redirect_to zone_admin_home_path(current_user)
     end
+    if signed_in? and current_user.session.checker?
+      return redirect_to checker_home_path(current_user)
+    end
   end
 
   def zone_supervisor_home
@@ -26,5 +29,9 @@ class MainController < ApplicationController
       return redirect_to root_path
     end
     @zones = @zone_admin.zones
+  end
+  def checker_home
+    return redirect_to root_path unless current_user.session.checker?
+    @organization = current_user.organization
   end
 end

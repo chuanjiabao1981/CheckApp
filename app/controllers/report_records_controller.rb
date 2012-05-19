@@ -18,7 +18,7 @@ class ReportRecordsController < ApplicationController
     if @report_record.save
       redirect_to report_record_path(@report_record,format: :mobile)
     else
-      render 'show',formats: [:mobile]
+      render 'new_report_record',formats: [:mobile]
     end
   end
   def edit

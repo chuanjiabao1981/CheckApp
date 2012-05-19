@@ -1,22 +1,5 @@
 <% provide(:title, "报告详情") %> 
-<ul class="breadcrumb">
-  <li>
-    <%= link_to '分区报告列表', zone_admin_home_path(@zone_admin)%>
-    <span class="divider">/</span>
-  </li>
-    <li>
-      <% if  @report.supervisor_report? %> 
-        <%= link_to "#{@organization.name}督察报告", zone_supervisor_organization_reports_path(@organization)%>
-      <% else %>
-        <%= link_to "#{@organization.name}巡查报告",worker_organization_reports_path(@organization)%>
-      <%end%>
-
-    <span class="divider">/</span>
-    </li>
-  <li class="active"><%= @report.template.name %></li>
-</ul>
-
-
+<%= render partial:'reports/nav_report_detail',locals:{zone_admin:@zone_admin,checker:@checker,organization:@organization,report:@report} %>
 <div class="box">
   <div class="row">
     <div class="span10 offset1">
@@ -32,7 +15,7 @@
   </div>
 </div>
 
-<% if (@report.supervisor_report? and @current_user.session.zone_admin?) or 
+<% if (@report.supervisor_report? and current_user.session.zone_admin?) or 
       (@report.worker_report? and current_user.session.checker?) or 
       current_user.session.site_admin?
 %>

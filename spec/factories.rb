@@ -65,12 +65,12 @@ FactoryGirl.define do
     check_category  
     check_point
     video_path      "1.jpg"
-    photo_path      "2.jpg"
     boolean_value   {rand(2) == 1}
     float_value     {rand(1000.0)}
     int_value       {rand(2000)}
     date_value      {rand(10.years).ago.strftime("%Y-%m-%d")  }
     text_value      {Faker::Lorem::sentence(20)}
+    photo_path      { check_point.can_photo ? File.open(File.join(Rails.root, 'spec', 'support', 'report_record', 'photo', 'test.jpg')):nil }
     factory :report_record_with_photo do
       photo_path    {File.open(File.join(Rails.root, 'spec', 'support', 'report_record', 'photo', 'test.jpg')) }
     end
@@ -114,7 +114,7 @@ FactoryGirl.define do
   factory :check_point do
     content                     {Faker::Lorem::sentence(5)}
     check_category  
-    can_photo                   false
+    can_photo                   {rand(2) == 1}
     can_video                   false
   end
   factory :check_category do
@@ -150,6 +150,16 @@ FactoryGirl.define do
         3.times do |n|
           FactoryGirl.create(:check_category_five_check_points,template:template)
         end
+      end
+    end
+    factory :template_with_3_normal_category_1_zero_check_point_category do |template|
+      sequence(:name)  {|n| "template_un_#{n}"}
+      after_create do |template|
+        FactoryGirl.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期",text_name:"备注",float_name:"检查值",int_name:"设备高度")
+        3.times do |n|
+          FactoryGirl.create(:check_category_five_check_points,template:template)
+        end
+        Factory.create(:check_category,template:template)
       end
     end
   end

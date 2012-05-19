@@ -39,9 +39,6 @@
 				<%= link_to '模板', zone_admin_templates_path(current_user) %>
 			</li>
 		<% end %>
-		<% if signed_in? and current_user.session.checker? %>
-			<%= link_to '机构','#'%>
-		<% end %>
 		<% if signed_in? %>
 		<li>
 			<%= link_to '设置','#' %>

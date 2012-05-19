@@ -95,8 +95,8 @@ class ReportsController < ApplicationController
   end
 
   def report_detail
-    ##TODO::这个事一个bug
-    @zone_admin = @report.committer
+    @zone_admin = @report.organization.zone.zone_admin
+    @checker    = @report.organization.checker
   end
   def pass
     if @report.finished?

@@ -1,3 +1,9 @@
+<script>
+var video = document.getElementById('video');
+video.addEventListener('click',function(){
+  video.play();
+},false);
+</script>
 <p>
 <%= link_to '返回',check_category_check_point_reports_report_path(@report_record.report_id,@report_record.check_category_id),class:"btn btn-success" %>
 </p>
@@ -16,11 +22,18 @@
     <tr>
       <td colspan="2"><img src="<%= @report_record.get_photo_path %>"/></td>
     </tr>
-  <% end %>
-  <% if @report_record.check_point.can_video? %>
+  <% elsif @report_record.check_point.can_video? %>
     <tr>
       <td>视频</td>
-      <td><video src="<%= @report_record.get_video_path %>"/></td>
+      <td>
+        <!--img src="/report_record_photo/development/report_record/photo_path/22/de95e0be-a608-4643-af34-989126b2e8c9.jpg"-->
+        <!--video id="video" autobuffer width="320" height="240" controls="controls"-->
+        <a href="<%= @report_record.get_video_path %>">视频</a>
+        <!--video autoplay="autoplay" controls="controls" style="align:center;" autobuffer    onclick="this.play();">
+          <source src="<%= @report_record.get_video_path %>" type="video/mp4"/>
+            Your browser does not support the video tag.
+        </video-->
+      </td>
     </tr>
   <% end %>
   <% if @check_value.has_boolean_name? %>

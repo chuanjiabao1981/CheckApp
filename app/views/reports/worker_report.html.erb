@@ -1,5 +1,6 @@
-<% provide(:title, "全部的自查报告|"+@organization.name) %> 
+<% provide(:title, "全部的巡查报告|"+@organization.name) %> 
 <ul class="breadcrumb">
+<%= render partial:'reports/nav_report_first_level', locals:{organization:@organization} %>
   <li class="active"><%= "#{@organization.name}巡查报告" %></li>
 </ul>
 <% if current_user.session.checker? or current_user.session.site_admin? %>

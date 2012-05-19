@@ -4,6 +4,17 @@
     <%= link_to(report_record.photo_path.to_s,id:"single_image") do %>
       <span class="label label-info">图</span>
     <% end %>
+  <% end %> 
+
+  <% if not report_record.nil? and check_point.can_video? %>
+    <div id="single_video">
+     <video width="480" height="360" controls preload style="display:none">
+        <source src="<%= report_record.video_path.to_s %>" type="video/mp4">
+      </video>
+    </div>
+    <a href="javascript();">
+      <span id="video_content" class="label label-info">视频</span>
+    </a>
   <% end %>
 </td>
 <% if check_value.has_boolean_name? %>

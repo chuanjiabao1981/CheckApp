@@ -11,12 +11,26 @@
   							<%= f.text_area :content,rows:3 %>
   						</div>
   					</div>
+            <div class="control-group">
+              <p>
+                <span class="label label-important">Important</span>
+              </p>
+              <div class="alert alert-success">
+                图片和视频只能二选一,选两个只有图片生效 ！
+              </div>
+            </div>
   					<div class="control-group">
   						<%= f.label :can_photo, "需要图片" ,class:"control-label"%>
   						<div class="controls">
   							<%= f.check_box :can_photo %>
   						</div>
   					</div>
+            <div class="control-group">
+            <%= f.label :can_video, "需要视频" ,class:"control-label"%>
+              <div class="controls">
+                <%= f.check_box :can_video %>
+              </div>
+            </div>
   					<div class="form-actions">
   						<%= f.submit action_name ,class:"btn btn-primary"%> 
   					</div>

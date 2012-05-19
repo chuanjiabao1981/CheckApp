@@ -1,0 +1,13 @@
+<ul class="breadcrumb">
+  <%= render partial:'reports/nav_report_first_level',
+      locals:{zone_admin:zone_admin,checker:checker,organization:organization} %>
+  <li>
+      <% if  report.supervisor_report? %> 
+        <%= link_to "#{organization.name}督察报告", zone_supervisor_organization_reports_path(organization)%>
+      <% else %>
+        <%= link_to "#{organization.name}巡查报告",worker_organization_reports_path(organization)%>
+      <%end%>
+    <span class="divider">/</span>
+  </li>
+  <li class="active"><%= report.template.name%></li>
+</ul>

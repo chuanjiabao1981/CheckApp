@@ -1,9 +1,6 @@
 <ul class="breadcrumb">
-  <li>
-    <%= link_to '分区报告列表', zone_admin_home_path(@zone_admin)%>
-  </li>
+  <li><%= link_to '全部分区报告',zone_admin_home_path(@zone_admin) %></li>
 </ul>
-
 <% @zones.each do |z|%>
 	<div class="box">
 		<div class="row">
@@ -14,11 +11,11 @@
 						<th colspan="5"><center><%= z.name %><center></th>
 					</tr>
 					<tr>
-						<th width="45%">机构名</th>
+						<th width="35%">机构名</th>
 						<th width="20%">联系人</th>
 						<th width="10%">电话</th>
-						<th>督察报告数</th>
-						<th>巡查报告数</th>
+						<th>督察报告</th>
+						<th>已审核巡查报告</th>
 					</tr>
 					<% z.organizations.each do |o| %>
 						<tr>
@@ -26,7 +23,7 @@
 							<td><%=o.contact%></td>
 							<td><%=o.phone%></td>
 							<td><%=link_to o.get_all_supervisor_report.size,zone_supervisor_organization_reports_path(o) %>
-							<td><%=link_to o.get_all_worker_report.size,worker_organization_reports_path(o,format: :html) %>
+							<td><%=link_to o.get_all_finished_worker_report.size,worker_organization_reports_path(o,format: :html) %>
 						</tr>		
 					<% end %>
 				</table>

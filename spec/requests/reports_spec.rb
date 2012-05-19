@@ -64,7 +64,7 @@ def fail_visit_organization_report_mobile
           end
         end
       end
-      n.should == 2
+      n.should == 3
     end
   end
   describe "非负责的zone supervisor 无法访问" do
@@ -375,8 +375,8 @@ def normal_supervisor_report_index
         end
       end         
       #puts finished_supervisor_report_num,new_supervisor_report_num,all_worker_report_num
-      finished_supervisor_report_num.should == 2
-      new_supervisor_report_num.should == 1
+      finished_supervisor_report_num.should == 3
+      new_supervisor_report_num.should == 2
       all_worker_report_num == 3
     end
   end
@@ -725,13 +725,18 @@ def test_report_detail_page(test_template,test_report,see_other_action)
     else
       page.should have_css('th[style*="display:none"]',text:no_set_text)
     end
-
     test_report.template.check_categories.each do |cc|
       cp_num = cc.check_points.size().to_s
+      next if cp_num == "0"
       page.should have_css("th[rowspan=\"#{cp_num}\"]",text:cc.category)
       cc.check_points.each do |cp|
         page.should have_selector("td",text:cp.content)
         rr = test_report.get_report_record_by_check_point_id(cp.id)
+
+        if cp.can_photo and not rr.nil?
+          css_selector = "a[href=\"#{rr.photo_path}\"]"
+          page.has_css?(css_selector).should == true
+        end
         if test_template.check_value.has_boolean_name?
           css_selector = "td"
           if rr.nil?
@@ -808,6 +813,17 @@ def normal_supervisor_report_detail
         test_report_detail_page(a_zone_org_1_report_6.template,a_zone_org_1_report_6,true)
       end
     end
+    describe "zone_admin登陆访问supervisor unormal report detail html报告" do
+      before do
+        sign_in a_zone_admin
+        visit report_detail_report_path(a_zone_org_1_supervisor_report_with_unormal_template_status_is_new,true)
+      end
+      specify do
+        test_report_detail_page(a_zone_org_1_supervisor_report_with_unormal_template_status_is_new.template,
+                                a_zone_org_1_supervisor_report_with_unormal_template_status_is_new,
+                                true)
+      end
+    end
     describe "site admin登陆访问supervisor report detail html报告" do
       before do
         sign_in the_site_admin
@@ -865,9 +881,9 @@ def test_supervisor_report_index(singin_user,test_org)
       worker_report_num = worker_report_num + 1
     end
   end
-  new_report_num.should == 1
-  finished_report_num.should == 2
-  worker_report_num.should == 3
+  new_report_num.should == 2
+  finished_report_num.should == 3
+  worker_report_num.should == 5
 
 end
 def normal_supervisor_report_index_html
@@ -1216,6 +1232,16 @@ def normal_worker_report_detail
         test_report_detail_page(a_zone_org_1_report_3.template,a_zone_org_1_report_3,true)
       end
     end
+    describe "checker登陆访问worker report detail html报告" do
+      before do
+        sign_in a_zone_org_1_checker
+        visit report_detail_report_path(a_zone_org_1_worker_report_with_unormal_template_status_is_new)
+      end
+      specify do
+        test_report_detail_page(a_zone_org_1_worker_report_with_unormal_template_status_is_new.template,
+                                a_zone_org_1_worker_report_with_unormal_template_status_is_new,true)
+      end
+    end
 
 end
 def normal_worker_report_pass_and_reject
@@ -1504,7 +1530,10 @@ describe "Reports" do
   let(:a_zone_org_1_checker)  {a_zone_org_1.checker}
   let(:a_zone_org_2_worker)   {a_zone_org_2.worker}
   let(:a_zone_org_2_checker)  {a_zone_org_2.checker}
-  let!(:a_template)      {FactoryGirl.create(:template_with_all_required,zone_admin:a_zone_admin,for_worker:true,for_supervisor:true)}
+  let!(:a_template)           {FactoryGirl.create(:template_with_all_required,zone_admin:a_zone_admin,for_worker:true,for_supervisor:true)}
+  let!(:a_unnormal_template)      {FactoryGirl.create(:template_with_3_normal_category_1_zero_check_point_category,
+                                      zone_admin:a_zone_admin,for_worker:true,for_supervisor:true)}
+
   let!(:a_zone_org_1_report_1)      {FactoryGirl.create(:report_with_some_records,
                                               organization:a_zone_org_1,
                                               template:a_template,
@@ -1520,6 +1549,20 @@ describe "Reports" do
                                                          template:a_template,
                                                          committer:a_zone_org_1.worker,
                                                          status:"finished")}
+  let!(:a_zone_org_1_worker_report_with_unormal_template_status_is_new) {
+                                                                          FactoryGirl.create(:report_with_all_records,
+                                                                                              organization:a_zone_org_1,
+                                                                                              template:a_unnormal_template,
+                                                                                              committer:a_zone_org_1.worker,
+                                                                                              status:"new")
+                                                                        }
+  let!(:a_zone_org_1_worker_report_with_unormal_template_status_is_finished) {
+                                                                          FactoryGirl.create(:report_with_all_records,
+                                                                                              organization:a_zone_org_1,
+                                                                                              template:a_unnormal_template,
+                                                                                              committer:a_zone_org_1.worker,
+                                                                                              status:"finished")
+                                                                        }
 
   let!(:a_zone_org_1_report_4)      {FactoryGirl.create(:report_with_some_records,
                                                          organization:a_zone_org_1,
@@ -1536,6 +1579,20 @@ describe "Reports" do
                                                          template:a_template,
                                                          committer:a_zone_supervisor,
                                                          status:"new")}
+  let!(:a_zone_org_1_supervisor_report_with_unormal_template_status_is_new) {
+                                     FactoryGirl.create(:report_with_all_records,
+                                      organization:a_zone_org_1,
+                                      template:a_unnormal_template,
+                                      committer:a_zone_supervisor,
+                                      status:"new")
+                                   }
+ let!(:a_zone_org_1_supervisor_report_with_unormal_template_status_is_finished) {
+                                     FactoryGirl.create(:report_with_all_records,
+                                      organization:a_zone_org_1,
+                                      template:a_unnormal_template,
+                                      committer:a_zone_supervisor,
+                                      status:"finished")
+                                   }                                
 
 
   before do
