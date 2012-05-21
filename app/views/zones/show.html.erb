@@ -49,7 +49,7 @@
         <% @zone.organizations.each do |o| %>
           <tr>
             <td><%= link_to o.name,organization_path(o) %></td>
-            <td><%= o.created_at %></td>
+            <td><%= I18n.localize(o.created_at,format: :long)  %></td>
             <td><%= link_to "编辑", edit_organization_path(o)%></td>
             <td><%= link_to "删除", organization_path(o), method: :delete, confirm: "确定删除这个机构以及下属全部信息吗？" %>
           </tr>

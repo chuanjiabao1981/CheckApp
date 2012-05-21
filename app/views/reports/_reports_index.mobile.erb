@@ -7,7 +7,7 @@
 <% reports.each do |report| %>
   <tr>
       <td> <%= link_to report.template.name ,check_categories_report_path(report,format: :mobile) %> </td>
-      <td> <%= report.created_at %> </td>
+      <td> <%= I18n.localize(report.created_at,format: :short)%> </td>
       <td>
         <% if report.status_is_new? %>
           <span class="label label-info">进行中</span>
@@ -19,4 +19,6 @@
       </td>
   </tr>
 <% end %>
-</table>
+</table> 
+<%= will_paginate reports ,class:"apple_pagination"%>
+

@@ -19,7 +19,7 @@
         <tr>
             <td><%= link_to @template.name,template_check_categories_path(@template) %></td>
             <td><%= @template.check_categories.size() %></td>
-            <td><%= @template.created_at %></td>
+            <td><%= I18n.localize(@template.created_at,format: :long) %></td>
         </tr>
       </table>
       <legend>检查项</legend>

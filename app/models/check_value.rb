@@ -19,7 +19,7 @@ class NullNameValidator < ActiveModel::Validator
   def validate(record)
     if (record.boolean_name == ""   and record.int_name == ""   and record.float_name == ""   and record.date_name == ""  )  or \
        (record.boolean_name == nil  and record.int_name == nil  and record.float_name == nil  and record.date_name == nil)
-      record.errors[:base] = "当前模板至少要有一个检查项"
+      record.errors[:base] = "不能全为空"
     end
   end
 end

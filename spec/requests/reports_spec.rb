@@ -94,8 +94,11 @@ def login_worker_visit_organization_reports_category
     visit worker_organization_reports_path(a_zone_org_1,format: :mobile)
   end
   describe "report status 是new" do
-    before { click_link a_zone_org_1_report_1.template.name }
+    # before { click_link a_zone_org_1_report_1.template.name }
+    before {      page.find("tr:nth-child(6)").find_link(a_zone_org_1_report_1.template.name).click } 
     specify do
+      # print page.html
+      # page.find("tr:nth-child(6)").find_link(a_zone_org_1_report_1.template.name)
       page.should have_link('编辑',href:edit_report_path(a_zone_org_1_report_1,format: :mobile))
       page.should have_link('删除',href:report_path(a_zone_org_1_report_1))
       page.should have_selector('td',text:a_zone_org_1_report_1.reporter_name)
@@ -161,7 +164,8 @@ def normal_visit_report_a_category_all_check_points
     before do
       sign_in a_zone_org_1_worker
       visit worker_organization_reports_path(a_zone_org_1,format: :mobile)
-      click_link a_zone_org_1_report_1.template.name
+      # click_link a_zone_org_1_report_1.template.name
+      page.find("tr:nth-child(6)").find_link(a_zone_org_1_report_1.template.name).click
       click_link a_zone_org_1_report_1.template.check_categories[2].category
     end
     specify do
@@ -300,7 +304,8 @@ def visit_edit_report
     before do
       sign_in a_zone_org_1_worker
       visit worker_organization_reports_path(a_zone_org_1,format: :mobile)
-      click_link a_zone_org_1.reports.first.template.name
+      page.find("tr:nth-child(6)").find_link(a_zone_org_1_report_1.template.name).click 
+      # click_link a_zone_org_1.reports.first.template.name
       click_link '编辑'
     end
     # it '基本元素正常' do
@@ -324,7 +329,7 @@ def destroy_worker_report
     before do
       sign_in a_zone_org_1_worker
       visit worker_organization_reports_path(a_zone_org_1,format: :mobile)
-      click_link a_zone_org_1.reports.first.template.name
+      page.find("tr:nth-child(6)").find_link(a_zone_org_1_report_1.template.name).click
     end
     it "-1" do 
       expect { click_link '删除' }.to change(Report,:count).by(-1)
@@ -685,7 +690,8 @@ def test_report_detail_page(test_template,test_report,see_other_action)
     page.should have_selector('th',text:"提交人")
     page.should have_selector('td',text:"#{test_report.reporter_name}")
     page.should have_selector('th',text:"提交时间")
-    page.should have_selector('td',text:"#{test_report.created_at}")
+    tt = I18n.localize(test_report.created_at,format: :long)
+    page.should have_selector('td',text:"#{tt}")
     if see_other_action
       if test_report.status_is_new?
         page.has_css?('input[value="审核通过"]').should == true

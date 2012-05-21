@@ -36,7 +36,7 @@ def sigin_visit_zone_new
     let(:a_zone_supervisor_1)     { a_zone_admin.zone_supervisors.first }
     let(:a_zone_supervisor_2)     { a_zone_admin.zone_supervisors.last }
     before do
-      fill_in 'Zone名称',with:new_zone_name
+      fill_in '分区名称',with:new_zone_name
       fill_in '备注',    with:new_zone_des
       page.find('css', "#zone_zone_supervisor_ids_[value='#{a_zone_supervisor_1.id}']").set(true)
       page.find('css', "#zone_zone_supervisor_ids_[value='#{a_zone_supervisor_2.id}']").set(true)
@@ -65,7 +65,7 @@ def sign_in_visit_zone_edit
     let(:a_zone_supervisor_1)     { a_zone_admin.zone_supervisors.first }
     let(:a_zone_supervisor_2)     { a_zone_admin.zone_supervisors.last }
     before do
-      fill_in 'Zone名称',with:new_zone_name
+      fill_in '分区名称',with:new_zone_name
       page.find('css', "#zone_zone_supervisor_ids_[value='#{a_zone_supervisor_1.id}']").set(false)
       #uncheck a_zone_supervisor_1.name
       page.find('css', "#zone_zone_supervisor_ids_[value='#{a_zone_supervisor_2.id}']").set(true)
@@ -80,7 +80,7 @@ def sign_in_visit_zone_edit
   end
   describe "错误编辑" do
     before do
-      fill_in 'Zone名称',with:""
+      fill_in '分区名称',with:""
       click_button '保存'
     end
     specify do  

@@ -22,7 +22,7 @@
 			      <td><%= link_to t.name,template_path(t) %></td>
 			      <td><%= t.for_supervisor ? "是":"否"%></td>
 			      <td><%= t.for_worker ? "是":"否"%></td>
-			      <td><%= t.created_at %></td>
+			      <td><%= I18n.localize(t.created_at,format: :long) %></td>
 			      <td><%= link_to '编辑',edit_template_path(t) %></td>
 			      <td><%= link_to '删除',template_path(t),method: :delete,confirm:"确定删除这个模板吗?" %></td>
 			  </tr>

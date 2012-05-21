@@ -13,7 +13,7 @@
             <th width="45%">检查详情</th>
             <th width="15%">现场图像</th>
             <th width="25%">创建时间</th>
-            <th colspan="2">操作</th>
+            <th colspan="2" width="15%">操作</th>
           </tr>
         </thead>
         <% @check_points.each do |cp| %>
@@ -24,7 +24,7 @@
               <% else %>
                 <td> 否 </td>
               <% end %>
-              <td><%= cp.created_at%></td>
+              <td><%= I18n.localize(cp.created_at,format: :long)%></td>
               <td><%= link_to '编辑',edit_check_point_path(cp) %></td>
               <td><%= link_to '删除',check_point_path(cp),method: :delete,confirm:"确定删除这个检查点以及相关的报告项吗？" %></td>
           </tr>

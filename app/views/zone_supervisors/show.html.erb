@@ -1,15 +1,25 @@
 <% provide(:title, "督察员|"+@zone_supervisor.name) %> 
 
-<%= link_to '编辑',edit_zone_supervisor_path(@zone_supervisor) %>
-<table>
-    <tr>
-        <th>督察员账号</th>
-        <td><%= @zone_supervisor.name %></td>
-    </tr>
-    <tr>
-        <th>备注</th>
-        <td><%= @zone_supervisor.des %></td>
-    </tr>
-</table>
+<%= render partial:'zone_supervisors/nav',locals:{zone_admin:@zone_admin,action_name:'督察员信息'} %>
+<p>
+	<button class="btn"><%= link_to '编辑',edit_zone_supervisor_path(@zone_supervisor) %></button>
+</p>
+<div class="box">
+	<div class="row">
+		<div class="span10 offset1">
+			<legend>督察员信息</legend>
+			<table class='table table-striped table-bordered'>
+			    <tr>
+			        <th>督察员账号</th>
+			        <td><%= @zone_supervisor.name %></td>
+			    </tr>
+			    <tr>
+			        <th>备注</th>
+			        <td><%= @zone_supervisor.des %></td>
+			    </tr>
+			</table>
+		</div>
+	</div>
+</div>
 
 

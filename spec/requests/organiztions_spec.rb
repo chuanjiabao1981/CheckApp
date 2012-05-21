@@ -36,9 +36,9 @@ def signin_visit_organization_new
       fill_in '联系人',with:'ceshiren'
       fill_in '联系电话',with:'111111111'
       fill_in '地址',with:'skk'
-      fill_in '自查员账号',with:org_worker
-      fill_in '自查员密码',with:'foobar'
-      fill_in '自查员密码确认',with:'foobar'
+      fill_in '巡查员账号',with:org_worker
+      fill_in '巡查员密码',with:'foobar'
+      fill_in '巡查员密码确认',with:'foobar'
       fill_in '审核员账号',with:org_checker
       fill_in '审核员密码',with:'foobar'
       fill_in '审核员密码确认',with:'foobar'
@@ -60,9 +60,9 @@ def signin_visit_organization_new
         fill_in '联系人',with:'ceshiren'
         fill_in '联系电话',with:'111111111'
         fill_in '地址',with:'skk'
-        fill_in '自查员账号',with:org_worker
-        fill_in '自查员密码',with:'foobar'
-        fill_in '自查员密码确认',with:'foobar'
+        fill_in '巡查员账号',with:org_worker
+        fill_in '巡查员密码',with:'foobar'
+        fill_in '巡查员密码确认',with:'foobar'
       end
       it 'org notchange' do
         expect {click_button '新增机构'}.not_to change(Organization,:count)
@@ -93,7 +93,7 @@ def signin_visit_organization_edit
     before do
       fill_in '机构名',with:new_org_name
       fill_in '审核员账号',with:new_checker_name
-      fill_in '自查员账号',with:new_worker_name
+      fill_in '巡查员账号',with:new_worker_name
       click_button '保存'
     end
     specify do

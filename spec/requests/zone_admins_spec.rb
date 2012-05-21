@@ -35,7 +35,7 @@ describe "ZoneAdmins" do
       describe "不合法信息" do
         it "不增加用户" do
           expect { click_button "确定"}.not_to change(ZoneAdmin,:count) 
-          page.should have_content('表单有 3 errors')
+          page.should have_content('表单有3个错误')
         end
       end
       describe "合法信息" do
@@ -90,7 +90,7 @@ describe "ZoneAdmins" do
           fill_in '密码' ,with: '1234' 
           click_button '保存'
         end
-        it { should have_content('error') }
+        it { should have_content('错误') }
       end
       describe "正常更新不含密码" do
         let(:new_name) {"test_new"}

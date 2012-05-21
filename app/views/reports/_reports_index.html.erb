@@ -20,7 +20,7 @@
         <tr>
             <td> <%= link_to report.template.name ,report_detail_report_path(report) %> </td>
             <td> <%= report.reporter_name%> </td>
-            <td> <%= report.created_at %> </td>
+            <td> <%= I18n.localize(report.created_at,format: :long) %> </td>
             <td>
               <% if report.status_is_new? %>
                  <span class="label label-info">进行中</span>

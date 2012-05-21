@@ -24,22 +24,22 @@ class Organization < ActiveRecord::Base
     return a
   end
   def get_all_worker_report
-    Report.where('organization_id=? and committer_type=?',self.id,'Worker')
+    Report.where('organization_id=? and committer_type=?',self.id,'Worker').order("created_at DESC")
   end
   def get_all_finished_worker_report
-    Report.where('organization_id=? and committer_type=? and status = ?',self.id,'Worker','finished')
+    Report.where('organization_id=? and committer_type=? and status = ?',self.id,'Worker','finished').order("created_at DESC")
   end
   def get_all_new_worker_report
-    Report.where('organization_id=? and committer_type=? and status = ?',self.id,'Worker','new')
+    Report.where('organization_id=? and committer_type=? and status = ?',self.id,'Worker','new').order("created_at DESC")
   end
   def get_all_supervisor_report
-    Report.where('organization_id=? and committer_type=?',self.id,'ZoneSupervisor')
+    Report.where('organization_id=? and committer_type=?',self.id,'ZoneSupervisor').order("created_at DESC")
   end
   def get_all_finished_supervisor_report
-    Report.where('organization_id=? and committer_type=? and status = ?',self.id,'ZoneSupervisor','finished')
+    Report.where('organization_id=? and committer_type=? and status = ?',self.id,'ZoneSupervisor','finished').order("created_at DESC")
   end
   def get_all_new_supervisor_report
-    Report.where('organization_id=? and committer_type=? and status = ?',self.id,'ZoneSupervisor','new')
+    Report.where('organization_id=? and committer_type=? and status = ?',self.id,'ZoneSupervisor','new').order("created_at DESC")
   end
 
 end

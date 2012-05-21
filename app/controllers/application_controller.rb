@@ -3,9 +3,4 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   include Api::V1::SessionsHelper
 
-  before_filter :set_locale
-
-	def set_locale
-  	I18n.locale = 'cn'
-	end
 end

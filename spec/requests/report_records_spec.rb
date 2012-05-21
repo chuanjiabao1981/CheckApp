@@ -114,11 +114,10 @@ describe "ReportRecords" do
         image_url          = test_record.get_photo_path
         image_css_selector = "img[src=\"#{image_url}\"]"
         page.has_css?(image_css_selector).should == true
-      end
-      if test_record.check_point.can_video
+      elsif test_record.check_point.can_video
         page.has_css?('td',text:'视频').should == true
         video_url           = test_record.get_video_path
-        video_css_selector  = "video[src=\"#{video_url}\"]"
+        video_css_selector  = "a[href=\"#{video_url}\"]"
         page.has_css?(video_css_selector).should == true
       end
     end

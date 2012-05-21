@@ -1,3 +1,4 @@
+#encoding:utf-8
 # == Schema Information
 #
 # Table name: templates
@@ -12,6 +13,13 @@
 #  can_video      :boolean         default(FALSE)
 #  can_photo      :boolean         default(FALSE)
 #
+class TemplateTypeValidator < ActiveModel::Validator
+  def validate(record)
+    if record.for_worker == false and record.for_supervisor == false 
+      record.errors[:base] = "至少选择一种摸板类型 [督察模板] [巡查摸板]"
+    end
+  end
+end
 
 class Template < ActiveRecord::Base
 
@@ -28,6 +36,7 @@ class Template < ActiveRecord::Base
   #validates :check_value,presence:true
   
   accepts_nested_attributes_for :check_value
+  validates_with TemplateTypeValidator
 
   def get_check_ponits_num
     n = 0

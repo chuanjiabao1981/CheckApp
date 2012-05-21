@@ -18,7 +18,7 @@
 			  <% @zone_supervisors.each do |s| %>
 			    <tr>
 			      <td><%= link_to s.name,zone_supervisor_path(s) %></td>
-			      <td><%= s.created_at %></td>
+			      <td><%= I18n.localize(s.created_at,format: :long) %></td>
 			      <td><%= link_to '编辑',edit_zone_supervisor_path(s) %> </td>
 			      <td><%= link_to '删除',zone_supervisor_path(s),method: :delete,confirm:"确定要删除这个督察员吗？" %></td>
 			    </tr>

@@ -5,7 +5,11 @@
     			功能导航	
   			</li>
 		<% if signed_in? and current_user.session.site_admin? %>
-			<li>
+			<% if controller_name == 'zone_admins'%>
+				<li class="active">
+			<% else %>
+				<li>
+			<% end %>
 				<%= link_to 'zone管理员',zone_admins_path %>
 			</li>
 		<% end %>
@@ -39,10 +43,22 @@
 				<%= link_to '模板', zone_admin_templates_path(current_user) %>
 			</li>
 		<% end %>
+		<% if signed_in? and current_user.session.checker? %>
+			<% if controller_name == 'main' %>
+				<li class="active">
+			<% else %>
+				<li>
+			<% end %>
+			<%= link_to '机构报表' ,checker_home_path(current_user) %>
+		<% end %>
 		<% if signed_in? %>
-		<li>
-			<%= link_to '设置','#' %>
-		</li>
+			<% if controller_name == 'user_settings'%>
+				<li class="active">
+			<% else %>
+				<li>
+			<% end %>
+				<%= link_to '设置',user_setting_path %>
+			</li>
 			<li>
 				<%= link_to '退出',signout_path ,method: "delete"%>
 			</li>

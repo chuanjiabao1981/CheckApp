@@ -24,7 +24,7 @@
 	    <tr>
 	    	<td><%= n %></td>
 	        <td><%= link_to z.name,zone_path(z) %></td>
-	        <td><%= z.created_at %></td>
+	        <td><%= I18n.localize(z.created_at,format: :long) %></td>
 	        <td><%= z.organizations.size %></td>
 	        <td><%= z.zone_supervisors.size %></td>
 	        <td><%= link_to "编辑", edit_zone_path(z)%></td>

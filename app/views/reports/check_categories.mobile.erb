@@ -16,7 +16,7 @@
   </tr>
   <tr>
     <th>提交时间</th>
-    <td colspan="2"><%= @report.created_at %></td>
+    <td colspan="2"><%= I18n.localize(@report.created_at,format: :long)%></td>
   </tr>
   <tr>
     <th> 检查类型</th>

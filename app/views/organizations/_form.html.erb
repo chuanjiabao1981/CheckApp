@@ -33,19 +33,19 @@
           <%= f.fields_for :worker do |worker| %>
             <legend>巡查员</legend>
             <div class="control-group">
-              <%= worker.label :name,"自查员账号",class:"control-label"%>
+              <%= worker.label :name,"巡查员账号",class:"control-label"%>
               <div class="controls">
                 <%= worker.text_field :name %>
               </div>
             </div>
             <div class="control-group">
-              <%= worker.label :password,"自查员密码" ,class:"control-label"%>
+              <%= worker.label :password,"巡查员密码" ,class:"control-label"%>
               <div class="controls">
                 <%= worker.password_field :password %>
               </div>
             </div>
             <div class="control-group">
-              <%= worker.label :password_confirmation,"自查员密码确认" ,class:"control-label"%>
+              <%= worker.label :password_confirmation,"巡查员密码确认" ,class:"control-label"%>
               <div class="controls">
                 <%= worker.password_field :password_confirmation %>
               </div>

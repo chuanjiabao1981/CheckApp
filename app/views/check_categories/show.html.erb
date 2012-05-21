@@ -19,7 +19,7 @@
         </tr>
         <tr>
           <th>创建时间</th>
-          <td><%=@category.created_at %></td>
+          <td><%=I18n.localize(@category.created_at,format: :long)%></td>
         </tr>
         <tr>
             <th>说明</th>

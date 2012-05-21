@@ -18,7 +18,7 @@
 			<% @categories.each do |c| %>
 			  <tr>
 			      <td><%= link_to c.category,check_category_path(c) %></td>
-			      <td><%= c.created_at %></td>
+			      <td><%= I18n.localize(c.created_at,format: :long) %></td>
 			      <td><%= link_to '编辑',edit_check_category_path(c) %></td>
 			      <td><%= link_to '删除',check_category_path(c),method: :delete,confirm:"确定删除这个检查类型，以及下属的检查点吗？" %></td>
 			  </tr>
