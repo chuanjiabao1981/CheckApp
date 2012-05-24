@@ -12,6 +12,7 @@ class MainController < ApplicationController
     if signed_in? and current_user.session.checker?
       return redirect_to checker_home_path(current_user)
     end
+    render layout:'application_one_column'
   end
 
   def zone_supervisor_home
