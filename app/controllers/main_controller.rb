@@ -15,7 +15,11 @@ class MainController < ApplicationController
     if signed_in? and current_user.session.site_admin?
       return redirect_to zone_admins_path
     end
-    render layout:'application_one_column'
+    # render layout:'application_one_column'
+    respond_to do |format|
+      format.mobile {render layout:'application'}
+      format.html { render layout:'application_one_column'}
+    end
   end
 
   def zone_supervisor_home
