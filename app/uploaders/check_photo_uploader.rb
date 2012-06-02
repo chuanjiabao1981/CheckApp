@@ -21,7 +21,11 @@ class CheckPhotoUploader < CarrierWave::Uploader::Base
   # 如下两个目录方法修改一定要小心
   # 在测试完成后，删除这两个目录下所有文件，这个是写死在 spec_helpler文件中的
   def store_dir
-    "report_record_photo/#{Rails.env}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    if Rails.env == "production"
+      "#{Rails.root}/report_media/report_record_photo/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    else 
+      "report_record_photo/#{Rails.env}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    end
   end
 
   def cache_dir
