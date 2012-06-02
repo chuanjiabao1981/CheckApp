@@ -18,10 +18,10 @@ module CarrierWave
       tmp_path   = File.join( directory, "tmpfile" )
 
       File.rename current_path, tmp_path
-      
-      Rails.logger.info("----------------------------")
-      Rails.logger.info(tmp_path)
-      Rails.logger.info(File.size(tmp_path).to_s)
+
+      Rails.logger.debug("----------------------------")
+      Rails.logger.debug(tmp_path)
+      Rails.logger.debug(File.size(tmp_path).to_s)
 
       # encode
       Voyeur::Video.new( filename: tmp_path ).convert( to: format.to_sym, output_filename: current_path )

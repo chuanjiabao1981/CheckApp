@@ -33,19 +33,19 @@ class CheckVideoUploader < CarrierWave::Uploader::Base
     "#{Rails.root}/tmp/uploads/#{Rails.env}/report_record_video/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
-  version :mp4 do
-    process :encode_video => [:mp4]
-    def full_filename(for_file)
-      "#{File.basename(for_file, File.extname(for_file))}.mp4"
-    end
-  end
+  #version :mp4 do
+  #  process :encode_video => [:mp4]
+  #  def full_filename(for_file)
+  #    "#{File.basename(for_file, File.extname(for_file))}.mp4"
+  #  end
+  #end
 
-  version :webm do
-    process :encode_video => [:webm]
-    def full_filename(for_file)
-      "#{File.basename(for_file, File.extname(for_file))}.webm"
-    end
-  end
+  #version :webm do
+  #  process :encode_video => [:webm]
+  #  def full_filename(for_file)
+  #    "#{File.basename(for_file, File.extname(for_file))}.webm"
+  #  end
+  #end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url
