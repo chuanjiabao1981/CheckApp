@@ -1,0 +1,69 @@
+创建用户组
+groupadd checkapp
+添加用户
+adduser work
+加入组
+adduser work admin
+adduser work checkapp
+
+
+
+su work
+
+##装包
+/usr/bin/apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
+
+
+##安装rvm
+1. curl -L get.rvm.io | bash -s stable
+2. source ~/.rvm/scripts/rvm
+3. rvm requirements
+   根据提示缺啥装啥
+4.rvm install 1.9.3 
+5. rvm --default use 1.9.3
+6. rvm gemset use global
+7. gem install bundler
+
+
+
+##安装rails 3.2.1
+1. gem install rails -v 3.2.1
+
+##安装nginx 和 passagen
+1. gem install passenger
+2. rvmsudo passenger-install-nginx-module
+3. rvm wrapper 1.9.3@global passenger
+
+4. curl -L http://bit.ly/nginx-ubuntu-init-file > /etc/init.d/nginx
+5. chmod +x /etc/init.d/nginx
+6. update-rc.d nginx defaults
+
+修改 /etc/init.d/nginx 中nginx的路径
+7. /etc/init.d/nginx start
+
+
+
+##安装mysql
+1. sudo apt-get install mysql-server mysql-client 
+2. sudo apt-get install libmysql-ruby libmysqlclient-dev
+3. gem install mysql2 
+
+4. sudo vim /etc/mysql/my.cnf  #运行配置文件
+   [client] 
+    default-character-set = utf8 
+    [mysqld] 
+     default-character-set = utf8
+     init_connect = 'SET NAMES utf8'
+
+   重启sudo service mysql restart
+5. CREATE DATABASE check_app_production
+   GRANT ALL PRIVILEGES ON check_app_production.* TO 'work'@'localhost' IDENTIFIED BY '12345678';
+
+
+
+
+
+
+
+
+
