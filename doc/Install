@@ -49,7 +49,7 @@ sudo apt-get install nodejs
 1. sudo apt-get install mysql-server mysql-client 
 2. sudo apt-get install libmysql-ruby libmysqlclient-dev
 3. gem install mysql2 
-
+   gem install activerecord-mysql-adapter
 4. sudo vim /etc/mysql/my.cnf  #运行配置文件
    [client] 
     default-character-set = utf8 

@@ -19,7 +19,11 @@ class CheckVideoUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "report_record_video/#{Rails.env}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    if Rails.env == "production"
+      "report_media/report_record_video/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    else
+      "report_record_video/#{Rails.env}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    end
   end
 
   def cache_dir
