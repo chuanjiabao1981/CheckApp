@@ -62,9 +62,10 @@ sudo apt-get install nodejs
    GRANT ALL PRIVILEGES ON check_app_production.* TO 'work'@'localhost' IDENTIFIED BY '12345678';
 
 
-
-
-
+asset line
+bundle exec rake assets:precompile
+编译后要重启
+sudo /etc/init.d/nginx restart
 
 
 
