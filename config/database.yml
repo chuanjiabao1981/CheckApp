@@ -22,7 +22,7 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: check_app_production
+  database: "check_app_production"
   pool: 5
   username: work
   password: "12345678"
