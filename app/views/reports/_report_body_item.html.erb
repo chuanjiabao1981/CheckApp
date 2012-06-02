@@ -7,13 +7,12 @@
   <% end %> 
 
   <% if not report_record.nil? and check_point.can_video? %>
-    <!--div id="single_video">
+    <div id="single_video">
      <video width="480" height="360" controls preload style="display:none">
         <source src="<%= report_record.video_path.to_s %>" type="video/mp4">
       </video>
     </div>
-    <a href="javascript();"-->
-    <a href="<%= report_record.video_path.mp4.url %>" id="single_video">
+    <a href="javascript();">
       <span id="video_content" class="label label-info">视频</span>
     </a>
   <% end %>
