@@ -8,7 +8,7 @@ gem 'rmagick'
 gem 'bootstrap-sass', '2.0.0'
 gem "fancybox-rails", "~> 0.1.4"
 gem 'will_paginate', '~> 3.0'
-
+gem 'voyeur'
 
 
 # Bundle edge Rails instead:

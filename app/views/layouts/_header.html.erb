@@ -2,7 +2,8 @@
  <%= stylesheet_link_tag    "application", :media => "all" %>
  <%= javascript_include_tag "application" %>
  <%= csrf_meta_tags %>
- 
+ <script src="http://releases.flowplayer.org/js/flowplayer-3.2.10.min.js"></script>
+
  <script>
 	 $(document).ready(function() {
 	
@@ -23,7 +24,36 @@
 				}
 			}
 		);
-
+		/*
+		$('a#single_video').click(function(e) {
+    	//Intercept the link's default behavior
+    		alert("1");
+   		 	e.preventDefault();
+    		//Create a container
+   			 var container = $('<div/>');
+    		//install flowplayer
+    		container.flowplayer('http://releases.flowplayer.org/swf/flowplayer-3.2.7.swf', $(this).attr('href'));
+    			//Launch fancybox with the flowplayer as content
+   				 //Be sure to set dimensions and disable autoDimensions & scrolling
+    		$.fancybox({
+        		content: container,
+        		width: 300, height: 200,
+       			scrolling: 'no',
+        		autoDimensions: false
+    		});
+		});​*/
+ 		$("a#single_video").click(function(e){
+ 			e.preventDefault();
+ 			var container = $('<div/>');
+ 			alert($(this).attr('href'));
+ 			container.flowplayer('http://releases.flowplayer.org/swf/flowplayer-3.2.7.swf', $(this).attr('href'));
+ 			$.fancybox({
+        	content: container,
+        	width: 300, height: 200,
+        	scrolling: 'no',
+        	autoDimensions: false
+    		});
+ 		});
 		$("a#single_image").fancybox();
 		
 		/* Using custom settings */

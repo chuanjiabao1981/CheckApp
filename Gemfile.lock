@@ -84,6 +84,7 @@ GEM
     multi_json (1.3.4)
     mysql2 (0.3.11)
     nokogiri (1.5.2)
+    open4 (1.3.0)
     polyglot (0.3.3)
     rack (1.4.1)
     rack-cache (1.2)
@@ -150,6 +151,8 @@ GEM
     uglifier (1.2.3)
       execjs (>= 0.3.0)
       multi_json (>= 1.0.2)
+    voyeur (0.1.2)
+      open4
     will_paginate (3.0.3)
     xpath (0.1.4)
       nokogiri (~> 1.3)
@@ -175,4 +178,5 @@ DEPENDENCIES
   sass-rails (= 3.2.4)
   sqlite3 (= 1.3.5)
   uglifier (= 1.2.3)
+  voyeur
   will_paginate (~> 3.0)
