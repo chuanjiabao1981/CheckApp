@@ -25,5 +25,5 @@ production:
   database: check_app_production
   pool: 5
   username: work
-  password: 12345678
+  password: "12345678"
   host: localhost
