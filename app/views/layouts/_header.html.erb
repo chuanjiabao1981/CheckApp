@@ -2,7 +2,7 @@
  <%= stylesheet_link_tag    "application", :media => "all" %>
  <%= javascript_include_tag "application" %>
  <%= csrf_meta_tags %>
- <script src="http://releases.flowplayer.org/js/flowplayer-3.2.10.min.js"></script>
+<script src="http://jqueryrotate.googlecode.com/svn/trunk/jQueryRotate.js"></script>
 
  <script>
 	 $(document).ready(function() {
@@ -37,8 +37,20 @@
         	autoDimensions: false
     		});
  		});*/
-		$("a#single_image").fancybox();
-		
+		$("a#single_image").fancybox({
+			onComplete: function(){
+				var value = 0;
+				$("#fancybox-img").rotate({
+					bind:
+					{
+						click: function(){
+							value+=90;
+							$(this).rotate(value);
+						}
+					}
+				});
+			},
+		});
 		/* Using custom settings */
 		
 		$("a#inline").fancybox({
