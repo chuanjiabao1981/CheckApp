@@ -18,7 +18,8 @@ class ReportRecord < ActiveRecord::Base
   mount_uploader :photo_path,CheckPhotoUploader
   mount_uploader :video_path,CheckVideoUploader
   #这个留给video用
-  validates :video_path,file_size:{:maximum => 200.megabytes.to_i}
+  #validates :video_path,file_size:{:maximum => 1.kilobytes.to_i}
+  validates :video_path,file_size:{:maximum => 20.megabytes.to_i }
 
   def get_boolean_value
     return "是" if self.boolean_value

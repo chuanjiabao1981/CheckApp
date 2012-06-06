@@ -1,0 +1,2 @@
+I18n.translate 'activerecord'
+I18n.locale = 'cn'

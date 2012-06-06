@@ -59,7 +59,49 @@ cn:
       long: ! '%Y年%b%d日 %H:%M'
       short: ! '%b%d日 %H:%M'
     pm: 下午
-  
+  helpers:
+    select:
+      prompt: 请选择
+    submit:
+      create: 新增%{model}
+      submit: 储存%{model}
+      update: 更新%{model}
+  number:
+    human:
+      decimal_units:
+        format: ! '%n %u'
+        units:
+          billion: 十亿
+          million: 百万
+          quadrillion: 千兆
+          thousand: 千
+          trillion: 兆
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 1
+        significant: false
+        strip_insignificant_zeros: false
+      storage_units:
+        format: ! '%n %u'
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+    precision:
+      format:
+        delimiter: ''
+  errors:
+    messages:
+      extension_white_list_error: "文件类型不对"
+      size_too_big: "文件太大了 (文件最大 %{file_size})"
   activerecord:
     models:
       check_value: "报告检查项"
@@ -106,6 +148,9 @@ cn:
         password_digest:  "巡查员密码"
       report:
         reporter_name:         "报告提交人"
+      report_record:
+        video_path:       "视频文件"
+        photo_path:       "图片文件"
 
     errors:
       template:
@@ -114,6 +159,9 @@ cn:
           other: "有 %{count} 个错误发生导致「%{model}」无法被保存。"  
         body: "如下字段出现错误：" 
       messages:
+        wrong_size: "文件大小不对(文件大小为 %{file_size})"
+        size_too_small: "文件太小了(文件至少 %{file_size})"
+        size_too_big: "文件太大了 (文件最大 %{file_size})"
         inclusion: "不包含于列表中"  
         exclusion: "是保留关键字"  
         invalid: "是无效的"  
