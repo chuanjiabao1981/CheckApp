@@ -41,6 +41,7 @@ describe CheckValue do
       before do
         @the_check_value.boolean_name =  @the_check_value.int_name = ""
         @the_check_value.date_name    =  @the_check_value.float_name = ""
+        @the_check_value.text_name    =  ""
       end
       it { should_not be_valid }
     end

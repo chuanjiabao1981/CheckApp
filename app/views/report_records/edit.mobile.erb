@@ -12,8 +12,12 @@
   <% end %>
   <% if @report.template.check_value.has_boolean_name? %>
     <%= f.label :boolean_value,@report.template.check_value.boolean_name %>
-    <%= f.radio_button :boolean_value,"1" ,checked:@report_record.boolean_value%> 是</br>
-    <%= f.radio_button :boolean_value,"0" ,checked:(not @report_record.boolean_value)%> 否</br>
+    <label style="cursor:pointer;">
+      <%= f.radio_button :boolean_value,"1" ,checked:@report_record.boolean_value ,style:"display:inline;margin-right:10px"%> 是
+    </label>
+    <label>
+      <%= f.radio_button :boolean_value,"0" ,checked:(not @report_record.boolean_value) ,style:"display:inline;margin-right:10px"%> 否
+    </label>
   <% end %>
   <% if @report.template.check_value.has_date_name? %>
   	<%= f.label :date_value,@report.template.check_value.date_name %>
@@ -33,5 +37,5 @@
     <%= f.label :text_value,@report.template.check_value.text_name %>
     <%= f.text_field :text_value %>
   <% end %>
-  <%= f.submit '保存' ,class:"btn btn-small" %> 
+  <%= f.submit '保存' ,class:"btn btn-large" %> 
 <% end %>
