@@ -15,7 +15,7 @@
 						<th width="20%">联系人</th>
 						<th width="25%">电话</th>
 						<th>督察报告</th>
-						<th>已审核巡查报告</th>
+						<th>巡查报告</th>
 					</tr>
 					<% z.organizations.each do |o| %>
 						<tr>
@@ -23,7 +23,7 @@
 							<td><%=o.contact%></td>
 							<td><%=o.phone%></td>
 							<td><%=link_to o.get_all_supervisor_report.size,zone_supervisor_organization_reports_path(o) %>
-							<td><%=link_to o.get_all_finished_worker_report.size,worker_organization_reports_path(o,format: :html) %>
+							<td><%=link_to o.get_all_worker_report.size,worker_organization_reports_path(o,format: :html) %>
 						</tr>		
 					<% end %>
 				</table>

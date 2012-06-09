@@ -1,0 +1,80 @@
+<%= form_tag(statistics_path(@zone_admin),method: :get) do %>
+<%= collection_select(:statistics,:template_id,@zone_admin.templates,:id,:name,@template.nil? ? {}:{selected:@template.id}) %>
+<label>开始日期
+	<%= text_field(:statistics,:start_date,value:@start_date) %>
+</label>
+<label>结束日期
+	<%= text_field(:statistics,:end_date,value:@end_date) %>
+</label>
+<%= submit_tag '查询' %>	
+<% end %>
+
+<p>
+	巡查报告数         <%= @report_statistics.get_total_worker_report_num %>
+	完成率100%~90%    <%= @report_statistics.get_worker_report_num_according_to_finished_percent(1,0.9) %> <br/>
+	完成率大于90%~70%  <%= @report_statistics.get_worker_report_num_according_to_finished_percent(0.9,0.7) %><br/>
+	完成率小于70%      <%= @report_statistics.get_worker_report_num_according_to_finished_percent(0.7,0) %><br/>
+
+	通过率大于90%		 <%= @report_statistics.get_worker_report_num_according_to_success_percent(1,0.9) %> <br/>
+	通过率70%~90%		 <%= @report_statistics.get_worker_report_num_according_to_success_percent(0.9,0.7) %><br/>
+	通过率小雨70%		 <%= @report_statistics.get_worker_report_num_according_to_success_percent(0.7,0) %><br/>
+
+</p>
+<p>
+	督察报告书<%= @report_statistics.get_total_supervisor_report_num %>
+	<table>
+		<tr>
+			<th colspan="2">统计信息</th>
+		</tr>
+		<tr>
+			<td>报告个数</td>
+			<td><%= @report_statistics.get_total_supervisor_report_num %></td>
+		</tr>
+		<tr>
+			<td>报告检查点个数</td>
+			<td><%= @report_statistics.get_total_check_points_num %></td>
+		</tr>
+		<tr>
+			<td>检查机构数</td>
+			<td><%= @report_statistics.get_total_org_has_supervisor_report_num %></td>
+		</tr>
+		<tr>
+			<th colspan="2"><center>通过率<center></th>
+		</tr>
+		<tr>
+			<td>通过率大于90%</td>
+			<td><%=@report_statistics.get_supervisor_report_num_according_to_success_percent(1,0.9) %></td>
+		</tr>
+		<tr>
+			<td>通过率在80%~90%</td>
+			<td><%=@report_statistics.get_supervisor_report_num_according_to_success_percent(0.9,0.8) %></td>
+		</tr>
+		<tr>
+			<td>通过率在70%~80%</td>
+			<td><%= @report_statistics.get_supervisor_report_num_according_to_success_percent(0.8,0.7) %></td>
+		</tr>
+		<tr>
+			<td>通过率在70%以下</td>
+			<td><%= @report_statistics.get_supervisor_report_num_according_to_success_percent(0.7,0) %></td>
+		</tr>
+		<tr>
+			<th colspan="2"><center>完成率<center></th>
+		</tr>
+		<tr>
+			<td>完成率90%以上</td>
+			<td><%= @report_statistics.get_supervisor_report_num_according_to_finished_percent(1,0.9) %> </td>
+		</tr>
+		<tr>
+			<td>完成率在80%到90%之间</td>
+			<td><%= @report_statistics.get_supervisor_report_num_according_to_finished_percent(0.9,0.8) %></td>
+		</tr>
+		<tr>
+			<td>完成率在70%到80%之间</td>
+			<td><%= @report_statistics.get_supervisor_report_num_according_to_finished_percent(0.8,0.7) %></td>
+		</tr>
+		<tr>
+			<td>完成率在70%以下</td>
+			<td><%= @report_statistics.get_supervisor_report_num_according_to_finished_percent(0.7,0) %></td>
+		</tr>
+	</table>
+</p>

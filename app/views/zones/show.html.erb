@@ -22,7 +22,7 @@
           </tr>
         </thead>
         <tr>
-          <td><%= link_to @zone.name,zone_organizations_path(@zone) %> </td>
+          <td><%=  @zone.name %> </td>
           <td> <%= @zone.des %></td>
           <td>
             <% @zone.zone_supervisors.each do |zs| %>

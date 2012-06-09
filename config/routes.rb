@@ -2,6 +2,8 @@
 CheckApp::Application.routes.draw do
 
 
+  get "statistics/search"
+
   resources :sessions, only: [:new, :create, :destroy]
 
   resources :zone_admins,shallow:true do
@@ -72,11 +74,14 @@ CheckApp::Application.routes.draw do
   match '/zone_supervisor_home'           ,to:'main#zone_supervisor_home',via: :get,format:'mobile'
   match '/zone_admin_home/:zone_admin_id' ,to:'main#zone_admin_home',via: :get,as:'zone_admin_home'
   match '/checker_home/:checker_id'       ,to:'main#checker_home',via: :get,as:'checker_home'
+  match '/statistics/:zone_admin_id'      ,to:'statistics#search',via: :get,as:'statistics'
   match '/setting'                        ,to:'user_settings#setting',via: :get,as:'user_setting'
   match '/setting_update'                 ,to:'user_settings#setting_update',via: :put, as:'user_setting_update'
   match '/about'                          ,to:'main#about'  ,via: :get,as:'about'
   match '/help'                           ,to:'main#help'   ,via: :get,as:'help'
   match '/contact'                        ,to:'main#contact',via: :get,as:'contact'
+
+
   root  to:'main#home'
 
   resources :zone_supervisors,shallow:true,only:[] do

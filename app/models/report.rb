@@ -46,6 +46,7 @@ class Report < ActiveRecord::Base
 
   validates_with ReportValidator
 
+
   def supervisor_report?
     return true if self.committer_type == 'ZoneSupervisor'
     return false
@@ -64,6 +65,13 @@ class Report < ActiveRecord::Base
   end
   def get_finished_check_points_num
     return self.report_records.size
+  end
+  def get_success_check_points_num
+    s = 0
+    self.report_records.each do |rr|
+      s = s+1 if rr.boolean_value
+    end
+    return s
   end
   def get_finished_check_points_num_by_check_category(check_category_id)
     s = 0

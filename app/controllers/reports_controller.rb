@@ -9,22 +9,24 @@ class ReportsController < ApplicationController
   before_filter :validate_report_template_when_create,    only:[:create]
   before_filter :validate_report_edit_and_update_and_destroy,         only:[:edit,:update,:destroy,:pass,:reject]
   def worker_report
-    if current_user.session.zone_admin? or current_user.session.zone_supervisor?
-      @worker_reports = @organization.get_all_finished_worker_report.paginate(page:params[:page],per_page:10)
-    elsif
-      @worker_reports = @organization.get_all_worker_report.paginate(page:params[:page],per_page:10)
-    end
+    #if current_user.session.zone_admin? or current_user.session.zone_supervisor?
+    #  @worker_reports = @organization.get_all_finished_worker_report.paginate(page:params[:page],per_page:10)
+    #elsif
+    #  @worker_reports = @organization.get_all_worker_report.paginate(page:params[:page],per_page:10)
+    #end
+    @worker_reports   = @organization.get_all_worker_report.paginate(page:params[:page],per_page:10)
     respond_to do |format|
       format.mobile
       format.html
     end
   end
   def supervisor_report
-    if current_user.session.checker? or current_user.session.worker?
-      @supervisor_reports = @organization.get_all_finished_supervisor_report.paginate(page:params[:page],per_page:10)
-    elsif
-      @supervisor_reports = @organization.get_all_supervisor_report.paginate(page:params[:page],per_page:10)
-    end
+    #if current_user.session.checker? or current_user.session.worker?
+    #  @supervisor_reports = @organization.get_all_finished_supervisor_report.paginate(page:params[:page],per_page:10)
+    #elsif
+    #  @supervisor_reports = @organization.get_all_supervisor_report.paginate(page:params[:page],per_page:10)
+    #end
+    @supervisor_reports   = @organization.get_all_supervisor_report.paginate(page:params[:page],per_page:10)
     @zone_admin = @organization.zone.zone_admin
     respond_to do |format|
       format.mobile
