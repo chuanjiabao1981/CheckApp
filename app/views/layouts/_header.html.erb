@@ -43,6 +43,8 @@
     		});
  		});*/
 		$("a#single_image").fancybox({
+
+			'titlePosition':   'inside',
 			onComplete: function(){
 				var value = 0;
 				$("#fancybox-img").rotate({
@@ -69,7 +71,7 @@
 			'transitionOut'	:	'elastic',
 			'speedIn'		:	600, 
 			'speedOut'		:	200, 
-			'overlayShow'	:	false
+			'overlayShow'	:	false,
 		});
 		
 	});

@@ -1,7 +1,7 @@
 <td>
   <%= check_point.content %>
   <% if not report_record.nil? and check_point.can_photo? %>
-    <%= link_to(report_record.photo_path.to_s,id:"single_image") do %>
+    <%= link_to(report_record.photo_path.to_s,id:"single_image",class:"grouped_elements",rel:"group_1",title:check_point.content) do %>
       <span class="label label-info">图</span>
     <% end %>
   <% end %> 
