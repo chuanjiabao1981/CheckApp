@@ -1,16 +1,21 @@
+#encoding:utf-8
 class StatisticsController < ApplicationController
   before_filter :correct_user,       only: [:search]
 
   def search
     ##TODO:: 不能超过一个月
     if @start_date_ts != 0 and @end_date_ts != 0
-      @reports            = find_report_in_time_range(@template,@start_date,@end_date)
-      @report_statistics  = ReportStatistics.new(@template)
-      @reports.each do |r|
-        @report_statistics.add_a_report_status(ReportStatus.new(r))
+      if ((@end_date_ts - @start_date_ts)/86400) > 6
+        flash.now[:error] = '您的账户仅能查询6天以内的数据。'
+      else
+        @reports            = find_report_in_time_range(@template,@start_date,@end_date)
+        @report_statistics  = ReportStatistics.new(@template)
+        @reports.each do |r|
+          @report_statistics.add_a_report_status(ReportStatus.new(r))
+        end
       end
-      logger.debug("supervisor report num:" + @report_statistics.get_total_supervisor_report_num.to_s)
-      logger.debug("worker report num :"    + @report_statistics.get_total_worker_report_num.to_s)
+      # logger.debug("supervisor report num:" + @report_statistics.get_total_supervisor_report_num.to_s)
+      # logger.debug("worker report num :"    + @report_statistics.get_total_worker_report_num.to_s)
     end
   end
 
@@ -32,11 +37,11 @@ private
       @end_date_ts    = get_time_stamp_from_ymd(@end_date)
       @template       = Template.find_by_id(params[:statistics][:template_id])
       return redirect_to root_path unless @template.zone_admin == @zone_admin or current_user.session.site_admin?
-      logger.debug(@start_date)
-      logger.debug(@start_date_ts)
-      logger.debug(@end_date)
-      logger.debug(@end_date_ts)
-      logger.debug(@template.name)
+      # logger.debug(@start_date)
+      # logger.debug(@start_date_ts)
+      # logger.debug(@end_date)
+      # logger.debug(@end_date_ts)
+      # logger.debug(@template.name)
     end
   end
   def get_time_stamp_from_ymd(str)

@@ -21,6 +21,13 @@
 			<% end %>
 				<%= link_to "分区报告列表",zone_admin_home_path(current_user)%>
 			</li>
+			<% if controller_name == 'statistics' %>
+				<li class="active">
+			<% else %>
+				<li>
+			<% end %>
+				<%= link_to '统计分析',statistics_path(current_user) %>
+			</li>
 			<% if controller_name == 'zones' %>
 				<li class="active">
 			<% else %>

@@ -70,6 +70,7 @@ class Report < ActiveRecord::Base
     s = 0
     self.report_records.each do |rr|
       s = s+1 if rr.boolean_value
+      Rails.logger.debug("boolean_value:"+rr.boolean_value.to_s)
     end
     return s
   end

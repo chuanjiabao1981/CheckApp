@@ -13,8 +13,8 @@ module ReportsHelper
 		def init
 			@finished_check_points_num = @report.get_finished_check_points_num
 			@success_check_points_num  = @report.get_success_check_points_num
-			Rails.logger.debug("finished check points num:" + @finished_check_points_num.to_s)
-			Rails.logger.debug("success check points num:"  + @success_check_points_num.to_s)
+			# Rails.logger.debug("finished check points num:" + @finished_check_points_num.to_s)
+			# Rails.logger.debug("success check points num:"  + @success_check_points_num.to_s)
 		end
 	end
 
@@ -29,12 +29,16 @@ module ReportsHelper
 		end
 
 		def add_a_report_status report_status
+			# Rails.logger.debug("worker len:"+@total_org_has_worker_report.length.to_s)
+			# Rails.logger.debug("super len:" +@total_org_has_supervisor_report.length.to_s)
 			if report_status.report.supervisor_report?
 				@supervisor_report_status_list.push report_status
-				@total_org_has_worker_report[report_status.report.organization_id] = "y"
+				@total_org_has_supervisor_report[report_status.report.organization_id] = "y"
+				# Rails.logger.debug("supervisor report org:"+report_status.report.organization.name)
 			elsif report_status.report.worker_report?
 				@worker_report_status_list.push report_status
-				@total_org_has_supervisor_report[report_status.report.organization_id] = "y"
+				@total_org_has_worker_report[report_status.report.organization_id] = "y"
+				# Rails.logger.debug("worker report org:"+report_status.report.organization.name)
 			end
 		end
 
@@ -72,11 +76,11 @@ module ReportsHelper
 		private 
 		def get_report_num_according_to_finished_percent report_status_list,a,b
 			return 0 if @total_check_points_num == 0
-			Rails.logger.debug("template check_points num :" +@total_check_points_num.to_s)
+			# Rails.logger.debug("template check_points num :" +@total_check_points_num.to_s)
 			s = 0 
 			report_status_list.each do |rs|
 				percent = rs.finished_check_points_num/Float(@total_check_points_num)
-				Rails.logger.debug(rs.report.template.name + "finished percent:" + percent.to_s)
+				# Rails.logger.debug(rs.report.template.name + "finished percent:" + percent.to_s)
 				if (percent < a and percent >=b) or (percent == a and a == 1)
 					s = s + 1
 				end
@@ -89,6 +93,7 @@ module ReportsHelper
 			s = 0
 			report_status_list.each do |rs|
 				percent = rs.success_check_points_num/Float(@total_check_points_num)
+				Rails.logger.debug("success num:" + rs.success_check_points_num.to_s)
 				Rails.logger.debug(rs.report.template.name + "success percent:" + percent.to_s)
 				if percent < a and percent >= b or (percent == a and a == 1)
 					s = s + 1

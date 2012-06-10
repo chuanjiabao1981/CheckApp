@@ -1,0 +1,99 @@
+<script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var sucess_data = google.visualization.arrayToDataTable([
+          ['分类', '报告个数'],
+          ['通过率大于90%',  <%=report_num_according_to_success_percent_1 %>  ],
+          ['通过率在80%~90%',      <%=report_num_according_to_success_percent_2 %>],
+          ['通过率在70%~80%',      <%=report_num_according_to_success_percent_3 %>],
+          ['通过率在70%以下', <%=report_num_according_to_success_percent_4 %>],
+        ]);
+
+        var sucess_options = {
+          title: '检查通过率'
+        };
+
+        var sucess_chart = new google.visualization.PieChart(document.getElementById("<%= chart_div %>_sucess"));
+        sucess_chart.draw(sucess_data, sucess_options);
+
+        var finish_data = google.visualization.arrayToDataTable([
+          ['分类', '报告个数'],
+          ['完成率大于90%',  <%=report_num_according_to_finished_percent_1 %>  ],
+          ['完成率在80%~90%',      <%=report_num_according_to_finished_percent_2 %>],
+          ['完成率在70%~80%',      <%=report_num_according_to_finished_percent_3 %>],
+          ['完成率在70%以下', <%=report_num_according_to_finished_percent_4 %>],
+        ]);
+
+        var finish_options={
+        	title:"报告完成率"
+        };
+
+        var finish_chart = new google.visualization.PieChart(document.getElementById("<%= chart_div %>_finish"));
+        finish_chart.draw(finish_data,finish_options);
+      }
+</script>
+<div class="box">
+	<div class="row">
+		<div class="span10 offset1">
+			<legend><%= report_type%></legend>
+			<table class="table table-striped table-bordered">
+				<tr>
+					<th colspan="2"><center>统计信息</center></th>
+				</tr>
+				<tr>
+					<td width="50%">报告个数</td>
+					<td><%= total_report_num %></td>
+				</tr>
+				<tr>
+					<td>报告检查点个数</td>
+					<td><%= total_check_points_num %></td>
+				</tr>
+				<tr>
+					<td>检查机构数</td>
+					<td><%= total_org_has_report_num %></td>
+				</tr>
+				<tr>
+					<th colspan="2"><center>通过率<center></th>
+				</tr>
+				<tr>
+					<td>通过率大于90%</td>
+					<td><%=report_num_according_to_success_percent_1 %></td>
+				</tr>
+				<tr>
+					<td>通过率在80%~90%</td>
+					<td><%=report_num_according_to_success_percent_2 %></td>
+				</tr>
+				<tr>
+					<td>通过率在70%~80%</td>
+					<td><%=report_num_according_to_success_percent_3 %></td>
+				</tr>
+				<tr>
+					<td>通过率在70%以下</td>
+					<td><%=report_num_according_to_success_percent_4 %></td>
+				</tr>
+				<tr>
+					<th colspan="2"><center>完成率<center></th>
+				</tr>
+				<tr>
+					<td>完成率90%以上</td>
+					<td><%= report_num_according_to_finished_percent_1 %> </td>
+				</tr>
+				<tr>
+					<td>完成率在80%到90%之间</td>
+					<td><%= report_num_according_to_finished_percent_2 %></td>
+				</tr>
+				<tr>
+					<td>完成率在70%到80%之间</td>
+					<td><%= report_num_according_to_finished_percent_3 %></td>
+				</tr>
+				<tr>
+					<td>完成率在70%以下</td>
+					<td><%= report_num_according_to_finished_percent_4 %></td>
+				</tr>
+			</table>
+			<div id="<%= chart_div %>_sucess" style="height: 350px;"></div>
+			<div id="<%= chart_div %>_finish" style="height: 350px;"></div>
+		</div>
+	</div>
+</div>
