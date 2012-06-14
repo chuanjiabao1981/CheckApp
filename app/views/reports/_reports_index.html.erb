@@ -22,6 +22,7 @@
             <% if report.template.get_check_ponits_num != 0 %>
               <td> <%= format("%.0f",report.get_finished_check_points_num/Float(report.template.get_check_ponits_num)*100) %>%</td>
             <% else %>
+              <td>0</td>
             <% end %>
             <!--td> <%= report.reporter_name%> </td-->
             <!--td> <%= I18n.localize(report.created_at,format: :long) %> </td-->

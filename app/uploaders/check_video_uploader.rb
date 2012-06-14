@@ -70,7 +70,7 @@ class CheckVideoUploader < CarrierWave::Uploader::Base
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   def extension_white_list
-     %w(3gp mp4)
+     %w(3gp mp4 m4v)
   end
    # store! nil's the cache_id after it finishes so we need to remember it for deletion
   def remember_cache_id(new_file)

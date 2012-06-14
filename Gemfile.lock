@@ -172,7 +172,7 @@ DEPENDENCIES
   coffee-rails (= 3.2.2)
   factory_girl_rails (= 1.4.0)
   faker (= 1.0.1)
-  fancybox-rails
+  fancybox-rails (~> 0.1.4)
   jquery-rails (= 2.0.0)
   jquery-ui-rails
   mysql2

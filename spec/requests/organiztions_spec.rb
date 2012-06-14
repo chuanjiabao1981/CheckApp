@@ -5,6 +5,7 @@ require 'spec_helper'
 def signin_visit_organization_index 
   specify do
     a_zone.organizations.each do |o|
+      # print o.name
       page.should have_link(o.name,href:organization_path(o))
       page.should have_link('编辑',href:edit_organization_path(o))
       page.should have_link('删除',href:organization_path(o))
@@ -165,8 +166,10 @@ describe "Organiztions" do
       before do
         sign_in a_zone_admin
         click_link '分区管理'
+        # print page.html
+        # click_link a_zone_admin.zones.first.name
         click_link a_zone_admin.zones.first.name
-        click_link a_zone_admin.zones.first.name
+        # print page.html
       end
       signin_visit_organization_index
     end
@@ -202,7 +205,7 @@ describe "Organiztions" do
         sign_in a_zone_admin
         click_link '分区管理'
         click_link a_zone_admin.zones.first.name
-        click_link a_zone_admin.zones.first.name
+        # click_link a_zone_admin.zones.first.name
         click_link a_zone_a_org.name
       end
       signin_visit_organization_show
@@ -256,7 +259,7 @@ describe "Organiztions" do
         sign_in a_zone_admin
         click_link '分区管理'
         click_link a_zone_admin.zones.first.name
-        click_link a_zone_admin.zones.first.name
+        # click_link a_zone_admin.zones.first.name
         click_link '新增机构'
       end
       signin_visit_organization_new
@@ -343,7 +346,7 @@ describe "Organiztions" do
       before do
         sign_in a_zone_admin
         click_link '分区管理'
-        click_link a_zone_admin.zones.first.name
+        # click_link a_zone_admin.zones.first.name
         click_link a_zone_admin.zones.first.name
       end
       signin_visit_organization_destroy
