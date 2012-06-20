@@ -17,6 +17,11 @@ class TemplateTypeValidator < ActiveModel::Validator
   def validate(record)
     if record.for_worker == false and record.for_supervisor == false 
       record.errors[:base] = "至少选择一种摸板类型 [督察模板] [巡查摸板]"
+      return 
+    end
+    if (record.zone_admin.get_all_templates_num + 1) > record.zone_admin.template_max_num 
+      record.errors[:base] = "您的账户仅能创建#{record.zone_admin.template_max_num}个摸板。"
+      return 
     end
   end
 end
@@ -42,6 +47,30 @@ class Template < ActiveRecord::Base
     n = 0
     self.check_categories.each do |cc|
       n += cc.check_points.size
+    end
+    return n
+  end
+
+  def get_video_check_point_num
+    n = 0
+    self.check_categories.each do |cc|
+      cc.check_points.each do |cp|
+        if cp.can_video?
+          n = n + 1
+        end
+      end
+    end
+    return n
+  end
+
+  def get_photo_check_point_num
+    n = 0
+    self.check_categories.each do |cc|
+      cc.check_points.each do |cp|
+        if cp.can_photo?
+          n = n + 1
+        end
+      end
     end
     return n
   end

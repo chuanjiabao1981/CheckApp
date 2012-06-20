@@ -9,6 +9,18 @@
 					<th>账号</th>
 					<td><%= @zone_admin_user.name %></td>
 				</tr>
+				<tr>
+					<th>可创建摸板个数</th>
+					<td><%= @zone_admin_user.template_max_num %></td>	
+				</tr>
+				<tr>
+					<th>摸板视频个数</th>
+					<td><%= @zone_admin_user.template_max_video_num%></td>
+				</tr>
+				<tr>
+					<th>摸板图片个数</th>
+					<td><%= @zone_admin_user.template_max_photo_num %></td>
+				</tr>
 			    <tr>
 			        <th>备注</th>
 			        <td><%= @zone_admin_user.des  %></td>

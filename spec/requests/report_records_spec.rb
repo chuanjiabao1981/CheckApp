@@ -1,6 +1,7 @@
 #encoding:utf-8
 require 'spec_helper'
 
+
 describe "ReportRecords" do
   subject{page}
   let(:the_site_admin){FactoryGirl.create(:site_admin_with_two_zone_admin)}

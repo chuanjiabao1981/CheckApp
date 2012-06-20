@@ -4,8 +4,11 @@ require_relative 'user_common_spec'
 
 
 describe ZoneAdmin do
-  let(:the_site_admin) { FactoryGirl.create(:site_admin) }
+  # let(:the_site_admin) { FactoryGirl.create(:site_admin) }
+
+  let(:the_site_admin){FactoryGirl.create(:site_admin_with_two_zone_admin)}
   before { @user = the_site_admin.zone_admins.build(name:"testme",password:"foobar",password_confirmation:"foobar") }
+
 
   subject {@user }
 
@@ -37,7 +40,12 @@ describe ZoneAdmin do
       it { should_not be_valid }
     end
     describe "template_max_photo_num" do
-      before { @user.template_max_video_num = -1 }
+      before do 
+        puts @user.template_max_photo_num
+        puts the_site_admin.zone_admins.first.template_max_photo_num
+        @user.template_max_video_num = -1 
+      end
+
       it { should_not be_valid }
     end
   end

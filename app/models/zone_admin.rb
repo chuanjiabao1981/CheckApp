@@ -1,7 +1,7 @@
 class ZoneAdmin < ActiveRecord::Base
   VALID_NAME_REGEX = /\A[a-zA-Z\d_]+\z/i
 
-  attr_accessible :name,:des,:password,:password_confirmation 
+  attr_accessible :name,:des,:password,:password_confirmation,:template_max_num,:template_max_video_num,:template_max_photo_num 
 
   before_save :create_remember_token
 
@@ -24,7 +24,9 @@ class ZoneAdmin < ActiveRecord::Base
   validates :template_max_photo_num, :numericality => { only_integer:true ,greater_than_or_equal_to:0}
 
 
-
+  def get_all_templates_num
+    return self.templates.size
+  end
 
 
 private 

@@ -55,8 +55,9 @@ def fail_visit_organization_report_mobile
           page.should_not have_link(report.template.name,href:check_categories_report_path(report,format: :mobile))
         elsif report.worker_report?
           if report.status_is_new?
-            page.should_not have_selector('td',text:'进行中')
-            page.should_not have_link(report.template.name,href:check_categories_report_path(report,format: :mobile))
+            # 由于策略发生了修改，为完成的报告允许被看到，所以注释掉如下两行
+            # page.should_not have_selector('td',text:'进行中')
+            # page.should_not have_link(report.template.name,href:check_categories_report_path(report,format: :mobile))
           elsif report.status_is_finished?
             n = n+1
             page.should have_link(report.template.name,href:check_categories_report_path(report,format: :mobile))
@@ -235,6 +236,7 @@ def visit_new_a_organization_report
       end
       describe "正常信息" do
         before do
+          # print page.html
           fill_in '提交人员',with: '马李了'
           select a_zone_admin.templates.first.name, from:'报告类型'
         end
@@ -862,7 +864,7 @@ def test_supervisor_report_index(singin_user,test_org)
     if report.supervisor_report?
       if singin_user.session.checker?
         if report.status_is_new?
-          page.has_css?(css_selector,text:report.template.name).should == false
+          # page.has_css?(css_selector,text:report.template.name).should == false
         else
           page.has_css?(css_selector,text:report.template.name).should == true
         end
@@ -871,7 +873,7 @@ def test_supervisor_report_index(singin_user,test_org)
       end
       if report.status_is_new?
         if singin_user.session.checker?
-          page.should_not have_selector('td',text:'进行中')
+          # page.should_not have_selector('td',text:'进行中')
         else
           page.should have_selector('td',text:'进行中') 
         end
@@ -1162,8 +1164,8 @@ def normal_worker_report_index_html
         if report.worker_report?
           if user.session.zone_admin?
             if report.status_is_new?
-              page.has_css?(css_selector,text:report.template.name).should == false
-              page.should_not have_selector('td',text:'进行中')
+              # page.has_css?(css_selector,text:report.template.name).should == false
+              # page.should_not have_selector('td',text:'进行中')
             else
               page.has_css?(css_selector,text:report.template.name).should == true
               page.should have_selector('td',text:'通过')

@@ -17,6 +17,9 @@ FactoryGirl.define do
     name                        "TestZoneAdmin"
     password                    "foobar"
     password_confirmation       "foobar"
+    template_max_photo_num      100
+    template_max_num            100
+    template_max_video_num      100
     site_admin
     factory :zone_admin_with_two_zone do
       after_create do |zone_admin|
@@ -92,6 +95,7 @@ FactoryGirl.define do
           Factory.create(:report_record,report:report,check_category:cp.check_category,check_point:cp)
         end
         n = 0
+        print report.template.zone_admin.template_max_photo_num
         report.template.check_categories[2].check_points.each do |cp|
           Factory.create(:report_record,report:report,check_category:cp.check_category,check_point:cp) 
           n = n+1
@@ -114,8 +118,9 @@ FactoryGirl.define do
   factory :check_point do
     content                     {Faker::Lorem::sentence(5)}
     check_category  
-    can_photo                   {rand(2) == 1}
+    can_photo                   { rand(2) == 1}
     can_video                   false
+    Rails.logger.debug("Factory:create a check point")
   end
   factory :check_category do
     category                    {Faker::Lorem::sentence(1)}
@@ -123,6 +128,7 @@ FactoryGirl.define do
     template        
     factory :check_category_five_check_points do |check_category|
       after_create do |check_category|
+        check_category.reload
         5.times do |n|
           Factory.create(:check_point,check_category:check_category)
         end
@@ -140,21 +146,25 @@ FactoryGirl.define do
     end
     factory :template_with_check_valud do |template|
       after_create do |template|
+        template.zone_admin.reload
         Factory.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期",float_name:"检查值",int_name:"设备温度",text_name:"备注")
       end
     end
     factory :template_with_all_required do |template|
       sequence(:name)  {|n| "template_#{n}"}
       after_create do |template|
+        template.zone_admin.reload
         FactoryGirl.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期",text_name:"备注",float_name:"检查值",int_name:"设备高度")
         3.times do |n|
           FactoryGirl.create(:check_category_five_check_points,template:template)
         end
+        Rails.logger.debug("Factory:template categoty num:#{template.check_categories.size}")
       end
     end
     factory :template_with_3_normal_category_1_zero_check_point_category do |template|
       sequence(:name)  {|n| "template_un_#{n}"}
       after_create do |template|
+        template.zone_admin.reload
         FactoryGirl.create(:check_value,template:template,boolean_name:"检查是否通过",date_name:"整改日期",text_name:"备注",float_name:"检查值",int_name:"设备高度")
         3.times do |n|
           FactoryGirl.create(:check_category_five_check_points,template:template)
