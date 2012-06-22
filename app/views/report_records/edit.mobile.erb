@@ -4,11 +4,19 @@
 <%= form_for(@report_record,url:report_record_path(@report_record)) do |f| %>
   <%= render 'shared/error_messages' ,:object => f.object%>
   <% if @report_record.check_point.can_photo? %>
-  	<%= f.label :photo_path,"现场图像" %>
-  	<%= f.file_field :photo_path %>
+    <% nnn = 1 %>
+    <%= f.fields_for :media_infos do |p| %>
+      <%= p.label       :photo_path,"现场图像#{nnn}" %>
+      <%= p.file_field  :photo_path %>
+      <% nnn = nnn + 1 %>
+    <% end %>
   <% elsif @report_record.check_point.can_video? %>
-    <%= f.label :video_path,"现场视频" %>
-    <%= f.file_field :video_path %>
+    <% nnn = 1 %>
+    <%= f.fields_for :media_infos do |v| %>
+      <%= v.label       :video_path,"现场视频#{nnn}" %>
+      <%= v.file_field  :video_path %>
+      <% nnn = nnn +1 %>
+    <% end %>
   <% end %>
   <% if @report.template.check_value.has_boolean_name? %>
     <%= f.label :boolean_value,@report.template.check_value.boolean_name %>

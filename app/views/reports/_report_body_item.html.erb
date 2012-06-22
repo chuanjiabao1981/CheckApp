@@ -1,20 +1,26 @@
 <td>
   <%= check_point.content %>
   <% if not report_record.nil? and check_point.can_photo? %>
-    <%= link_to(report_record.photo_path.to_s,id:"single_image",class:"grouped_elements",rel:"group_1",title:check_point.content) do %>
-      <span class="label label-info">图</span>
+    <% report_record.media_infos.each do |p| %>
+      <% if not p.photo_path.to_s.blank? %>
+        <%= link_to(p.photo_path.to_s,id:"single_image",class:"grouped_elements",rel:"group_1",title:check_point.content) do %>
+          <span class="label label-info">图</span>
+        <% end %>
+      <% end %>
     <% end %>
   <% end %> 
 
   <% if not report_record.nil? and check_point.can_video? %>
-    <div id="single_video">
-     <video width="640" height="480" controls preload style="display:none">
-        <source src="<%= report_record.video_path.to_s %>" type="video/mp4">
-      </video>
-    </div>
-    <a href="javascript();">
-      <span id="video_content" class="label label-info">视频</span>
-    </a>
+    <% report_record.media_infos.each do |v| %>
+      <div id="single_video">
+        <video width="640" height="480" controls preload style="display:none">
+          <source src="<%= v.video_path.to_s %>" type="video/mp4">
+        </video>
+      </div>
+      <a href="javascript();">
+        <span id="video_content" class="label label-info">视频</span>
+      </a> 
+    <% end %>
   <% end %>
 </td>
 <% if check_value.has_boolean_name? %>

@@ -151,6 +151,9 @@ cn:
       report_record:
         video_path:       "视频文件"
         photo_path:       "图片文件"
+      media_infos:
+        video_path:       "视频文件"
+        photo_path:       "图片文件"
 
     errors:
       template:

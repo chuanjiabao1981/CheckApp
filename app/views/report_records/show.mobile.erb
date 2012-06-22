@@ -19,20 +19,22 @@ video.addEventListener('click',function(){
     </td>
   </tr>
   <% if @report_record.check_point.can_photo? %>
-    <tr>
-      <td colspan="2"><img src="<%= @report_record.get_photo_path %>"/></td>
-    </tr>
+    <% @report_record.media_infos.each do |p| %>
+      <% if not p.nil? and not p.photo_path.to_s.blank? %>
+        <tr>
+          <td colspan="2"><img src="<%= p.photo_path.to_s %>"/></td>
+        </tr>
+      <% end %>
+    <% end %>
   <% elsif @report_record.check_point.can_video? %>
     <tr>
       <td>视频</td>
       <td>
-        <!--img src="/report_record_photo/development/report_record/photo_path/22/de95e0be-a608-4643-af34-989126b2e8c9.jpg"-->
-        <!--video id="video" autobuffer width="320" height="240" controls="controls"-->
-        <a href="<%= @report_record.get_video_path %>">视频</a>
-        <!--video autoplay="autoplay" controls="controls" style="align:center;" autobuffer    onclick="this.play();">
-          <source src="<%= @report_record.get_video_path %>" type="video/mp4"/>
-            Your browser does not support the video tag.
-        </video-->
+        <% @report_record.media_infos.each do |v| %>
+          <% if not v.nil? and not v.video_path.to_s.blank? %>
+            <a href="<%= v.video_path.to_s %>">视频</a>
+          <% end %>
+        <% end %>
       </td>
     </tr>
   <% end %>

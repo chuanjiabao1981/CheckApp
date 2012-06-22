@@ -10,6 +10,13 @@ class ReportRecordsController < ApplicationController
     @report_record.check_point_id    = params[:check_point_id]
     @report_record.check_category_id = @check_point.check_category.id
     @report_record.date_value        = nil
+    if @check_point.can_photo?
+      get_photo_num.times do 
+        @report_record.build_photo_media 
+      end
+    elsif @check_point.can_video?
+      @report_record.build_video_media
+    end
   end
   def create_report_record
     @report_record = @report.report_records.build(params[:report_record])
@@ -35,6 +42,9 @@ class ReportRecordsController < ApplicationController
   end
 
 private
+  def get_photo_num
+    return 3
+  end
   def validate_user_new
     return redirect_to root_path(format: :mobile) unless current_user.session.worker? or current_user.session.zone_supervisor?
     @report         = Report.find_by_id(params[:id])
