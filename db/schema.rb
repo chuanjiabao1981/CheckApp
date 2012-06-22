@@ -151,6 +151,8 @@ ActiveRecord::Schema.define(:version => 20120621121619) do
     t.integer  "site_admin_id"
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
+    t.integer  "check_point_photo_num",  :default => 2
+    t.integer  "check_point_video_num",  :default => 1
   end
 
   create_table "zone_supervisor_relations", :force => true do |t|

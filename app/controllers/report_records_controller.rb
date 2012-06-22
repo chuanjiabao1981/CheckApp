@@ -43,7 +43,7 @@ class ReportRecordsController < ApplicationController
 
 private
   def get_photo_num
-    return 3
+    return @report.template.zone_admin.check_point_photo_num
   end
   def validate_user_new
     return redirect_to root_path(format: :mobile) unless current_user.session.worker? or current_user.session.zone_supervisor?

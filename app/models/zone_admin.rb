@@ -1,7 +1,7 @@
 class ZoneAdmin < ActiveRecord::Base
   VALID_NAME_REGEX = /\A[a-zA-Z\d_]+\z/i
 
-  attr_accessible :name,:des,:password,:password_confirmation,:template_max_num,:template_max_video_num,:template_max_photo_num 
+  attr_accessible :name,:des,:password,:password_confirmation,:template_max_num,:template_max_video_num,:template_max_photo_num,:check_point_photo_num,:check_point_video_num 
 
   before_save :create_remember_token
 

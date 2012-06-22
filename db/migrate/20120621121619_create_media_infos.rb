@@ -7,6 +7,8 @@ class CreateMediaInfos < ActiveRecord::Migration
       t.references :report_record
       t.timestamps
     end
+    add_column :zone_admins,:check_point_photo_num,:integer,:default=>2
+    add_column :zone_admins,:check_point_video_num,:integer,:default=>1
     v_n = 0
     p_n = 0
     ReportRecord.all.each do |t|
@@ -52,5 +54,7 @@ class CreateMediaInfos < ActiveRecord::Migration
   end
   def down
   	drop_table :media_infos
+  	remove_column :zone_admins,:check_point_photo_num
+  	remove_column :zone_admins,:check_point_video_num
   end	
 end
