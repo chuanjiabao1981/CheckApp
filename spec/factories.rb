@@ -62,7 +62,12 @@ FactoryGirl.define do
       end
     end
   end
-  
+
+  factory :media_info do
+    report_record
+    photo_path { File.open(File.join(Rails.root, 'spec', 'support', 'report_record', 'photo', 'test.jpg')) }
+  end
+   
   factory :report_record do
     report
     check_category  
@@ -73,7 +78,10 @@ FactoryGirl.define do
     int_value       {rand(2000)}
     date_value      {rand(10.years).ago.strftime("%Y-%m-%d")  }
     text_value      {Faker::Lorem::sentence(20)}
-    photo_path      { check_point.can_photo ? File.open(File.join(Rails.root, 'spec', 'support', 'report_record', 'photo', 'test.jpg')):nil }
+    # photo_path      { check_point.can_photo ? File.open(File.join(Rails.root, 'spec', 'support', 'report_record', 'photo', 'test.jpg')):nil }
+    after_create do |report_record| 
+      FactoryGirl.create(:media_info,report_record:report_record)
+    end
     factory :report_record_with_photo do
       photo_path    {File.open(File.join(Rails.root, 'spec', 'support', 'report_record', 'photo', 'test.jpg')) }
     end
@@ -120,7 +128,7 @@ FactoryGirl.define do
     check_category  
     can_photo                   { rand(2) == 1}
     can_video                   false
-    Rails.logger.debug("Factory:create a check point")
+    # Rails.logger.debug("Factory:create a check point")
   end
   factory :check_category do
     category                    {Faker::Lorem::sentence(1)}

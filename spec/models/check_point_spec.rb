@@ -41,7 +41,7 @@ describe CheckPoint do
     end
     describe "photo超过限制" do
       before do
-        puts a_zone_admin.template_max_photo_num
+        # puts a_zone_admin.template_max_photo_num
       end
       it {should_not be_valid}
     end

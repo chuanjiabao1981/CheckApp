@@ -82,7 +82,7 @@ describe "ReportRecords" do
       visit report_record_path(test_record,format: :mobile)
     end
     specify do
-      #print page.html
+      # print page.html
       page.should have_link('返回',href:check_category_check_point_reports_report_path(test_record.report_id,test_record.check_category_id))
       page.should have_selector('td',text:test_record.check_point.content)
       if test_template.check_value.has_int_name?
@@ -111,8 +111,9 @@ describe "ReportRecords" do
         page.has_css?('td',text:test_record.get_float_value).should == true
       end
       if test_record.check_point.can_photo
+        # print page.html
         #page.has_css?('td',text:'图像').should == true
-        image_url          = test_record.get_photo_path
+        image_url          = test_record.media_infos.first.photo_path.to_s
         image_css_selector = "img[src=\"#{image_url}\"]"
         page.has_css?(image_css_selector).should == true
       elsif test_record.check_point.can_video
@@ -136,7 +137,8 @@ describe "ReportRecords" do
       fill_in       test_template.check_value.int_name        ,with:test_int_value
       fill_in       test_template.check_value.float_name      ,with:test_float_value
       fill_in       test_template.check_value.text_name       ,with:test_text_value
-      attach_file   'report_record_photo_path'                  ,test_photo_path
+      # attach_file   'report_record_photo_path'                  ,test_photo_path
+      attach_file   'report_record[media_infos_attributes][0][photo_path]' , test_photo_path
     end
     specify do
       test_report.check_point_is_done?(test_check_point.id).should == false
@@ -156,8 +158,8 @@ describe "ReportRecords" do
         test_report.report_records.last.get_boolean_value         == '否'
         #puts test_report.report_records.last.get_boolean_value
       end
-      test_report.report_records.last.photo_path.current_path.should_not be_nil
-      File.exist?(test_report.report_records.last.photo_path.current_path).should == true
+      test_report.report_records.last.media_infos.first.photo_path.current_path.should_not be_nil
+      File.exist?(test_report.report_records.last.media_infos.first.photo_path.current_path).should == true
     end   
   end
   shared_examples_for "update a report" do
@@ -177,7 +179,7 @@ describe "ReportRecords" do
       fill_in       test_template.check_value.int_name        ,with:test_int_value
       fill_in       test_template.check_value.float_name      ,with:test_float_value
       fill_in       test_template.check_value.text_name       ,with:test_text_value
-      attach_file   'report_record_photo_path'                  ,test_photo_path     
+      attach_file   'report_record[media_infos_attributes][0][photo_path]'                  ,test_photo_path     
     end
     specify do
       test_report.should be_status_is_new

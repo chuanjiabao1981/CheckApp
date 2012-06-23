@@ -742,7 +742,7 @@ def test_report_detail_page(test_template,test_report,see_other_action)
         rr = test_report.get_report_record_by_check_point_id(cp.id)
 
         if cp.can_photo and not rr.nil?
-          css_selector = "a[href=\"#{rr.photo_path}\"]"
+          css_selector = "a[href=\"#{rr.media_infos.first.photo_path}\"]"
           page.has_css?(css_selector).should == true
         end
         if test_template.check_value.has_boolean_name?
