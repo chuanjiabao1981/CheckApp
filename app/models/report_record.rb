@@ -35,7 +35,7 @@ end
 class ReportRecord < ActiveRecord::Base
   require 'carrierwave/orm/activerecord'
 
-  attr_accessible :check_point_id,:int_value,:float_value,:text_value,:boolean_value,:photo_path,:video_path,:date_value,:media_infos_attributes
+  attr_accessible :check_point_id,:int_value,:float_value,:text_value,:boolean_value,:date_value,:media_infos_attributes
   belongs_to :report
   belongs_to :check_point#,inverse_of: :report_records
   belongs_to :check_category
@@ -47,14 +47,13 @@ class ReportRecord < ActiveRecord::Base
   validates :check_point,presence:true
   validates :check_category,presence:true
   has_many  :media_infos,dependent: :destroy
-  mount_uploader :photo_path,CheckPhotoUploader
-  mount_uploader :video_path,CheckVideoUploader
+  # mount_uploader :photo_path,CheckPhotoUploader
+  # mount_uploader :video_path,CheckVideoUploader
 
   accepts_nested_attributes_for :media_infos
 
   #这个留给video用
-  #validates :video_path,file_size:{:maximum => 1.kilobytes.to_i}
-  validates :video_path,file_size:{:maximum => 20.megabytes.to_i }
+  #validates :video_path,file_size:{:maximum => 20.megabytes.to_i }
 
   def build_video_media
     a                 = self.media_infos.build
@@ -79,11 +78,5 @@ class ReportRecord < ActiveRecord::Base
   end
   def get_text_value
     return self.text_value
-  end
-  def get_video_path
-    return self.video_path
-  end
-  def get_photo_path
-    return self.photo_path
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120621121619) do
+ActiveRecord::Schema.define(:version => 20120623083444) do
 
   create_table "check_categories", :force => true do |t|
     t.string   "category"
@@ -80,8 +80,6 @@ ActiveRecord::Schema.define(:version => 20120621121619) do
     t.float    "float_value",       :default => 0.0
     t.date     "date_value",        :default => '2011-12-03'
     t.text     "text_value",        :default => ""
-    t.string   "photo_path"
-    t.string   "video_path"
     t.datetime "created_at",                                  :null => false
     t.datetime "updated_at",                                  :null => false
   end

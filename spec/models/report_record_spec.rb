@@ -42,10 +42,10 @@ describe ReportRecord do
     @report.save
     @report_record = @report.report_records.build(check_point_id:a_check_point.id,boolean_value:false)
     @report_record.check_category_id = a_check_point.check_category.id
-    @report_record_with_photo        = FactoryGirl.create(:report_record_with_photo,
-                                                           report:@report,
-                                                           check_category:a_check_point_with_photo.check_category,
-                                                           check_point:a_check_point_with_photo)
+    #@report_record_with_photo        = FactoryGirl.create(:report_record_with_photo,
+    #                                                       report:@report,
+    #                                                       check_category:a_check_point_with_photo.check_category,
+    #                                                       check_point:a_check_point_with_photo)
     #@report_record_with_9m_photo   = FactoryGirl.build(:report_record_with_9m_photo,
                                                            #report:@report,
                                                            #check_category:a_check_point_with_photo.check_category,
@@ -64,8 +64,6 @@ describe ReportRecord do
   it {should respond_to(:float_value)}
   it {should respond_to(:date_value)}
   it {should respond_to(:text_value)}
-  it {should respond_to(:photo_path)}
-  it {should respond_to(:video_path)}
   it {should respond_to(:check_category)}
   it {should respond_to(:check_category_id)}
   
@@ -75,15 +73,15 @@ describe ReportRecord do
     end
     it {should_not be_valid }
   end
-  describe "测试photo path" do
-    specify do
-      @report_record_with_photo.should be_valid
-      file_path = @report_record_with_photo.photo_path.current_path
-      File.exist?(file_path).should == true
-      @report_record_with_photo.destroy
-      File.exist?(file_path).should == false
-    end
-  end
+  #describe "测试photo path" do
+  #  specify do
+  #    @report_record_with_photo.should be_valid
+  #    file_path = @report_record_with_photo.photo_path.current_path
+  #    File.exist?(file_path).should == true
+  #    @report_record_with_photo.destroy
+  #    File.exist?(file_path).should == false
+  #  end
+  #end
   #describe "测试photo大小" do
   # specify do
   #   @report_record_with_9m_photo.save

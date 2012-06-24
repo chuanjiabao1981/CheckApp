@@ -72,7 +72,6 @@ FactoryGirl.define do
     report
     check_category  
     check_point
-    video_path      "1.jpg"
     boolean_value   {rand(2) == 1}
     float_value     {rand(1000.0)}
     int_value       {rand(2000)}
