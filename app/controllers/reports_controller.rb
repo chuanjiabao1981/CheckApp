@@ -39,7 +39,13 @@ class ReportsController < ApplicationController
     end
   end
   def check_points
-    @check_category = CheckCategory.find_by_id(params[:check_category_id])
+    @check_category             = CheckCategory.find_by_id(params[:check_category_id])
+    @template                   = @check_category.template
+    @check_point_start_no       = 0
+    @template.check_categories.each do |cc|
+      break if cc.id.to_i == params[:check_category_id].to_i
+      @check_point_start_no     = @check_point_start_no + cc.check_points.size
+    end
     respond_to do |format|
       format.mobile
     end

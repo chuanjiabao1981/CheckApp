@@ -1,5 +1,5 @@
 <td>
-  <%= check_point.content %>
+  <%= check_point_index_no %>.<%= check_point.content %>
   <% if not report_record.nil? and check_point.can_photo? %>
     <% report_record.media_infos.each do |p| %>
       <% if not p.photo_path.to_s.blank? %>

@@ -43,7 +43,7 @@
   <% end %>
   <% if @report.template.check_value.has_text_name? %>
     <%= f.label :text_value,@report.template.check_value.text_name %>
-    <%= f.text_field :text_value %>
+    <%= f.text_area :text_value %>
   <% end %>
   <%= f.submit '保存' ,class:"btn btn-large" %> 
 <% end %>

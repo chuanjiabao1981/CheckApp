@@ -42,24 +42,30 @@
           <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.date_name}%>
           <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.text_name}%>
         </tr>
+        <% nnn = 0 %> 
         <% @report.template.check_categories.each do |cc| %>
           <% check_points_array = cc.check_points %>
           <% check_points_num   = check_points_array.size %>
           <% next if check_points_num == 0 %>
+          <% nnn = nnn + 1%>
           <% first_check_ponit  = check_points_array.shift %>
           <tr>
             <th rowspan="<%=check_points_num%>"> <%= cc.category %> </th>
               <%= render partial:'reports/report_body_item',locals:{check_value:@report.template.check_value,
                                                            check_point:first_check_ponit,
-                                                           report_record:@report.get_report_record_by_check_point_id(first_check_ponit.id)}
+                                                           report_record:@report.get_report_record_by_check_point_id(first_check_ponit.id),
+                                                            check_point_index_no:nnn
+                                                            }
                                                            %>
           </tr>
           <% check_points_array.each do |cp| %>
+          <% nnn = nnn + 1%>
           <tr>
             <%= render partial:'reports/report_body_item',
             locals:{check_value:@report.template.check_value,
              check_point:cp,
-             report_record:@report.get_report_record_by_check_point_id(cp.id)
+             report_record:@report.get_report_record_by_check_point_id(cp.id),
+             check_point_index_no:nnn
               } %>
           </tr>
           <% end %>

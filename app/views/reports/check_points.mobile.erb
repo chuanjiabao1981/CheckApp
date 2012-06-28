@@ -6,9 +6,9 @@
     <th>检查点</th>
     <th colspan="2">操作</th>
   </tr>
-  <% @check_category.check_points.each do |cp| %>
+  <% @check_category.check_points.each_with_index do |cp,i| %>
     <tr>
-        <td width="50%"><%= cp.content %></td>
+        <td width="50%"><%= @check_point_start_no + i + 1%>.<%= cp.content %></td>
         <% if @report.check_point_is_done?(cp.id) %>
           <% if @report.status_is_new? %>
             <% if @report.committer == current_user %>
