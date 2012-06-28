@@ -8,9 +8,7 @@
         <% end %>
       <% end %>
     <% end %>
-  <% end %> 
-
-  <% if not report_record.nil? and check_point.can_video? %>
+  <% elsif not report_record.nil? and check_point.can_video? %>
     <% report_record.media_infos.each do |v| %>
       <div id="single_video">
         <video width="640" height="480" controls preload style="display:none">
