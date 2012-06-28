@@ -16,9 +16,9 @@
             <th colspan="2" width="15%">操作</th>
           </tr>
         </thead>
-        <% @check_points.each do |cp| %>
+        <% @check_points.each_with_index do |cp,i| %>
           <tr>
-              <td><%= cp.content %></td>
+              <td><%= @check_point_start_no + i + 1%>. <%= cp.content %></td>
               <% if cp.can_photo? %>
                 <td>是</td>
               <% else %>

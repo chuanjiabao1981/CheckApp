@@ -4,7 +4,12 @@ class CheckPointsController < ApplicationController
   before_filter :correct_user_for_collection,   only: [:new, :create,:index]
 
   def index
-    @check_points = CheckPoint.find_all_by_check_category_id(params[:check_category_id])
+    @check_points               = CheckPoint.find_all_by_check_category_id(params[:check_category_id])
+    @check_point_start_no       = 0
+    @template.check_categories.each do |cc|
+      break if cc.id.to_i == params[:check_category_id].to_i
+      @check_point_start_no     = @check_point_start_no + cc.check_points.size
+    end
   end
   def new
     @check_point  = CheckPoint.new
