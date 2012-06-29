@@ -10,8 +10,9 @@
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
-            <th width="45%">检查详情</th>
+            <th width="30%">检查详情</th>
             <th width="15%">现场图像</th>
+            <th width="15%">现场视频</th>
             <th width="25%">创建时间</th>
             <th colspan="2" width="15%">操作</th>
           </tr>
@@ -23,6 +24,11 @@
                 <td>是</td>
               <% else %>
                 <td> 否 </td>
+              <% end %>
+              <% if not cp.can_photo? and cp.can_video? %>
+                <td>是</td>
+              <% else %>
+                <td>否</td>
               <% end %>
               <td><%= I18n.localize(cp.created_at,format: :long)%></td>
               <td><%= link_to '编辑',edit_check_point_path(cp) %></td>
