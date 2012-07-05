@@ -1,7 +1,7 @@
 class ZoneAdmin < ActiveRecord::Base
   VALID_NAME_REGEX = /\A[a-zA-Z\d_]+\z/i
 
-  attr_accessible :name,:des,:password,:password_confirmation,:template_max_num,:template_max_video_num,:template_max_photo_num,:check_point_photo_num,:check_point_video_num 
+  attr_accessible :name,:des,:password,:password_confirmation,:template_max_num,:template_max_video_num,:template_max_photo_num,:check_point_photo_num,:check_point_video_num ,:max_org_num,:max_zone_supervisor_num,:max_backup_month
 
   before_save :create_remember_token
 
@@ -26,6 +26,16 @@ class ZoneAdmin < ActiveRecord::Base
 
   def get_all_templates_num
     return self.templates.size
+  end
+  def get_all_orgs_num
+    s = 0 
+    self.zones.each do |z|
+      s = s + z.organizations.size
+    end
+    return s
+  end
+  def get_all_zone_supervisors_num
+    return self.zone_supervisors.size
   end
 
 

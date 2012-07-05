@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120623083444) do
+ActiveRecord::Schema.define(:version => 20120703131205) do
 
   create_table "check_categories", :force => true do |t|
     t.string   "category"
@@ -143,14 +143,17 @@ ActiveRecord::Schema.define(:version => 20120623083444) do
     t.string   "name"
     t.string   "des"
     t.string   "password_digest"
-    t.integer  "template_max_num",       :default => 2
-    t.integer  "template_max_photo_num", :default => 5
-    t.integer  "template_max_video_num", :default => 1
+    t.integer  "template_max_num",        :default => 2
+    t.integer  "template_max_photo_num",  :default => 5
+    t.integer  "template_max_video_num",  :default => 1
     t.integer  "site_admin_id"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
-    t.integer  "check_point_photo_num",  :default => 2
-    t.integer  "check_point_video_num",  :default => 1
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+    t.integer  "check_point_photo_num",   :default => 2
+    t.integer  "check_point_video_num",   :default => 1
+    t.integer  "max_org_num",             :default => 5
+    t.integer  "max_zone_supervisor_num", :default => 5
+    t.integer  "max_backup_month",        :default => 10
   end
 
   create_table "zone_supervisor_relations", :force => true do |t|

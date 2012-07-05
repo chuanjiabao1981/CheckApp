@@ -41,6 +41,24 @@
               <%= f.text_field :check_point_photo_num %>
             </div>
           </div>
+          <div class="control-group">
+            <%= f.label :max_org_num,"可创建机构数",class:"control-label" %>
+            <div class="controls">
+              <%= f.text_field :max_org_num %>
+            </div>
+          </div>
+          <div class="control-group">
+            <%= f.label :max_zone_supervisor_num,"可创建督察员个数",class:"control-label" %>
+            <div class="controls">
+              <%= f.text_field :max_zone_supervisor_num %>
+            </div>
+          </div>
+          <div class="control-group">
+            <%= f.label :max_backup_month,"数据备份的月份数",class:"control-label" %>
+            <div class="controls">
+              <%= f.text_field :max_backup_month %>
+            </div>
+          </div>
           <div class="control-group"> 
             <%= f.label :password ,"密码",class:"control-label"%>
             <div class="controls">

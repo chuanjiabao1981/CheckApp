@@ -1,3 +1,12 @@
+#encoding:utf-8
+class OrganizationValidator < ActiveModel::Validator
+  def validate(record)
+    if (record.zone.zone_admin.get_all_orgs_num + 1) > record.zone.zone_admin.max_org_num
+      record.errors[:base] = "您的账户仅能创建#{record.zone.zone_admin.max_org_num}个机构。"
+      return 
+    end
+  end
+end
 class Organization < ActiveRecord::Base
 
   JSON_OPTS = {only:[:id,:name,:phone,:contact,:address]}
@@ -14,6 +23,8 @@ class Organization < ActiveRecord::Base
   validates :phone      ,presence:true,length:{maximum:250}
   validates :contact    ,presence:true,length:{maximum:250}
   validates :address    ,presence:true,length:{maximum:250}
+
+  validates_with OrganizationValidator
 
   accepts_nested_attributes_for :checker,:worker
 

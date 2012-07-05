@@ -29,6 +29,18 @@
 					<th>单个检查点可拍摄图像个数</th>
 					<td><%= @zone_admin_user.check_point_photo_num%></td>
 				</tr>
+				<tr>
+					<th>可创建机构数</th>
+					<td><%= @zone_admin_user.max_org_num %></td>
+				</tr>
+				<tr>
+					<th>可创建督察员个数</th>
+					<td><%= @zone_admin_user.max_zone_supervisor_num %></td>
+				</tr>
+				<tr>
+					<th>数据备份的月份数</th>
+					<td><%= @zone_admin_user.max_backup_month %></td>
+				</tr>
 			    <tr>
 			        <th>备注</th>
 			        <td><%= @zone_admin_user.des  %></td>

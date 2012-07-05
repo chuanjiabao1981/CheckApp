@@ -163,6 +163,7 @@ private
   end
   def validate_report_visitor
     @report = Report.find_by_id(params[:id]) 
+    # @report = Report.includes(:report_records).where(:id=>params[:id])
     return redirect_to root_path if @report.nil?
     check_current_user_can_visit_the_organization(@report.organization.id)
   end
