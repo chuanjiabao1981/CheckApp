@@ -48,7 +48,7 @@ module SessionsHelper
   def validate_equipment
     if request.format == 'mobile'
       left_day = current_equipment_left_time
-      if left_day == 0
+      if left_day <= 0
         sign_out
         return redirect_to root_path(format: :mobile)
       end
