@@ -1,0 +1,41 @@
+<% provide(:title, "全部的管理员") %>
+<% if current_user.session.site_admin? %>
+<p>
+	<button class="btn"><%= link_to '新增',new_zone_admin_equipment_path(@zone_admin) %></button>
+</p>
+<% end %>
+
+<div class="box">
+	<div class="row">
+		<div class="span10 offset1">
+			<legend>移动终端</legend>	
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th width="30%">设备编码</th>
+						<th>过期日期</th>
+						<% if current_user.session.site_admin? %>
+						<th>设备类型</th>
+						<th>备注</th>
+						<th colspan="2">操作</th>
+						<% end %>
+					</tr>
+				</thead>
+			  <% @equipments.each_with_index do |e,i| %>
+			    <tr>
+			    	<td><%=i+1%></td>
+			        <td><%= e.serial_num %></td>
+			        <td><%= e.expire_date %></td>
+			        <% if current_user.session.site_admin? %>
+				        <td><%= e.equipment_type %></td>
+			        	<td><%= e.des %></td>
+			        	<td><%= link_to "编辑" ,edit_equipment_path(e)%> </td>
+			        	<td><%= link_to "删除", equipment_path(e), method: :delete, confirm: "确定删除这个设备吗	？" %></td>
+			        <% end %>
+			    </tr>
+			  <% end %>
+			</table>
+		</div>
+	</div>
+</div>

@@ -9,5 +9,10 @@
 		<div class="button_box">
 	    		<%= link_to '巡查员登陆',worker_signin_path ,class: "btn btn-large btn-primary"%>
 		</div>
+		<% if not current_equipment_register? %>
+			<div class="button_box">
+				<%= link_to '设备注册',register_equipment_path,class:"btn btn-large btn-primary" %>
+			</div>
+		<% end %>
 	<% end %>
 </div>

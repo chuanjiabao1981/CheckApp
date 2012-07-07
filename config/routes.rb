@@ -1,15 +1,13 @@
 #encoding:utf-8
 CheckApp::Application.routes.draw do
 
-
   get "statistics/search"
 
   resources :sessions, only: [:new, :create, :destroy]
 
   resources :zone_admins,shallow:true do
-    resources :zones,:zone_supervisors,:templates
+    resources :zones,:zone_supervisors,:templates,:equipments
   end
-
 
   resources :zones,shallow:true,only:[] do
     resources :organizations
@@ -57,7 +55,8 @@ CheckApp::Application.routes.draw do
     end
   end
 
-
+  match '/register_equipment'             ,to:'equipments#register_equipment',via: :get,format:'mobile'      
+  match '/create_equipment'               ,to:'equipments#create_equipment',via: :post
   match '/site_admin/signin'              ,to:'sessions#site_admin_new'
   match '/site_admin/sessions'            ,to:'sessions#site_admin_create',via: :post
   match '/zone_admin/signin'              ,to:'sessions#zone_admin_new'

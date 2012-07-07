@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120703131205) do
+ActiveRecord::Schema.define(:version => 20120706122717) do
 
   create_table "check_categories", :force => true do |t|
     t.string   "category"
@@ -51,6 +51,18 @@ ActiveRecord::Schema.define(:version => 20120703131205) do
   end
 
   add_index "checkers", ["organization_id"], :name => "index_checkers_on_organization_id"
+
+  create_table "equipment", :force => true do |t|
+    t.string   "serial_num"
+    t.date     "expire_date"
+    t.string   "equipment_type"
+    t.text     "des"
+    t.integer  "zone_admin_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "equipment", ["serial_num"], :name => "index_equipment_on_serial_num"
 
   create_table "media_infos", :force => true do |t|
     t.string   "video_path"

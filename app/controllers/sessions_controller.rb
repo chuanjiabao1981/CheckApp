@@ -47,6 +47,16 @@ class SessionsController < ApplicationController
   end
 
   def worker_create
+    if not current_equipment_register?
+      flash.now[:error] = '您的设备未注册，无法登陆！'
+      render 'worker_new'
+      return
+    end
+    if current_equipment_left_time == 0
+      flash.now[:error] = '您设备的服务费已用完，请续费.'
+      render 'worker_new'
+      return 
+    end
     worker = Worker.find_by_name(params[:session][:name])
     if worker && worker.authenticate(params[:session][:password])
       sign_in(worker)
@@ -61,6 +71,16 @@ class SessionsController < ApplicationController
   def zone_supervisor_new
   end
   def zone_supervisor_create
+    if not current_equipment_register?
+      flash.now[:error] = '您的设备未注册，无法登陆！'
+      render 'zone_supervisor_new'
+      return 
+    end
+    if current_equipment_left_time == 0
+      flash.now[:error] = '您设备的服务费已用完，请续费.'
+      render 'zone_supervisor_new'
+      return 
+    end
     zone_supervisor = ZoneSupervisor.find_by_name(params[:session][:name])
     if zone_supervisor and zone_supervisor.authenticate(params[:session][:password])
       sign_in(zone_supervisor)

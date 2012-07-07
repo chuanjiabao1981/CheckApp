@@ -13,7 +13,7 @@
 					<tr>
 						<th>#</th>
 						<th>账号</th>
-						<th colspan="4">基本信息</th>
+						<th colspan="5">基本信息</th>
 						<th colspan="2">操作</th>
 					</tr>
 				</thead>
@@ -21,6 +21,7 @@
 			    <tr>
 			    	<td><%=i%></td>
 			        <td><%= link_to u.name,zone_admin_path(u) %></td>
+			        <td><%= link_to "设备",zone_admin_equipments_path(u) %></td>
 			        <td><%= link_to "报告",zone_admin_home_path(u) %></td>
 			        <td><%= link_to "分区管理",zone_admin_path(u) %></td>
 			        <td><%= link_to "摸板",zone_admin_templates_path(u) %> </td>

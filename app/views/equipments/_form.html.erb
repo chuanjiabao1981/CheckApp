@@ -1,0 +1,39 @@
+<div class="box">
+  <div class="row">
+    <div class="span10 offset1">
+      <%= form_for(equitment,url:post_url,html:{class:"form-horizontal"}) do |f| %>
+        <legend><%= legend_name %></legend>
+        <fieldset>
+          <%= render 'shared/error_messages' ,:object => f.object%>
+          <div class="control-group">
+            <%= f.label :serial_num,"设备编码" ,class:"control-label"%>
+            <div class="controls">
+              <%= f.text_field :serial_num %>
+            </div>
+          </div>
+          <div class="control-group">
+            <%= f.label :expire_date,"过期时间" ,class:"control-label"%>
+            <div class="controls">
+              <%= f.text_field :expire_date %>
+            </div>
+          </div>
+          <div class="control-group">
+            <%= f.label :equipment_type,"设备类型" ,class:"control-label"%>
+            <div class="controls">
+              <%= f.text_field :equipment_type %>
+            </div>
+          </div>
+          <div class="control-group">
+            <%= f.label :des,"备注" ,class:"control-label"%>
+            <div class="controls">
+              <%= f.text_area :des ,:rows => 3%>
+            </div>
+          </div>
+          <div class="form-actions">
+             <%= f.submit action_name ,class:"btn btn-primary"%>
+          </div>
+        </fieldset>
+      <% end %>
+    </div>
+  </div>
+</div>

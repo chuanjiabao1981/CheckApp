@@ -1,0 +1,19 @@
+<%= form_for(equitment,url:post_url) do |f| %>
+  <p><%= legend_name %></p>
+  <fieldset>
+    <%= render 'shared/error_messages' ,:object => f.object%>
+    <%= text_field :confirm,:password %>
+    <%= f.hidden_field  :serial_num,:value=>current_equipment_serial_num %>
+    <%= f.label :zone_admin_id,"分区管理员" %>
+    <%= f.collection_select(:zone_admin_id,@all_zone_admins,:id,:name) %>
+    <%= f.label :expire_date,"过期时间" ,class:"control-label"%>
+    <%= f.date_select :expire_date,include_blank:true,
+            use_month_names:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+            default:nil%>
+    <%= f.label :equipment_type,"设备类型" ,class:"control-label"%>
+    <%= f.text_field :equipment_type %>
+    <%= f.label :des,"备注" ,class:"control-label"%>
+    <%= f.text_area :des ,:rows => 3%>
+    <%= f.submit action_name ,class:"btn btn-primary"%>
+  </fieldset>
+<% end %>

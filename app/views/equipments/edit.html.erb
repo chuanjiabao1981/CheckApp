@@ -1,0 +1,2 @@
+<% provide(:title, "设备信息编辑") %> 
+<%= render partial:'equipments/form',locals:{equitment:@equipment,legend_name:'新增设备',post_url:equipment_path(@zone_admin),zone_admin:@zone_admin,action_name:'保存'} %>
