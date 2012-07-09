@@ -1526,6 +1526,8 @@ end
 
 
 describe "Reports" do
+  let!(:test_equipment) {FactoryGirl.create(:equipment)}
+
   let(:the_site_admin){FactoryGirl.create(:site_admin_with_two_zone_admin)}
   let(:a_zone_admin)  {the_site_admin.zone_admins.first }
   let(:b_zone_admin)  {the_site_admin.zone_admins.last  }

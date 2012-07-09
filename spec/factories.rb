@@ -200,4 +200,8 @@ FactoryGirl.define do
       end
     end
   end 
+  factory :equipment do
+    serial_num "test-agent"
+    expire_date "2222-12-12"
+  end
 end

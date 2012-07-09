@@ -48,6 +48,7 @@ class SessionsController < ApplicationController
 
   def worker_create
     if not current_equipment_register?
+      # logger.debug("===========" + current_equipment_serial_num)
       flash.now[:error] = '您的设备未注册，无法登陆！'
       render 'worker_new'
       return

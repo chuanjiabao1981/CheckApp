@@ -4,6 +4,8 @@ require 'spec_helper'
 describe "StaticPages" do
 
   subject { page }
+  let!(:test_equipment) {FactoryGirl.create(:equipment)}
+
 
   describe "非登陆用户" do
     before { visit root_path }
@@ -163,6 +165,7 @@ describe "StaticPages" do
       click_link '巡查员登陆'
       fill_in '账号',with:a_worker.name
       fill_in '密码',with:a_worker.password
+      Capybara.current_session.driver.browser.header "User_agent" ,"test-agent" 
       click_button '登陆'
     end
     specify do
@@ -175,10 +178,10 @@ describe "StaticPages" do
       click_link '巡查员登陆'
       fill_in '账号',with:"xxxxx"
       fill_in '密码',with:"1234"
+      Capybara.current_session.driver.browser.header "User_agent" ,"test-agent" 
       click_button '登陆'
     end
     specify do
-      #print page.html
       page.should have_selector('div.alert.alert-error', text: '账号密码错误')
     end
   end

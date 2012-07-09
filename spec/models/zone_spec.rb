@@ -58,11 +58,12 @@ describe Zone do
 
   normal_test
 
+
   describe "Zone删除 解除和zone_supervisor的关系" do
     before do
         @a_zone.save
-        @a_zone_supervisor = @a_zone.zone_supervisors.create(name:"testme2",password:"foobar",password_confirmation:"foobar")
-        @a_zone.zone_supervisor_relations.create(zone_supervisor_id:@a_zone_supervisor.id)
+        @a_zone_supervisor = a_zone_admin.zone_supervisors.create(name:"testme2",password:"foobar",password_confirmation:"foobar")
+        @a_zone.zone_supervisors << @a_zone_supervisor
     end
     specify do
       ZoneSupervisorRelation.find_by_zone_id(@a_zone.id).should_not be_nil

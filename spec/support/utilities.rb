@@ -13,9 +13,14 @@ def sign_in(user)
   end
   fill_in "账号",    with: user.name
   fill_in "密码", with: user.password
+  # page.driver.request.env[:HTTP_USER_AGENT] = "test"
+  # print request.env
+  Capybara.current_session.driver.browser.header "User_agent" ,"test-agent" 
   click_button "登陆"
+
   # Sign in when not using Capybara as well.
   cookies[:remember_token] = user.session.remember_token
+
 end
 
 def api_post_request(uri,body)
