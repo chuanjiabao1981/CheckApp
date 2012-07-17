@@ -53,7 +53,7 @@ class SessionsController < ApplicationController
       render 'worker_new'
       return
     end
-    if current_equipment_left_time == 0
+    if current_equipment_left_time <= 0
       flash.now[:error] = '您设备的服务费已用完，请续费.'
       render 'worker_new'
       return 
@@ -77,7 +77,7 @@ class SessionsController < ApplicationController
       render 'zone_supervisor_new'
       return 
     end
-    if current_equipment_left_time == 0
+    if current_equipment_left_time <= 0
       flash.now[:error] = '您设备的服务费已用完，请续费.'
       render 'zone_supervisor_new'
       return 
