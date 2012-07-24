@@ -2,8 +2,8 @@
  <%= stylesheet_link_tag    "application", :media => "all" %>
  <%= javascript_include_tag "application" %>
  <%= csrf_meta_tags %>
- <script src="http://jqueryrotate.googlecode.com/svn/trunk/jQueryRotate.js"></script>
- <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+ <!--script src="http://jqueryrotate.googlecode.com/svn/trunk/jQueryRotate.js"></script-->
+ <!--script type="text/javascript" src="http://www.google.com/jsapi"></script-->
 
 
  <script>
@@ -43,6 +43,15 @@
         	autoDimensions: false
     		});
  		});*/
+ 		$("a#single_image").fancybox({
+
+			'titlePosition':   'inside',
+			'titleFormat'       : function(title, currentArray, currentIndex, currentOpts) {
+		    return '<span> 现场图像 ' +  (currentIndex + 1) + ' / ' + currentArray.length + '<br/>' + title + '</span>';
+				}
+		});
+ 		/*
+ 		  // rotate using jqueryrotate
 		$("a#single_image").fancybox({
 
 			'titlePosition':   'inside',
@@ -62,6 +71,7 @@
 				});
 			},
 		});
+ 			*/
 		/* Using custom settings */
 		
 		$("a#inline").fancybox({
