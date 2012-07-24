@@ -44,7 +44,7 @@ class MediaInfoPhotoUploader < CarrierWave::Uploader::Base
 
   # Process files as they are uploaded:
   process :resize_to_fill => [800, 800]
-  process :quality => 40
+  process :quality => 90
   #
   # def scale(width, height)
   #   # do something
