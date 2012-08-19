@@ -3,7 +3,9 @@
  <%= javascript_include_tag "application" %>
  <%= csrf_meta_tags %>
  <!--script src="http://jqueryrotate.googlecode.com/svn/trunk/jQueryRotate.js"></script-->
- <!--script type="text/javascript" src="http://www.google.com/jsapi"></script-->
+ <% if controller_name  == 'statistics' %>
+ <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+ <% end %>
 
 
  <script>

@@ -9,6 +9,7 @@ class ReportsController < ApplicationController
   before_filter :validate_report_template_when_create,    only:[:create]
   before_filter :validate_report_edit_and_update_and_destroy,         only:[:edit,:update,:destroy,:pass,:reject]
   before_filter :validate_equipment#,                      only:[:worker_report,:check_categories,:supervisor_report]
+  before_filter :checkapp_client_need_update
   def worker_report
     #if current_user.session.zone_admin? or current_user.session.zone_supervisor?
     #  @worker_reports = @organization.get_all_finished_worker_report.paginate(page:params[:page],per_page:10)

@@ -73,3 +73,7 @@ sudo /etc/init.d/nginx restart
 
 
 
+####分区
+1. 先用fdisk 分区
+2. 格式化
+3. sudo mount /dev/xvdb /home/work/application/data/

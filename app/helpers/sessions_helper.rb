@@ -31,7 +31,12 @@ module SessionsHelper
   end
 
   def current_equipment_serial_num
-    request.env['HTTP_USER_AGENT']
+    splits = request.env['HTTP_USER_AGENT'].split(Rails.application.config.agent_splitor)
+    if splits.size == Rails.application.config.agent_split_num
+      return splits[Rails.application.config.agent_equipment_offset]
+    else
+      return request.env['HTTP_USER_AGENT']
+    end 
   end
   def current_equipment
     @current_equipment ||= Equipment.find_by_serial_num(current_equipment_serial_num)
@@ -39,12 +44,25 @@ module SessionsHelper
   def current_equipment_register?
     !current_equipment.nil?
   end
+  def current_checkapp_client_version
+    splits = request.env['HTTP_USER_AGENT'].split(Rails.application.config.agent_splitor)
+    if splits.size == Rails.application.config.agent_split_num
+      return splits[Rails.application.config.agent_client_version_offset]
+    else
+      return request.env['HTTP_USER_AGENT']
+    end
+  end
 
   def current_equipment_left_time
     return 0 if not current_equipment_register?
     return (current_equipment.expire_date - Date.today).to_i
   end
 
+  def checkapp_client_need_update
+    if request.format =='mobile' and current_checkapp_client_version != Rails.application.config.check_client_version
+      flash.now[:error] = Rails.application.config.agent_client_need_update_msg
+    end
+  end
   def validate_equipment
     if request.format == 'mobile'
       left_day = current_equipment_left_time

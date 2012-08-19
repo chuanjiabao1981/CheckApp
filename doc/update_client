@@ -1,0 +1,8 @@
+1. 首先把编译好的程序 放到对应的目录下
+    public/android23/check.apk
+    public/android40/check.apk
+2.  更新版本
+    check_app/config/initializers/checkapp_client.rb
+3.  手工测试
+4.  提交版本
+5.  发布
