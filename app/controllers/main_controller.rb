@@ -20,9 +20,9 @@ class MainController < ApplicationController
       return redirect_to zone_admins_path
     end
     # render layout:'application_one_column'
-    if request.format == 'mobile' and current_equipment_left_time <=0
-      flash.now[:error] = "设备费用已用完，请续费，谢谢！"
-    end
+    #if request.format == 'mobile' and current_equipment_left_time <=0
+    #  flash.now[:error] = "设备费用已用完，请续费，谢谢！"
+    #end
 
     respond_to do |format|
       format.mobile {render layout:'application'}
