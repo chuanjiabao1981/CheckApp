@@ -1,2 +1,4 @@
  rake db:migrate RAILS_ENV="production"
  bundle exec rake assets:precompile
+
+ git push origin master

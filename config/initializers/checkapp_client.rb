@@ -3,7 +3,7 @@
 ###本文件如有修改必须重启
 CheckApp::Application.configure  do
 	#客户端版本号,每次升级客户端必须修改
-	config.check_client_version 			= "0.11"
+	config.check_client_version 			= "0.12"
 	#agent的分隔符，格式为：	//imeistring:imsistring:version:andriod[24]
 	config.agent_splitor					= '@' 
 	config.agent_split_num					= 4
