@@ -43,7 +43,8 @@ class MediaInfoPhotoUploader < CarrierWave::Uploader::Base
   # end
 
   # Process files as they are uploaded:
-  process :resize_to_fill => [800, 800]
+  process :resize_to_fill => [800, 800] 
+  process :date_watermark
   process :quality => 90
   #
   # def scale(width, height)
@@ -61,6 +62,21 @@ class MediaInfoPhotoUploader < CarrierWave::Uploader::Base
     %w(jpg jpeg gif png)
   end
 
+  def date_watermark
+    manipulate! do |img|
+      if Rails.env != 'production'
+        img
+      else 
+        text = Magick::Draw.new
+        text.gravity = Magick::SouthWestGravity
+        text.fill = 'red'
+        text.pointsize = 32
+        text.font_weight = Magick::BoldWeight
+        text.annotate(img, 0, 0, 0, 0, Time.now.strftime("%Y/%m/%d %H:%M:%S"))
+        img
+      end
+   end
+  end
 
 
   # store! nil's the cache_id after it finishes so we need to remember it for deletion
