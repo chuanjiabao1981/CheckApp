@@ -24,7 +24,7 @@ class Organization < ActiveRecord::Base
   validates :contact    ,presence:true,length:{maximum:250}
   validates :address    ,presence:true,length:{maximum:250}
 
-  validates_with OrganizationValidator
+  validates_with OrganizationValidator, :on => :create
 
   accepts_nested_attributes_for :checker,:worker
 
