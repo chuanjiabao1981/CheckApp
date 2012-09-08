@@ -6,7 +6,7 @@ CheckApp::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
 
   resources :zone_admins,shallow:true do
-    resources :zones,:zone_supervisors,:templates,:equipments
+    resources :zones,:zone_supervisors,:templates,:equipments,:locations
   end
 
   resources :zones,shallow:true,only:[] do

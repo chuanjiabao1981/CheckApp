@@ -32,9 +32,10 @@ end
 
 class Report < ActiveRecord::Base
   #attr_accessible :template_id,:organization_id,:reporter_name
-  attr_accessible :template_id,:reporter_name
+  attr_accessible :template_id,:reporter_name,:location_id
   belongs_to :template,inverse_of: :reports
   belongs_to :organization
+  belongs_to :location
   belongs_to :committer,polymorphic:true
   has_many   :report_records, dependent: :destroy
 

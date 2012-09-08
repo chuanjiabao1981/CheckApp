@@ -35,6 +35,13 @@
 			<% end %>
 				<%= link_to '分区管理',zone_admin_zones_path(current_user) %>
 			</li>
+			<% if controller_name == 'locations' %>
+				<li class ="active">
+			<% else %>
+				<li>
+			<% end %>
+				<%= link_to '位置管理',zone_admin_locations_path(current_user) %>
+			</li>
 			<% if controller_name == 'zone_supervisors' %>
 				<li class="active">
 			<% else %>
@@ -49,6 +56,7 @@
 			<% end %>
 				<%= link_to '模板', zone_admin_templates_path(current_user) %>
 			</li>
+
 		<% end %>
 		<% if signed_in? and current_user.session.checker? %>
 			<% if controller_name == 'main' %>

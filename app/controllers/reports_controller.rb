@@ -58,7 +58,8 @@ class ReportsController < ApplicationController
     elsif current_user.session.zone_supervisor?
       @template_list = Template.where(for_supervisor:true,zone_admin_id:@organization.zone.zone_admin_id)
     end
-    @report = @organization.reports.build()
+    @location_list  = @organization.zone.zone_admin.locations
+    @report         = @organization.reports.build()
   end
   def create
     @report = @organization.build_a_report(params[:report],current_user)
@@ -70,17 +71,20 @@ class ReportsController < ApplicationController
       elsif current_user.session.zone_supervisor?
         @template_list = Template.where(for_supervisor:true,zone_admin_id:@organization.zone.zone_admin_id)
       end
+      @location_list  = @organization.zone.zone_admin.locations
       render 'new',formats: [:mobile]
     end
   end
 
 
   def edit
+    @location_list  = @organization.zone.zone_admin.locations
   end
   def update
-    if @report.update_attributes(reporter_name:params[:report][:reporter_name])
+    if @report.update_attributes(reporter_name:params[:report][:reporter_name],location_id:params[:report][:location_id])
       redirect_to check_categories_report_path(@report,format: :mobile)
     else
+      @location_list  = @organization.zone.zone_admin.locations
       render 'edit',formats: [:mobile]
     end
   end

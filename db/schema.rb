@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120706122717) do
+ActiveRecord::Schema.define(:version => 20120908084448) do
 
   create_table "check_categories", :force => true do |t|
     t.string   "category"
@@ -64,6 +64,14 @@ ActiveRecord::Schema.define(:version => 20120706122717) do
 
   add_index "equipment", ["serial_num"], :name => "index_equipment_on_serial_num"
 
+  create_table "locations", :force => true do |t|
+    t.string   "name"
+    t.text     "des"
+    t.integer  "zone_admin_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "media_infos", :force => true do |t|
     t.string   "video_path"
     t.string   "photo_path"
@@ -108,6 +116,7 @@ ActiveRecord::Schema.define(:version => 20120706122717) do
     t.string   "status"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.integer  "location_id"
   end
 
   add_index "reports", ["organization_id"], :name => "index_reports_on_organization_id"

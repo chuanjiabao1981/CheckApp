@@ -11,6 +11,10 @@
     <td colspan="2"><%= @report.template.name%></td>
   </tr>
   <tr>
+    <th>位置</th>
+    <td colspan="2"><%= @report.location.nil? ? "--" : @report.location.name %></td>
+  </tr>
+  <tr>
     <th>提交者</th>
     <td colspan="2"><%= @report.reporter_name%></td>
   </tr>

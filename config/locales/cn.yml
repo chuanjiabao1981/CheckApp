@@ -58,6 +58,7 @@ cn:
       default: ! '%Y年%b%d日 %A %H:%M:%S %Z'
       long: ! '%Y年%b%d日 %H:%M'
       short: ! '%b%d日 %H:%M'
+      brief: ! '%b%d日'
     pm: 下午
   helpers:
     select:
@@ -154,6 +155,9 @@ cn:
       media_infos:
         video_path:       "视频文件"
         photo_path:       "图片文件"
+      location:
+        name:             "位置名称"
+        des:              "位置描述"
 
     errors:
       template:

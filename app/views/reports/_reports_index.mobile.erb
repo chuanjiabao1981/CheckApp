@@ -1,13 +1,14 @@
 <table class="table table-bordered table-striped">
   <tr>
-    <th width="40%">报告名称</th>
+    <th width="50%" colspan="2">报告名称</th>
     <th><center>创建时间</center></th>
     <th width="25%">当前状态</th>
   </tr>
 <% reports.each do |report| %>
   <tr>
       <td> <%= link_to report.template.name ,check_categories_report_path(report,format: :mobile) %> </td>
-      <td> <%= I18n.localize(report.created_at,format: :short)%> </td>
+      <td> <%= report.location.nil? ? "--" : report.location.name %></td>
+      <td> <%= I18n.localize(report.created_at,format: :brief)%> </td>
       <td>
         <% if report.status_is_new? %>
           <span class="label label-info">进行中</span>

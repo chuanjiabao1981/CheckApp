@@ -1,0 +1,6 @@
+<% provide(:title, "全部位置信息") %> 
+<%= render partial:'locations/nav',locals:{zone_admin:@zone_admin,action_name:'位置信息管理'} %>
+<%= render partial:'locations/form',locals:{location:@location,
+	legend_name:'编辑位置信息',
+	post_url:location_path(@location),
+	zone_admin:@zone_admin,action_name:'保存'} %>

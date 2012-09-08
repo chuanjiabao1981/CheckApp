@@ -5,6 +5,8 @@
 
   <%= f.label :template_id,"报告类型" %>
   <%= f.collection_select(:template_id,@template_list,:id,:name) %>
+  <%= f.label :location_id,"选择位置" %>
+  <%= f.collection_select(:location_id,@location_list,:id,:name, {:include_blank => true}) %>
   <%= f.label :reporter_name,"提交人员" %>
   <%= f.text_field :reporter_name %>
   <%= f.submit '新增' ,class: "btn btn-small"%> 

@@ -76,6 +76,15 @@ module SessionsHelper
     end
   end
 
+  #说明：通用权限过滤
+  #如果通过，输出
+  #           1. @zone_admin
+  def default_correct_user_for_collection(zone_admin)
+    return false if not zone_admin
+    return false unless zone_admin == current_user or current_user.session.site_admin?
+    return true
+  end
+
   private
 
     def user_from_remember_token2
