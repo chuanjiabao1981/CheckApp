@@ -71,7 +71,8 @@ private
     @report            = @report_record.report
     return redirect_to root_path(format: :mobile) if @report.nil?
     logger.debug("before report owner test")
-    return redirect_to root_path(format: :mobile) unless @report.committer == current_user
+    ##非owner只能看 不能改
+    return redirect_to root_path(format: :mobile) if @report.committer != current_user and action_name != 'show'
     logger.debug("after report owner test")
     logger.debug("before report status finished")
     return redirect_to root_path(format: :mobile) if @report.status_is_finished? and action_name !='show'
