@@ -11,14 +11,16 @@
         <thead>
           <tr>
             <th width="40%">报告类型</th>
-            <th width="15%">完成率</th>
-            <th width="15%">通过率</th>
+            <th witdh="20%">地点</th>
+            <th width="8%">完成率</th>
+            <th width="8%">通过率</th>
             <th>报告状态</th>
           </tr>
         </thead>
       <% reports.each do |report| %>
         <tr>
             <td> <%= link_to report.template.name ,report_detail_report_path(report) %> </td>
+            <td> <%= report.location.nil? ? "--" : report.location.name %></td>
             <% if report.template.get_check_ponits_num != 0 %>
               <td> <%= format("%.0f",report.get_finished_check_points_num/Float(report.template.get_check_ponits_num)*100) %>%</td>
             <% else %>

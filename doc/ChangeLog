@@ -1,8 +1,10 @@
 1. 2012-09-08
-   a. 给报告添加了location信息
+   a. 服务端添加了location信息管理模块
    b. 修改了ReportRecordsController一个权限bug:
       改成了：不是report的创建者，可以查看报告，不能改。
    c. 修改了ReportRecordsController展现的一个bug:
       非owner的“查看”按钮展现错误
    d. mobile版本的report详情页中添加了，提交账号信息。
+   e. 服务器端报告展示了，位置信息
+   f. 服务器端报告展示了，报告record的创建时间
 2.

@@ -21,6 +21,11 @@
     <% end %>
   <% end %>
 </td>
+<% if report_record.nil? %>
+  <td>N/A</td>
+<% else %>
+  <td><%= I18n.localize(report_record.created_at,format: :long) %></td>
+<% end %>
 <% if check_value.has_boolean_name? %>
   <% if report_record.nil? %>
     <td>未完成</td>
