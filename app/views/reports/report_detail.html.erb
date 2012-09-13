@@ -15,8 +15,8 @@
   </div>
 </div>
 
-<% if (@report.supervisor_report? and current_user.session.zone_admin?) or 
-      (@report.worker_report? and current_user.session.checker?) or 
+<% if (@report.supervisor_report? and (current_user.session.zone_admin? or current_user.session.zone_supervisor?)) or 
+      (@report.worker_report?     and (current_user.session.zone_admin? or current_user.session.checker? )) or 
       current_user.session.site_admin?
 %>
         <% if @report.status_is_new? %>

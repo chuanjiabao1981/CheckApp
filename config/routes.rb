@@ -65,12 +65,12 @@ CheckApp::Application.routes.draw do
   match '/checker/sessions'               ,to:'sessions#checker_create',via: :post
   match '/worker/signin'                  ,to:'sessions#worker_new',format:'mobile'
   match '/worker/sessions'                ,to:'sessions#worker_create',via: :post,format:'mobile'
-  match '/zone_supervisor/signin'         ,to:'sessions#zone_supervisor_new',format:'mobile'
-  match '/zone_supervisor/sessions'       ,to:'sessions#zone_supervisor_create',via: :post,format:'mobile'
+  match '/zone_supervisor/signin'         ,to:'sessions#zone_supervisor_new'
+  match '/zone_supervisor/sessions'       ,to:'sessions#zone_supervisor_create',via: :post
 
 
   match '/signout'                        ,to:'sessions#destroy', via: :delete
-  match '/zone_supervisor_home'           ,to:'main#zone_supervisor_home',via: :get,format:'mobile'
+  match '/zone_supervisor_home'           ,to:'main#zone_supervisor_home',via: :get
   match '/zone_admin_home/:zone_admin_id' ,to:'main#zone_admin_home',via: :get,as:'zone_admin_home'
   match '/checker_home/:checker_id'       ,to:'main#checker_home',via: :get,as:'checker_home'
   match '/statistics/:zone_admin_id'      ,to:'statistics#search',via: :get,as:'statistics'

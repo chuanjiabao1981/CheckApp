@@ -4,7 +4,7 @@
 <div class="row">
 	<% if not signed_in? %>
 		<div class="button_box">
-	    		<%= link_to '督察员登陆',zone_supervisor_signin_path ,class: "btn btn-large btn-primary"%>
+	    		<%= link_to '督察员登陆',zone_supervisor_signin_path(format: :mobile) ,class: "btn btn-large btn-primary"%>
 		</div>
 		<div class="button_box">
 	    		<%= link_to '巡查员登陆',worker_signin_path ,class: "btn btn-large btn-primary"%>

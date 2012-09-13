@@ -13,6 +13,15 @@
 				<%= link_to 'zone管理员',zone_admins_path %>
 			</li>
 		<% end %>
+		<% if signed_in? and current_user.session.zone_supervisor? %>
+			<% if controller_name == 'main' %>
+				<li class="active">
+			<% else %>
+				<li>
+			<% end %>
+				<%= link_to "分区报告列表",zone_supervisor_home_path %>
+			</li>
+		<% end %>
 		<% if signed_in? and current_user.session.zone_admin? %>
 			<% if controller_name == 'main' %>
 				<li class="active">

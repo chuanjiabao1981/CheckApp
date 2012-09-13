@@ -1,5 +1,5 @@
 <h1>督察员登陆</h1>
-<%= render partial:'sessions/login',locals:{post_url:zone_supervisor_sessions_path} %>
+<%= render partial:'sessions/login',locals:{post_url:zone_supervisor_sessions_path(format: :mobile)} %>
 <!--div class="row">
   <div class="span6 offset3">
     <%= form_for(:session, :url => zone_supervisor_sessions_path) do |f| %>

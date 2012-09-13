@@ -8,7 +8,10 @@ class MainController < ApplicationController
   		return redirect_to worker_organization_reports_path(current_user.organization,format: :mobile)
   	end
   	if signed_in? and current_user.session.zone_supervisor?
-  		return redirect_to zone_supervisor_home_path(format: :mobile)
+      respond_to do |format|
+  		  format.mobile {return redirect_to zone_supervisor_home_path(format: :mobile)}
+        format.html   {return redirect_to zone_supervisor_home_path}
+      end
   	end
     if signed_in? and current_user.session.zone_admin?
       return redirect_to zone_admin_home_path(current_user)
@@ -31,8 +34,13 @@ class MainController < ApplicationController
   end
 
   def zone_supervisor_home
-  	return redirect_to root_path(format: :mobile) unless current_user.session.zone_supervisor?
+  	return redirect_to root_path(format: request.format) unless current_user.session.zone_supervisor?
+    @zone_supervisor = current_user
  	  @zones = current_user.zones
+    respond_to do |format|
+      format.mobile 
+      format.html  
+    end
   end
 
   def zone_admin_home

@@ -1,0 +1,16 @@
+分区审核员的功能
+1. 浏览已完成的报告，巡查和督察报告
+2. 负责审核 自己分区的 报告 是否通过。
+3. 可以浏览别的分区的报告？？
+3. 可以进行统计功能
+
+
+model
+1. zone_auditor belongs_to  zone_admin
+   zone_admin   has_many    zone_auditor
+   zone_auditor has_many    auditor_relations
+   zone_auditor has_many    zones through auditor_relations
+   zone         has_many    auditor_reloations
+   zone 		has_many    zone_auditors through auditor_reloations
+
+   zone_auditor has_one session as longin
