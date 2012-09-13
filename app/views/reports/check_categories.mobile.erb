@@ -2,7 +2,7 @@
 <% if @report.status_is_new? and @report.committer == current_user %>
 <p>
 <%= link_to '编辑',edit_report_path(@report,format: :mobile) ,class:"btn btn-small"%>
-<%= link_to '删除',report_path(@report), method: :delete,confirm:"确定删除自查报告吗?" ,class:"btn btn-small"%>
+<%= link_to '删除',report_path(@report,format: :mobile), method: :delete,confirm:"确定删除此报告吗?" ,class:"btn btn-small"%>
 </p>
 <% end %>
 <table class="table table-bordered table-striped">

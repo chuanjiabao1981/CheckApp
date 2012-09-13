@@ -134,12 +134,20 @@ class ReportsController < ApplicationController
 private
   #just for reportor_name
   def validate_report_edit_and_update_and_destroy
-    if @report.supervisor_report?
-      return redirect_to root_path unless @report.committer == current_user or current_user.session.zone_admin? or current_user.session.site_admin? or current_user.session.zone_supervisor?
-    end
-    if @report.worker_report?
-      return redirect_to root_path unless @report.committer == current_user or current_user.session.checker? or current_user.session.site_admin?
-    end
+    # 权限限制不要太严，通过ui控制。这样权限部分比较简单
+    #if @report.supervisor_report?
+    #  return redirect_to root_path unless @report.committer == current_user or current_user.session.zone_admin? or current_user.session.site_admin? or current_user.session.zone_supervisor?
+    #end
+    #if @report.worker_report?
+    #  return redirect_to root_path unless @report.committer == current_user or current_user.session.checker? or current_user.session.site_admin?
+    #end
+
+    return redirect_to root_path unless @report.committer == current_user or 
+                                        current_user.session.checker? or
+                                        current_user.session.site_admin? or
+                                        current_user.session.zone_supervisor? or
+                                        current_user.session.zone_admin?
+
 
     #return redirect_to root_path if @report.committer == current_user and @report.status_is_finished?
   end
