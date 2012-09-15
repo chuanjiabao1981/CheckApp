@@ -15,6 +15,10 @@ class UserSettingsController < ApplicationController
   		if not current_user.update_attributes(params[:checker])
   			return render 'setting'
   		end
+    elsif current_user.session.zone_supervisor?
+      if not current_user.update_attributes(params[:zone_supervisor])
+        return render 'setting'
+      end
   	end
   	flash[:success] = "密码更新成功！"
   	sign_in(current_user)

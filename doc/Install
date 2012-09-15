@@ -76,4 +76,7 @@ sudo /etc/init.d/nginx restart
 ####分区
 1. 先用fdisk 分区
 2. 格式化
+3. sudo fdisk -l
 3. sudo mount /dev/xvdb /home/work/application/data/
+4. sudo mount /dev/xvdc1 /home/work/application/current/public/report_media/media_info_video/
+5. sudo mount /dev/xvdb1 /home/work/application/current/public/report_media/media_info_photo/

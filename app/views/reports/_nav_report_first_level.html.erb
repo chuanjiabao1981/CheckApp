@@ -2,6 +2,9 @@
       <% if current_user.session.zone_admin? or current_user.session.site_admin? %>
         <%= link_to '全部分区报告',zone_admin_home_path(organization.zone.zone_admin)%>
       <% end %>
+      <% if current_user.session.zone_supervisor? %>
+      	<%= link_to '全部分区报告',zone_supervisor_home_path %>
+      <% end %>
       <% if current_user.session.checker? %>
         <%= link_to "#{organization.name}报告",checker_home_path(organization.checker) %>
       <% end %>
