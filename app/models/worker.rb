@@ -25,5 +25,4 @@ private
     session = self.build_session()
     session.remember_token = SecureRandom.urlsafe_base64
   end
-  
 end
