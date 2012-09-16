@@ -1,6 +1,6 @@
 
 <% provide(:title, "机构|"+@organization.name) %> 
 <%= render partial:'organizations/nav',locals:{organization:@organization,action_name:"#{@organization.name}资料编辑"} %>
-<%= render partial:'organizations/form',locals:{organization:@organization,post_url:organization_path(@organization),action_name:"保存"} %>
+<%= render partial:'organizations/form',locals:{organization:@organization,post_url:organization_path(@organization),action_name:"保存",zone_admin:@zone_admin} %>
 
 

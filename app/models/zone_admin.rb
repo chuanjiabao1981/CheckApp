@@ -14,6 +14,7 @@ class ZoneAdmin < ActiveRecord::Base
   has_many :zones,dependent: :destroy
   has_many :equipments,dependent: :destroy
   has_many :locations,dependent: :destroy
+  has_many :workers,dependent: :destroy
 
   belongs_to :site_admin
 

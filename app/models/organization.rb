@@ -10,12 +10,14 @@ end
 class Organization < ActiveRecord::Base
 
   JSON_OPTS = {only:[:id,:name,:phone,:contact,:address]}
-  attr_accessible :name,:phone,:contact,:address,:worker_attributes,:checker_attributes
+  attr_accessible :name,:phone,:contact,:address,:checker_attributes,:worker_ids
 
   belongs_to :zone
   
   has_one :checker,dependent: :destroy,inverse_of: :organization
-  has_one :worker ,dependent: :destroy,inverse_of: :organization
+  #has_one :worker ,dependent: :destroy,inverse_of: :organization
+  has_many :organization_worker_relations,dependent: :destroy
+  has_many :workers,:through => :organization_worker_relations
 
   has_many :reports,dependent: :destroy
 
@@ -26,7 +28,7 @@ class Organization < ActiveRecord::Base
 
   validates_with OrganizationValidator, :on => :create
 
-  accepts_nested_attributes_for :checker,:worker
+  accepts_nested_attributes_for :checker
 
   def build_a_report(report_attribute,committer)
     a = self.reports.build(report_attribute)

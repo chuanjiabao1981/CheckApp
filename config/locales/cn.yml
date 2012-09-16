@@ -108,9 +108,9 @@ cn:
       check_value: "报告检查项"
     attributes:
       checker:
-        name: "审核员账号"
-        password_digest: "审核员密码"
-        password:         "审核员密码"
+        name: "机构管理员账号"
+        password_digest: "机构管理员密码"
+        password:         "机构管理员密码"
       zone_admin:
         name: "账号"
         password_digest: "密码"

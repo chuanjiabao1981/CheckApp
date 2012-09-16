@@ -8,6 +8,8 @@ class Zone < ActiveRecord::Base
   has_many   :zone_supervisor_relations,:dependent=>:destroy
   has_many   :zone_supervisors,:through => :zone_supervisor_relations
   has_many   :organizations, :dependent=>:destroy
+
+  has_many   :workers,:dependent => :destroy
   
   validates :name,length:{maximum:250},presence:true
   validates :des, length:{maximum:400}

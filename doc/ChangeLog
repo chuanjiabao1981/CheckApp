@@ -10,3 +10,6 @@
 2. 2012-09-13
    a. spuervisor 在客户端登陆，提交报告
    b. supervisor 在服务端登陆，负责报告管理（审核，通过，查看，删除）
+3. 2012-09-15
+   a. worker 和organization分离创建
+   b. worker 可以再客户端看到多个organization的报告

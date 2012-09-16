@@ -1,0 +1,11 @@
+<% provide(:title, "巡查员编辑") %>
+<%= render partial:'workers/nav',locals:{zone_admin:@zone_admin,action_name:'巡查员编辑'} %>
+<%= render partial:'workers/form',
+	locals:{
+			worker:@worker,
+			post_url:worker_path(@worker),
+			legend_name:"巡查员编辑",
+			action_name:'保存',
+			zone_admin:@zone_admin
+			} 
+%>

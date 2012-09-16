@@ -1,9 +1,13 @@
 <ul class="breadcrumb">
+	<li>
+	 	<%= link_to '机构列表',worker_home_path(format: :mobile) %>
+	 	<span class="divider">/</span>
+  </li>
   <li class="active"><%= @organization.name %></li>
 </ul>
-<% if @organization.worker == current_user %>
+<!--% if @organization.worker == current_user %-->
 <p>
   <%= link_to '新建自检报告',new_organization_report_path(@organization,format: :mobile),class: "btn btn-small"%>
 </p>
-<% end %>
+<!--% end %-->
 <%= render partial:'reports/reports_index',locals:{reports:@worker_reports} %>

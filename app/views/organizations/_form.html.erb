@@ -29,7 +29,22 @@
               <%= f.text_field :phone %>
             </div>
           </div>
-      
+          <div class="control-group">
+            <label class="control-label" for="worker_name">巡查员账号</label>
+              <% zone_admin.workers.each do |worker| %>
+                <%if worker.zone.nil? or 
+                    worker.zone == organization.zone or 
+                    organization.worker_ids.include?(worker.id) 
+                %>
+                  <div class="controls">
+                    <%= check_box_tag "organization[worker_ids][]", 
+                      worker.id, organization.worker_ids.include?(worker.id)%>
+                    <%= worker.name%>
+                  </div>
+                <% end %>
+              <% end %>
+          </div>
+          <!--
           <%= f.fields_for :worker do |worker| %>
             <legend>巡查员</legend>
             <div class="control-group">
@@ -51,22 +66,23 @@
               </div>
             </div>
           <% end %>
+          !-->
           <%= f.fields_for :checker do |checker| %>
-            <legend>审核员</legend>
+            <legend>机构管理员</legend>
             <div class="control-group">
-              <%= checker.label :name,"审核员账号" ,class:"control-label"%>
+              <%= checker.label :name,"机构管理员账号" ,class:"control-label"%>
               <div class="controls">
                 <%= checker.text_field :name %>
               </div>
             </div>
             <div class="control-group">
-              <%= checker.label :password,"审核员密码" ,class:"control-label"%>
+              <%= checker.label :password,"机构管理员密码" ,class:"control-label"%>
               <div class="controls">
                 <%= checker.password_field :password %>
               </div>
             </div>
             <div class="control-group">
-              <%= checker.label :password_confirmation,"审核员密码确认",class:"control-label" %>
+              <%= checker.label :password_confirmation,"机构管理员密码确认",class:"control-label" %>
               <div class="controls">
                 <%= checker.password_field :password_confirmation %>
               </div>

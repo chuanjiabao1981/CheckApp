@@ -1,23 +1,29 @@
 class Worker < ActiveRecord::Base
   VALID_NAME_REGEX = /\A[a-zA-Z\d_]+\z/i
 
-  attr_accessible :name,:des,:password,:password_confirmation 
+  attr_accessible :name,:des,:password,:password_confirmation,:zone_id
 
   before_save :create_remember_token
 
   ##auto save导致factory_girl的:organization_with_a_checker_and_a_worker递归save
-  belongs_to :organization,inverse_of: :worker#,autosave:true
+  #belongs_to :organization,inverse_of: :worker#,autosave:true
 
+  has_many :organization_worker_relations,dependent: :destroy
+  has_many :organizations,:through => :organization_worker_relations
+
+  belongs_to :zone_admin
+  belongs_to :zone
+  
   has_one   :session ,as: :login
 
-  has_many  :reports ,as: :committer
+  has_many  :reports ,as: :committer,dependent: :destroy
 
 
   has_secure_password
 
   validates :name,  presence: true, length:{ maximum:128 },  format:{with:VALID_NAME_REGEX} ,uniqueness: { case_sensitive: false }
   validates :des,   length:{maximum:250}
-  validates :organization,presence:true
+#  validates :organization,presence:true
 
 
 private 

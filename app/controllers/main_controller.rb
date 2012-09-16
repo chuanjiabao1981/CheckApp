@@ -1,11 +1,15 @@
 #encoding:utf-8
 class MainController < ApplicationController
   before_filter 
-  before_filter :validate_equipment,  only:[:zone_supervisor_home]
+  before_filter :validate_equipment,  only:[:zone_supervisor_home,:worker_home]
   before_filter :checkapp_client_need_update
   def home
   	if signed_in? and current_user.session.worker?
-  		return redirect_to worker_organization_reports_path(current_user.organization,format: :mobile)
+  		#return redirect_to worker_organization_reports_path(current_user.organization,format: :mobile)
+      respond_to do |format|
+        format.mobile {return redirect_to worker_home_path(format: :mobile)}
+        format.html   {return redirect_to worker_home_path}
+      end
   	end
   	if signed_in? and current_user.session.zone_supervisor?
       respond_to do |format|
@@ -40,6 +44,14 @@ class MainController < ApplicationController
     respond_to do |format|
       format.mobile 
       format.html  
+    end
+  end
+
+  def worker_home
+    @organizations = current_user.organizations
+    respond_to do |format|
+      format.mobile
+      format.html
     end
   end
 

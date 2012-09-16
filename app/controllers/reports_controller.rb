@@ -160,8 +160,7 @@ private
       return redirect_to root_path unless @template.zone_admin == current_user.zone_admin
       return redirect_to root_path unless @current_user.zone_ids.include?(@organization.zone.id)
     else
-      return redirect_to root_path unless @template.zone_admin == current_user.organization.zone.zone_admin
-      return redirect_to root_path unless @organization == current_user.organization
+      return redirect_to root_path unless @template.zone_admin_id == current_user.zone_admin_id
     end
   end
   def validate_report_creater
@@ -199,7 +198,7 @@ private
       return redirect_to root_path unless @organization.zone.zone_admin == current_user
     end
     if current_user.session.worker?
-      return redirect_to root_path unless @organization.worker  == current_user
+      return redirect_to root_path unless current_user.organization_ids.include?(@organization.id)
     end
     if current_user.session.checker?
       return redirect_to root_path unless @organization.checker == current_user

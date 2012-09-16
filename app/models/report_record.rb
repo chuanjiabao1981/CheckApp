@@ -21,7 +21,7 @@ class ReportValidator < ActiveModel::Validator
         record.errors[:committer_id] = '当前人员使用的是督察模板'
         return
       end
-      if record.organization_id != record.committer.organization_id
+      if not record.committer.organization_ids.include?(record.organization_id)
         record.errors[:organization_id] = '当前人员不能提交此机构的模板'
         return
       end

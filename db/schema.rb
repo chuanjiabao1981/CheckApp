@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120908084448) do
+ActiveRecord::Schema.define(:version => 20120915025536) do
 
   create_table "check_categories", :force => true do |t|
     t.string   "category"
@@ -80,6 +80,16 @@ ActiveRecord::Schema.define(:version => 20120908084448) do
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
   end
+
+  create_table "organization_worker_relations", :force => true do |t|
+    t.integer  "organization_id"
+    t.integer  "worker_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "organization_worker_relations", ["organization_id"], :name => "index_organization_worker_relations_on_organization_id"
+  add_index "organization_worker_relations", ["worker_id"], :name => "index_organization_worker_relations_on_worker_id"
 
   create_table "organizations", :force => true do |t|
     t.string   "name"
@@ -153,12 +163,11 @@ ActiveRecord::Schema.define(:version => 20120908084448) do
     t.string   "name"
     t.string   "des"
     t.string   "password_digest"
-    t.integer  "organization_id"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.integer  "zone_admin_id"
+    t.integer  "zone_id"
   end
-
-  add_index "workers", ["organization_id"], :name => "index_workers_on_organization_id"
 
   create_table "zone_admins", :force => true do |t|
     t.string   "name"

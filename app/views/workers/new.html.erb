@@ -1,0 +1,7 @@
+<% provide(:title, "新增巡查员") %>
+<!--
+<%= render partial:'zone_supervisors/nav',locals:{zone_admin:@zone_admin,action_name:'新增督察员'} %>
+-->
+<%= render partial:'workers/nav',locals:{zone_admin:@zone_admin,action_name:'新增巡查员'} %>
+
+<%= render partial:'workers/form',locals:{worker:@worker,post_url:zone_admin_workers_path(@zone_admin),legend_name:"新增巡查员",action_name:'添加巡查员',zone_admin:@zone_admin} %>

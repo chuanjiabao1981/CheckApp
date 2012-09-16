@@ -27,7 +27,10 @@ module SessionsHelper
   end
 
   def singed_in_user
-    redirect_to root_path unless signed_in? 
+    respond_to do |format| 
+      format.html   {redirect_to root_path unless signed_in? }
+      format.mobile {redirect_to root_path(format: :mobile) unless signed_in? }
+    end
   end
 
   def current_equipment_serial_num

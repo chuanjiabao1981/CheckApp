@@ -1,0 +1,15 @@
+<ul class="breadcrumb">
+  <li class="active">机构列表</li>
+</ul>
+<table class="table table-bordered table-striped">
+	<tr>
+		<th width="70%">机构名</th>
+		<th>巡查报告数</th>
+	</tr>
+	<% @organizations.each do |o| %>
+		<tr>
+			<td><%=link_to o.name,worker_organization_reports_path(o,format: :mobile) %></td>
+			<td><%= o.get_all_worker_report.size %>
+		</tr>		
+	<% end %>
+</table>

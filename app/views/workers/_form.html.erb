@@ -1,0 +1,46 @@
+<div class="box">
+  <div class="row">
+    <div class="span10 offset1">
+      <%= form_for(worker,url:post_url,html:{class:"form-horizontal"}) do |f| %>
+        <%= render 'shared/error_messages' ,:object => f.object%>
+        <legend><%= legend_name %></legend>
+        <fieldset>
+          <div class="control-group">
+            <%= f.label :name,"巡查员账号",class:"control-label" %>
+            <div class="controls">
+              <%= f.text_field :name %>
+            </div>
+          </div>
+          <div class="control-group">
+            <%= f.label :password ,"密码",class:"control-label"%>
+            <div class="controls">
+              <%= f.password_field :password %>
+            </div>
+          </div>
+          <div class="control-group">  
+            <%= f.label :password_confirmation, "确认密码" ,class:"control-label"%>
+            <div class="controls">
+              <%= f.password_field :password_confirmation %>
+            </div>
+          </div>
+          <div class="control-group">
+            <%= f.label :zone_id,"所属分区" ,class:"control-label" %>
+            <div class="controls">
+              <%= f.collection_select(:zone_id,zone_admin.zones,:id,:name, {:include_blank => true}) %>
+            </div>
+          </div>
+          <div class="control-group">
+            <%= f.label :des,"备注" ,class:"control-label"%>
+            <div class="controls">
+              <%= f.text_area :des ,rows:3%>
+            </div>
+          </div>
+    
+          <div class="form-actions">
+            <%= f.submit action_name, class: "btn btn-primary" %>
+          </div>
+        </fieldset>
+      <% end %>
+    </div>
+  </div>
+</div>

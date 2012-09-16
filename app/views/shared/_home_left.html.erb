@@ -58,6 +58,13 @@
 			<% end %>
 				<%= link_to '督察员',zone_admin_zone_supervisors_path(current_user) %>
 			</li>
+			<% if controller_name == 'workers' %>
+				<li class="active">
+			<% else %>
+				<li>
+			<% end %>
+				<%= link_to '巡查员',zone_admin_workers_path(current_user) %>
+			</li>
 			<% if controller_name == 'templates' %>
 				<li class= "active">
 			<% else %>
