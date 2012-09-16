@@ -1,6 +1,6 @@
 <%= render partial:'reports/nav',locals:{action_name:"新增报告",organization:@organization} %>
 
-<%= form_for(@report,url:organization_reports_path(@organization)) do |f| %>
+<%= form_for(@report,url:organization_reports_path(@organization,format: :mobile)) do |f| %>
   <%= render 'shared/error_messages' ,:object => f.object%>
 
   <%= f.label :template_id,"报告类型" %>

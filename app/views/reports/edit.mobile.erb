@@ -1,7 +1,7 @@
 <p>
 	<%= link_to "返回", check_categories_report_path(@report),class:"btn btn-success"%>
 </p>
-<%= form_for(@report,url:report_path(@reporte)) do |f| %>
+<%= form_for(@report,url:report_path(@report,format: :mobile)) do |f| %>
   <%= render 'shared/error_messages' ,:object => f.object%>
   <%= f.label :location_id,"选择位置" %>
   <%= f.collection_select(:location_id,@location_list,:id,:name, {:include_blank => true}) %>

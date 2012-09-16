@@ -1,7 +1,7 @@
 <p>
 <%= link_to '返回',check_category_check_point_reports_report_path(@report_record.report_id,@report_record.check_category_id),class:"btn btn-success" %>
 </p>
-<%= form_for(@report_record,url:report_record_path(@report_record)) do |f| %>
+<%= form_for(@report_record,url:report_record_path(@report_record,format: :mobile)) do |f| %>
   <%= render 'shared/error_messages' ,:object => f.object%>
   <% if @report_record.check_point.can_photo? %>
     <% nnn = 1 %>

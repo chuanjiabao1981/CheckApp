@@ -1,7 +1,4 @@
 <% provide(:title, "全部巡查员") %> 
-<!--
-<%= render partial:'locations/nav',locals:{zone_admin:@zone_admin,action_name:'位置信息管理'} %>
--->
 <%= render partial:'workers/nav',locals:{zone_admin:@zone_admin,action_name:'全部巡查员'} %>
 <p>
 	<button class="btn"><%= link_to '添加巡查员',new_zone_admin_worker_path(@zone_admin) %></button>
@@ -9,14 +6,14 @@
 <div class="box">
 	<div class="row">
 		<div class="span10 offset1">
-			<legend>全部位置信息</legend>
+			<legend>全部巡查员</legend>
 			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
 						<th width="5%">#</th>
 						<th width="20%">账号</th>
-						<th width="20%">所属分区</th>
-						<th width="20%">描述</th>
+						<th width="15%">所属分区</th>
+						<th width="20%">负责机构</th>
 						<th colspan="2">操作</th>
 					</tr>
 				</thead>
@@ -25,7 +22,13 @@
 			      <td><%= i      %></td>
 			      <td><%= w.name %></td>
 			      <td><%= w.zone.nil? ? "": w.zone.name %></td>
-			      <td><%= w.des  %></td>
+			      <td>
+			      	<ol>
+			      		<% w.organizations.each_with_index do |o,ii| %>
+			      			<li><%= o.name  %></li>
+			      		<% end %>
+			      	</ol>
+			      </td>
 			      <td><%= link_to '编辑',edit_worker_path(w) %> </td>
 			      <td><%= link_to '删除',worker_path(w),method: :delete,confirm:"确定要删除这个巡查员和相关报告吗？" %></td>
 			    </tr>

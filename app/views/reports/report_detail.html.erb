@@ -8,6 +8,7 @@
           <tr><th width="20%">报告类型      </th> <td><%= @report.template.name%></td></tr>
           <tr><th>检查点个数    </th> <td><%= @report.template.get_check_ponits_num %>个</td></tr>
           <tr><th>已完成检查点  </th> <td><%= @report.get_finished_check_points_num %>个</td></tr>
+          <tr><th>提交账号     </th> <td><%= @report.committer.name %></td></tr>
           <tr><th>提交人       </th> <td><%= @report.reporter_name %></td></tr>
           <tr><th>提交时间     </th> <td><%= I18n.localize(@report.created_at,format: :long) %></td></tr>
       </table>
@@ -34,7 +35,7 @@
       <legend>报告详情</legend>
       <table class="table  table-striped table-bordered">
         <tr>
-          <th>检查类型</th>
+          <th width="10%">检查类型</th>
           <th>检查内容</th>
           <th>检查时间</th>
           <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.boolean_name}%>
