@@ -6,7 +6,9 @@ class Worker < ActiveRecord::Base
   before_save :create_remember_token
 
   ##auto save导致factory_girl的:organization_with_a_checker_and_a_worker递归save
-  #belongs_to :organization,inverse_of: :worker#,autosave:true
+  ### 这个只是为了migaration使用
+  ### 20120915025536_add_zone_info_to_worker.rb
+  belongs_to :organization #inverse_of: :worker#,autosave:true
 
   has_many :organization_worker_relations,dependent: :destroy
   has_many :organizations,:through => :organization_worker_relations

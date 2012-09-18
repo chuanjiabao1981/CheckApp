@@ -13,3 +13,5 @@
 3. 2012-09-15
    a. worker 和organization分离创建
    b. worker 可以再客户端看到多个organization的报告
+4. 2012-09-18
+   a. 解决了客户,上传（视频、图像）按钮只显示一半的问题

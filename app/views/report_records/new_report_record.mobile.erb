@@ -6,16 +6,16 @@
   <% if @report_record.check_point.can_photo? %>
     <% nnn = 1 %>
     <%= f.fields_for :media_infos do |p| %>
-      <%= p.label         :photo_path,"现场图像#{nnn}" %>
-      <%= p.file_field    :photo_path %>
-      <%= p.hidden_field  :media_type,:value=>"p" %>
+        <%= p.label         :photo_path,"现场图像#{nnn}" %>
+        <%= p.file_field    :photo_path,style:"padding-bottom:40px"%>
+        <%= p.hidden_field  :media_type,:value=>"p" %>
       <% nnn = nnn + 1 %>
     <% end %>
   <% elsif @report_record.check_point.can_video? %>
     <% nnn = 1 %>
     <%= f.fields_for :media_infos do |v| %>
       <%= v.label           :video_path,"现场视频#{nnn}" %>
-      <%= v.file_field      :video_path %>
+      <%= v.file_field      :video_path ,style:"padding-bottom:40px"%>
       <%= v.hidden_field    :media_type,:value=>'v' %>
       <% nnn = nnn +1 %>
     <% end %>
