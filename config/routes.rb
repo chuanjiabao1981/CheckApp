@@ -1,9 +1,11 @@
 #encoding:utf-8
 CheckApp::Application.routes.draw do
 
+
   get "statistics/search"
 
   resources :sessions, only: [:new, :create, :destroy]
+  resources :crashes,  only: [:create]
 
   resources :zone_admins,shallow:true do
     resources :zones,:zone_supervisors,:templates,:equipments,:locations,:workers
