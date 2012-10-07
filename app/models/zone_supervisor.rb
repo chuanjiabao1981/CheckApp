@@ -30,7 +30,7 @@ class ZoneSupervisor < ActiveRecord::Base
   validates :name,  presence: true, length:{ maximum:36 },  format:{with:VALID_NAME_REGEX} ,uniqueness: { case_sensitive: false }
   validates :des,   length:{maximum:250}
 #  validates :password_confirmation,presence:true,:unless=>"password==''"
-  validates_with ZoneSupervisorValidator
+  validates_with ZoneSupervisorValidator, :on => :create
 
 private 
   def create_remember_token

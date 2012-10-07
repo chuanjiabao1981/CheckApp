@@ -10,6 +10,10 @@
   	</li>
   <% end %>
   <% if current_user.session.worker? %>
+    <li>
+      <%= link_to '机构列表',worker_home_path(format: :mobile) %>
+      <span class="divider">/</span>
+    </li>
   	<li>
   	  <%= link_to organization.name,worker_organization_reports_path(organization,format: :mobile) %>
 	  <span class="divider">/</span>

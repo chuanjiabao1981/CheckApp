@@ -41,7 +41,7 @@ class Template < ActiveRecord::Base
   #validates :check_value,presence:true
   
   accepts_nested_attributes_for :check_value
-  validates_with TemplateTypeValidator
+  validates_with TemplateTypeValidator, :on => :create
 
   def get_check_ponits_num
     n = 0
@@ -51,27 +51,49 @@ class Template < ActiveRecord::Base
     return n
   end
 
-  def get_video_check_point_num
+  def get_video_check_point_num(id)
     n = 0
+    hasid = false
     self.check_categories.each do |cc|
       cc.check_points.each do |cp|
         if cp.can_video?
           n = n + 1
+          if cp.id == id 
+            hasid = true
+          end
         end
       end
     end
-    return n
+    if hasid 
+      #Rails.logger.info("=============11111111:"+n.to_s)
+
+      return n
+    else
+      Rails.logger.info("=============22222222:"+(n+1).to_s)
+
+      return n + 1
+    end
   end
 
-  def get_photo_check_point_num
+  def get_photo_check_point_num(id)
     n = 0
+    hasid = false
     self.check_categories.each do |cc|
       cc.check_points.each do |cp|
         if cp.can_photo?
           n = n + 1
+          if cp.id == id
+            hasid =true
+          end
         end
       end
     end
-    return n
+    if hasid
+      #Rails.logger.info("=============11111111:"+n.to_s)
+      return n
+    else
+      #Rails.logger.info("=============22222222:"+(n+1).to_s)
+      return n+1
+    end
   end
 end

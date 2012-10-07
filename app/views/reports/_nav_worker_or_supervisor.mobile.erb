@@ -1,0 +1,11 @@
+<% if current_user.session.zone_supervisor? %>
+     <li>
+       <%= link_to '机构列表',zone_supervisor_home_path(format: :mobile) %>
+       <span class="divider">/</span>
+     </li>
+   <% elsif current_user.session.worker? %>
+     <li>
+     	<%= link_to '机构列表',worker_home_path(format: :mobile) %>
+     	<span class="divider">/</span>
+     </li>
+ <% end %>

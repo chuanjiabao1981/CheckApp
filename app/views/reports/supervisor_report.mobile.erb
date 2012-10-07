@@ -1,9 +1,6 @@
 <ul class="breadcrumb">
-    <li>
-      <%= link_to '机构列表',zone_supervisor_home_path(format: :mobile) %>
-      <span class="divider">/</span>
-    </li>
-  <li class="active"><%= @organization.name %></li>
+	<%= render partial:'reports/nav_worker_or_supervisor' %>
+  	<li class="active"><%= @organization.name %>的督察报告</li>
 </ul>
 <p>
   <% if current_user.session.zone_supervisor? and @organization.zone.zone_supervisor_ids.include?(current_user.id) %>
