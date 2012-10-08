@@ -1,8 +1,12 @@
+<!--
 <%= render partial:'reports/nav',locals:{action_name:"报告详情",organization:@organization} %>
+-->
+<%= render partial:'shared/reports_nav',locals:{zone:@zone,organization:@organization,report:@report} %>
+
 <% if @report.status_is_new? and @report.committer == current_user %>
 <p>
-<%= link_to '编辑',edit_report_path(@report,format: :mobile) ,class:"btn btn-small"%>
-<%= link_to '删除',report_path(@report,format: :mobile), method: :delete,confirm:"确定删除此报告吗?" ,class:"btn btn-small"%>
+<%= link_to '编辑',edit_report_path(@report,format: :mobile) ,class:"btn btn-primary"%>
+<%= link_to '删除',report_path(@report,format: :mobile), method: :delete,confirm:"确定删除此报告吗?" ,class:"btn btn-danger"%>
 </p>
 <% end %>
 <table class="table table-bordered table-striped">

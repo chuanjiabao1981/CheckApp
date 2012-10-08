@@ -12,7 +12,13 @@ CheckApp::Application.routes.draw do
   end
 
   resources :zones,shallow:true,only:[] do
-    resources :organizations
+    resources :organizations do
+      collection do
+        get 'supervisor_reports',action:'supervisor_reports'
+        get 'worker_reports',action:'worker_reports'
+        get 'all_reports',action:'all_reports'
+      end
+    end
   end
 
   resources :organizations,shallow:true,only:[] do

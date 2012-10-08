@@ -1,0 +1,54 @@
+<ul class="breadcrumb">
+
+	<% if controller_name == 'main' and action_name == 'zone_supervisor_home' %>
+	  <li class="active">分区列表</li>
+	<% elsif controller_name == 'main' and action_name == 'worker_home' %>
+		<li class="active">机构列表</li>
+	<% else %>
+		<li>
+			<% if current_user.session.zone_supervisor? %>
+				<%= link_to '分区列表', zone_supervisor_home_path(format: :mobile) %> 
+				<span class="divider">/</span>
+			<% else %>
+				<%= link_to '机构列表', worker_home_path(format: :mobile) %>
+				<span class="divider">/</span>			
+			<% end %>
+		</li>
+		
+		<% if controller_name == 'organizations' and action_name == 'supervisor_reports' %>
+			<li class="active"><%= zone.name + '的督察报告' %></li>
+		<% elsif controller_name == 'organizations' and action_name == 'worker_reports' %>
+			<li class="active"><%= zone.name + '的巡查报告' %></li>
+		<% else %>
+			<% if current_user.session.zone_supervisor? %>
+				<li>
+					<% if get_report_branch(report) == ReportsHelper::SUPERVISOR_BRANCH %>
+						<%= link_to zone.name + '的督察报告', supervisor_reports_zone_organizations_path(zone,format: :mobile) %>
+					<%elsif get_report_branch(report) == ReportsHelper::WORKER_BRANCH %>
+						<%= link_to zone.name + '的巡查报告', worker_reports_zone_organizations_path(zone,format: :mobile) %>
+					<% end %>
+					<span class="divider">/</span>
+				</li>
+			<% end %>
+	
+			<% if controller_name == 'reports' and action_name == 'supervisor_report' %>
+				<li class="active"><%= organization.name+'的督察报告' %></li>
+			<% elsif controller_name == 'reports' and action_name == 'worker_report' %>
+				<li class="active"><%= organization.name+'的巡查报告' %></li>
+			<% else %>
+				<li>
+					<% if get_report_branch(report) == ReportsHelper::SUPERVISOR_BRANCH %>
+						<%= link_to organization.name+'的督察报告',zone_supervisor_organization_reports_path(organization,format: :mobile) %>
+					<% elsif  get_report_branch(report) == ReportsHelper::WORKER_BRANCH %>
+						<%= link_to organization.name+'的巡查报告',worker_organization_reports_path(organization,format: :mobile) %>
+					<% end %>
+					<span class="divider">/</span>
+				</li>
+				<li class="active">报告详情</li>
+
+			<% end %>
+			
+		<% end %>
+	
+	<% end %>
+</ul>

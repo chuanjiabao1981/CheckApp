@@ -1,12 +1,16 @@
+<!--
 <ul class="breadcrumb">
 	<li>
 	 	<%= render partial:'reports/nav_worker_or_supervisor' %>
   	</li>
   	<li class="active"><%= @organization.name %>的巡查报告</li>
 </ul>
+-->
+<%= render partial:'shared/reports_nav',locals:{zone:@zone,organization:@organization,report:@report} %>
+
 <% if current_user.session.worker? and @organization.worker_ids.include?( current_user.id) %>
 <p>
-  <%= link_to '新建巡查报告',new_organization_report_path(@organization,format: :mobile),class: "btn btn-small"%>
+  <%= link_to '新建巡查报告',new_organization_report_path(@organization,format: :mobile),class: "btn btn-success"%>
 </p>
 <% end %>
 <%= render partial:'reports/reports_index',locals:{reports:@worker_reports} %>

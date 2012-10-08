@@ -1,0 +1,29 @@
+<div class="box">
+	<div class="row">
+		<div class="span10 offset1">
+			<legend><%= @zone.name %></legend>
+			<table class="table table-bordered table-striped">
+				<tr>
+					<th colspan="5"><center><%= @zone.name %><center></th>
+				</tr>
+				<tr>
+					<th width="25%">机构名</th>
+					<th width="20%">联系人</th>
+					<th width="25%">电话</th>
+					<th>督察报告</th>
+					<th>巡查报告</th>
+				</tr>
+				<% @organizations.each do |o| %>
+					<tr>
+						<td><%=o.name%></td>
+						<td><%=o.contact%></td>
+						<td><%=o.phone%></td>
+						<td><%=link_to o.get_all_supervisor_report.size,zone_supervisor_organization_reports_path(o)%>
+						<td><%=link_to o.get_all_worker_report.size,worker_organization_reports_path(o,format: :html) %>
+					</tr>		
+				<% end %>
+			</table>
+			<%= will_paginate @organizations ,class:"apple_pagination"%>
+		</div>
+	</div>
+</div>

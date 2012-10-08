@@ -48,7 +48,7 @@ class MainController < ApplicationController
   end
 
   def worker_home
-    @organizations = current_user.organizations
+    @organizations = current_user.organizations.paginate(page:params[:page],per_page:Rails.application.config.organization_report_page_num)
     respond_to do |format|
       format.mobile
       format.html

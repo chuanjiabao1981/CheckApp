@@ -17,6 +17,7 @@ class ReportsController < ApplicationController
     #  @worker_reports = @organization.get_all_worker_report.paginate(page:params[:page],per_page:10)
     #end
     @worker_reports   = @organization.get_all_worker_report.paginate(page:params[:page],per_page:10)
+    @zone             = @organization.zone
     respond_to do |format|
       format.mobile
       format.html
@@ -30,12 +31,14 @@ class ReportsController < ApplicationController
     #end
     @supervisor_reports   = @organization.get_all_supervisor_report.paginate(page:params[:page],per_page:10)
     @zone_admin = @organization.zone.zone_admin
+    @zone       = @organization.zone
     respond_to do |format|
       format.mobile
       format.html
     end
   end
   def check_categories
+    @zone       = @organization.zone
     respond_to do |format|
       format.mobile
     end

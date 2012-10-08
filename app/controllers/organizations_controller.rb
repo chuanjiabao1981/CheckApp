@@ -2,6 +2,9 @@ class OrganizationsController < ApplicationController
   before_filter :site_or_zone_admin_user,       only: [:new, :create,:edit,:update,:show,:index,:destroy]
   before_filter :correct_user_for_member,       only: [:edit,:update,:show,:destroy]
   before_filter :correct_user_for_collection,   only: [:new, :create,:index]
+  before_filter :validate_equipment,            only: [:supervisor_reports,:worker_reports]
+  before_filter :checkapp_client_need_update,   only: [:supervisor_reports,:worker_reports]
+
 
   def index
     @organizations = Organization.find_all_by_zone_id(params[:zone_id])
@@ -49,6 +52,23 @@ class OrganizationsController < ApplicationController
     @organization.destroy
     return redirect_to zone_path(@zone)
   end
+
+  def supervisor_reports
+    @zone          = Zone.find_by_id(params[:zone_id])
+    @organizations = Organization.where(:zone_id=>params[:zone_id]).paginate(page:params[:page],per_page:Rails.application.config.organization_report_page_num)
+  end
+
+  def worker_reports
+    @zone          = Zone.find_by_id(params[:zone_id])
+    @organizations = Organization.where(:zone_id=>params[:zone_id]).paginate(page:params[:page],per_page:Rails.application.config.organization_report_page_num)
+  end
+
+  def all_reports
+    @zone          = Zone.find_by_id(params[:zone_id])
+    @organizations = Organization.where(:zone_id=>params[:zone_id]).paginate(page:params[:page],per_page:Rails.application.config.organization_report_page_num)
+  end
+
+
 
 private 
   def user_want_checker

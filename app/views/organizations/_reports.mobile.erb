@@ -1,0 +1,26 @@
+<%= render partial:'shared/reports_nav',locals:{zone:@zone,organization:@organization,report:@report} %>
+
+<table class="table table-bordered table-striped">
+	<tr>
+		<th width="15%"><center>编号</center></th>
+		<th width="40%"><center>机构名</center></th>
+		<th><center>报告</center></th>
+	</tr>
+	<% organizations.each_with_index do |o,i| %>
+		<tr>
+
+			<td><%= i+1 + (params[:page].nil? ? 0 : ((params[:page].to_i) - 1) )* Rails.application.config.organization_report_page_num %></td>
+			<td><%=o.name%></td>
+			<% if s %>
+				<td>
+					<%=link_to "督察报告",zone_supervisor_organization_reports_path(o,format: :mobile) %>
+				</td>
+			<% else %>
+				<td>
+					<%=link_to "巡查报告",worker_organization_reports_path(o,format: :mobile) %>
+				</td>
+			<% end %>
+		</tr>	
+	<% end %>
+</table>
+<%= will_paginate organizations ,class:"apple_pagination"%>

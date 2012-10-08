@@ -1,6 +1,32 @@
 module ReportsHelper
+	WORKER_BRANCH 				= 1
+	SUPERVISOR_BRANCH			= 2
+	NONE_BRANCH					= -1
 	def find_report_in_time_range(template,start_time,end_time)
 		return Report.where(:created_at=>start_time.to_date..end_time.to_date,:template_id =>template.id)
+	end
+	def get_report_branch report
+		if not report.nil?
+			if report.supervisor_report?
+				return SUPERVISOR_BRANCH
+			end
+			if report.worker_report?
+				return WORKER_BRANCH
+			end
+			return NONE_BRANCH
+		end
+		if controller_name == 'organizations' and action_name == 'worker_reports'
+			return WORKER_BRANCH
+		end
+		if controller_name == 'organizations' and action_name == 'supervisor_reports'
+			return SUPERVISOR_BRANCH
+		end
+		if controller_name == 'reports' and action_name == 'supervisor_report'
+			return SUPERVISOR_BRANCH
+		end
+		if controller_name == 'reports' and action_name == 'worker_report'
+			return WORKER_BRANCH
+		end
 	end
 	class ReportStatus
 		attr_accessor :finished_check_points_num,:success_check_points_num,:report

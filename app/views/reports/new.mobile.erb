@@ -9,6 +9,6 @@
   <%= f.collection_select(:location_id,@location_list,:id,:name, {:include_blank => true}) %>
   <%= f.label :reporter_name,"提交人员" %>
   <%= f.text_field :reporter_name %>
-  <%= f.submit '新增' ,class: "btn btn-small"%> 
+  <%= f.submit '新增' ,class: "btn btn-primary"%> 
 <% end %>
 

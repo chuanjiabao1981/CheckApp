@@ -34,7 +34,7 @@ class ZonesController < ApplicationController
     @zone.destroy
     redirect_to zone_admin_zones_path(@zone_admin)
   end
-
+  
 private 
   def correct_user_for_member
     @zone = Zone.find_by_id(params[:id])

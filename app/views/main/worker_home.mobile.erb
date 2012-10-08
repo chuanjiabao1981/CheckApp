@@ -1,31 +1,22 @@
-<ul class="breadcrumb">
-  <li class="active">机构列表</li>
-</ul>
+<%= render partial:'shared/reports_nav',locals:{zone:@zone,organization:@organization,report:@report} %>
 <table class="table table-bordered table-striped">
 	<tr>
-		<th width="40%">机构名</th>
-		<th>操作</th>
+		<th width="15%"><center>编号</center></th>
+		<th width="35%"><center>机构名</center></th>
+		<th colspan="2"><center>报告</center></th>
 	</tr>
-	<% @organizations.each do |o| %>
+	<% @organizations.each_with_index do |o,i| %>
 		<tr>
+			<td><center><%= i+1 + (params[:page].nil? ? 0 : ((params[:page].to_i) - 1) )* Rails.application.config.organization_report_page_num %></center></td>
 			<td><%=o.name%></td>
 			<td>
-				<div class="btn-group">
-					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						选择报告列表
-						<span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu" style="min-width:130px">
-						<li>
-							<%=link_to "督察报告",zone_supervisor_organization_reports_path(o,format: :mobile),style:"font-size:20px"%>
-						</li>
-						<li class="divider"></li>
-						<li>
-							<%=link_to "巡查报告",worker_organization_reports_path(o,format: :mobile),style:"font-size:20px"%>
-						</li>
-					</ul>
-				</div>
+				<%=link_to "督察报告",zone_supervisor_organization_reports_path(o,format: :mobile)%>
+			</td>
+			<td>
+				<%=link_to "巡查报告",worker_organization_reports_path(o,format: :mobile)%>
 			</td>
 		</tr>	
 	<% end %>
 </table>
+<%= will_paginate @organizations ,class:"apple_pagination"%>
+
