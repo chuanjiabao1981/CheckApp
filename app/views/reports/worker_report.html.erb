@@ -5,7 +5,7 @@
   <li class="active"><%= "#{@organization.name}巡查报告" %></li>
 </ul>
 -->
-<%= render partial:'shared/reports_nav',locals:{zone:@zone,organization:@organization} %>
+<%= render partial:'shared/reports_nav',locals:{zone:@zone,organization:@organization,report:@report} %>
 
 <% if current_user.session.checker? or current_user.session.site_admin? %>
 	<% new_reports_num = @organization.get_all_new_worker_report.size %>

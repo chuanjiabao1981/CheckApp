@@ -18,13 +18,21 @@
 				<%= link_to zone.name + '的全部报告', all_reports_zone_organizations_path(zone) %>
 				<span class="divider">/</span>
 			</li>
-			<li class="active">
-				<% if controller_name == 'reports' and action_name == 'worker_report' %>
-					<%= organization.name + '的巡查报告' %>
-				<% elsif controller_name == 'reports' and action_name == 'supervisor_report' %>
-					<%= organization.name + '的督察报告' %>
-				<% end %>
-			</li>
+			<% if controller_name == 'reports' and action_name == 'worker_report' %>
+				<li class="active"><%= organization.name + '的巡查报告' %></li>
+			<% elsif controller_name == 'reports' and action_name == 'supervisor_report' %>
+				<li class="active"><%= organization.name + '的督察报告' %></li>
+			<% else %>
+				<li>
+					<% if report.supervisor_report? %>
+						<%= link_to organization.name + '的督察报告', zone_supervisor_organization_reports_path(organization) %>
+					<% else %>
+						<%= link_to organization.name + '的巡查报告', worker_organization_reports_path(organization) %>
+					<% end %>
+					<span class="divider">/</span>
+				</li>
+				<li class="active">报告详情</li>
+			<% end %>
 		<% end %>
 	<% end %>
 </ul>

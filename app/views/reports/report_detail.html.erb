@@ -1,5 +1,6 @@
 <% provide(:title, "报告详情") %> 
-<%= render partial:'reports/nav_report_detail',locals:{zone_admin:@zone_admin,checker:@checker,organization:@organization,report:@report} %>
+<%= render partial:'shared/reports_nav',locals:{zone:@organization.zone,organization:@organization,report:@report} %>
+
 <div class="box">
   <div class="row">
     <div class="span10 offset1">
