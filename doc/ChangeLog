@@ -15,3 +15,8 @@
    b. worker 可以再客户端看到多个organization的报告
 4. 2012-09-18
    a. 解决了客户,上传（视频、图像）按钮只显示一半的问题
+5. 2012-10-09
+   a. validate 数量，仅在create的时候有效  
+   b. 摸板编辑的时候的修改不能修改属性(重点) (不再区分督察和巡查摸板)
+   c. zone_supervisor 在客户端看到worker报告 (worker可以看到督察报告)
+   d. 报告列表太长的问题 （重点） worker和supervisor mobile和html都进行了修改。重点是导航部分的升级
