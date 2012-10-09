@@ -2,3 +2,4 @@
  bundle exec rake assets:precompile
 
  git push origin master
+ rake db:rollback RAILS_ENV="production"

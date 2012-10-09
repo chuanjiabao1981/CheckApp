@@ -1,0 +1,30 @@
+<ul class="breadcrumb">
+	<% if controller_name == 'main' and (action_name == 'zone_admin_home' or action_name == 'zone_supervisor_home') %>
+		<li class="active">分区报告列表</li>
+	<% else %>
+		<li>
+			<% if current_user.session.zone_admin? %>
+				<%= link_to '分区报告列表', zone_admin_home_path(current_user) %>
+			<% else %>
+				<%= link_to '分区报告列表', zone_supervisor_home_path %>
+			<% end %>
+			<span class="divider">/</span>
+		</li>
+
+		<% if controller_name == 'organizations' and action_name == 'all_reports' %>
+			<%= zone.name + '的全部报告' %>
+		<% else %>
+			<li>
+				<%= link_to zone.name + '的全部报告', all_reports_zone_organizations_path(zone) %>
+				<span class="divider">/</span>
+			</li>
+			<li class="active">
+				<% if controller_name == 'reports' and action_name == 'worker_report' %>
+					<%= organization.name + '的巡查报告' %>
+				<% elsif controller_name == 'reports' and action_name == 'supervisor_report' %>
+					<%= organization.name + '的督察报告' %>
+				<% end %>
+			</li>
+		<% end %>
+	<% end %>
+</ul>

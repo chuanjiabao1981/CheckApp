@@ -1,6 +1,25 @@
-<ul class="breadcrumb">
-  <li><%= link_to '全部分区报告',home_path %></li>
-</ul>
+<div class="box">
+	<div class="row">
+		<div class="span10 offset1">	
+			<legend>全部分区报告</legend>
+			<table class="table table-bordered table-striped">
+				<tr>
+					<th width="8%"><center>编号</center></th>
+					<th width="40%"><center>分区名称</center></th>
+					<th><center>报告列表</center></th>
+				</tr>
+				<% zones.each_with_index do |z,i|%>
+				<tr>
+					<td><center><%= i+ 1 %></center></td>
+					<td><%= z.name %> </td>
+					<td><%= link_to '全部报告',all_reports_zone_organizations_path(z) %></td>
+				</tr>
+				<% end %>
+			</table>	 
+		</div>
+	</div>
+</div>
+<!--
 <% zones.each do |z|%>
 	<div class="box">
 		<div class="row">
@@ -31,3 +50,4 @@
 		</div>
 	</div>
 <% end %>
+-->

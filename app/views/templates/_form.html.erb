@@ -12,18 +12,8 @@
             </div>
           </div>
           <% if template.new_record? %>
-          <div class="control-group">
-            <%= f.label :for_supervisor,"督察模板" ,class:"control-label"%>
-            <div class="controls">
-              <%= f.check_box :for_supervisor %>
-            </div>
-          </div>
-          <div class="control-group">
-            <%= f.label :for_worker,"巡查模板" ,class:"control-label"%>
-            <div class="controls">
-              <%= f.check_box :for_worker %>
-            </div>
-          </div>
+            <%= f.hidden_field  :for_supervisor,:value=>"1" %>
+            <%= f.hidden_field  :for_worker,:value=>"1" %>
           <% end %>
           <legend>报告结果设定</legend>
           <%= f.fields_for :check_value do |check_value| %>
