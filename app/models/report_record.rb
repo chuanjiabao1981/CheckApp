@@ -35,7 +35,7 @@ end
 class ReportRecord < ActiveRecord::Base
   require 'carrierwave/orm/activerecord'
 
-  attr_accessible :check_point_id,:int_value,:float_value,:text_value,:boolean_value,:date_value,:media_infos_attributes
+  attr_accessible :check_point_id,:int_value,:float_value,:text_value,:boolean_value,:date_value,:text_with_photo_value,:media_infos_attributes
   belongs_to :report
   belongs_to :check_point#,inverse_of: :report_records
   belongs_to :check_category
@@ -44,6 +44,7 @@ class ReportRecord < ActiveRecord::Base
   validates :int_value, numericality: { :only_integer => true }
   validates :float_value,numericality:true
   validates :text_value,length:{maximum:1200}
+  validates :text_with_photo_value,length:{maximum:1200}
   validates :check_point,presence:true
   validates :check_category,presence:true
   has_many  :media_infos,dependent: :destroy
@@ -56,12 +57,22 @@ class ReportRecord < ActiveRecord::Base
   #validates :video_path,file_size:{:maximum => 20.megabytes.to_i }
 
   def build_video_media
-    a                 = self.media_infos.build
-    a.media_type      = "v"
+    a                     = self.media_infos.build
+    a.media_type          = Rails.application.config.MediaTypeCheckPointVideo
+    a.media_store_mode    = Rails.application.config.media_store_mode
+
+    b                     = self.media_infos.build
+    b.media_type          = Rails.application.config.MediaTypeTextWithVideo
+    b.media_store_mode    = Rails.application.config.media_store_mode
   end
   def build_photo_media
-    a                 = self.media_infos.build
-    a.media_type      = "p"
+    a                     = self.media_infos.build
+    a.media_type          = Rails.application.config.MediaTypeCheckPointPhoto
+    a.media_store_mode    = Rails.application.config.media_store_mode
+
+    b                     = self.media_infos.build
+    b.media_type          = Rails.application.config.MediaTypeTextWithPhoto
+    b.media_store_mode    = Rails.application.config.media_store_mode
   end
   def get_boolean_value
     return "是" if self.boolean_value
@@ -78,5 +89,8 @@ class ReportRecord < ActiveRecord::Base
   end
   def get_text_value
     return self.text_value
+  end
+  def get_text_with_photo_value
+    return self.text_with_photo_value.to_s
   end
 end

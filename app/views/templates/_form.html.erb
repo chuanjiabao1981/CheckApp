@@ -52,6 +52,15 @@
                 <p class="help-block">这个检查项，主要让工作人员填写：检查过程中的备注信息。</p>
               </div>
             </div>
+            <% if @zone_admin.can_text_with_photo %>
+              <div class="control-group">
+                <%= check_value.label :text_with_photo_name,"文字配图" ,class:"control-label"%>
+                  <div class="controls">
+                    <%= check_value.text_field :text_with_photo_name %>
+                    <p class="help-block">这个检查项，主要让工作人员填写：检查过程中的反馈信息。</p>
+                  </div>
+              </div>
+            <% end %>
           <% end %>
           <div class="form-actions">
             <%= f.submit  action_name,class:"btn btn-primary"%> 

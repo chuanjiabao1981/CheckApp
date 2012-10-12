@@ -70,7 +70,9 @@ sudo /etc/init.d/nginx restart
 
 
 
-
+安装 sar
+0. sudo apt-get install sysstat
+1. vim /etc/default/sysstat
 
 
 ####分区

@@ -38,6 +38,12 @@
 					<td><%= @zone_admin_user.max_zone_supervisor_num %></td>
 				</tr>
 				<tr>
+					<th>是否支持文字配图字段</th>
+					<td>
+						<%= @zone_admin_user.can_text_with_photo? ? '是' : '否' %>
+					</td>
+				</tr>
+				<tr>
 					<th>数据备份的月份数</th>
 					<td><%= @zone_admin_user.max_backup_month %></td>
 				</tr>

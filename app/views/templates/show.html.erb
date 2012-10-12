@@ -40,6 +40,9 @@
           <% if @template.check_value.has_text_name? %>
             <li><%= @template.check_value.text_name %>
           <% end %>
+          <% if @template.check_value.has_text_with_photo_name? %>
+            <li><%= @template.check_value.text_with_photo_name %>
+          <% end %>
          <% end %>
       </ul>
     </div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121009050931) do
+ActiveRecord::Schema.define(:version => 20121011130159) do
 
   create_table "check_categories", :force => true do |t|
     t.string   "category"
@@ -37,8 +37,9 @@ ActiveRecord::Schema.define(:version => 20121009050931) do
     t.string   "date_name"
     t.string   "text_name"
     t.integer  "template_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.string   "text_with_photo_name"
   end
 
   create_table "checkers", :force => true do |t|
@@ -77,8 +78,9 @@ ActiveRecord::Schema.define(:version => 20121009050931) do
     t.string   "photo_path"
     t.string   "media_type"
     t.integer  "report_record_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+    t.string   "media_store_mode", :default => "local"
   end
 
   create_table "organization_worker_relations", :force => true do |t|
@@ -105,13 +107,14 @@ ActiveRecord::Schema.define(:version => 20121009050931) do
     t.integer  "report_id"
     t.integer  "check_point_id"
     t.integer  "check_category_id"
-    t.boolean  "boolean_value",     :default => false
-    t.integer  "int_value",         :default => 0
-    t.float    "float_value",       :default => 0.0
-    t.date     "date_value",        :default => '2011-12-03'
-    t.text     "text_value",        :default => ""
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
+    t.boolean  "boolean_value",         :default => false
+    t.integer  "int_value",             :default => 0
+    t.float    "float_value",           :default => 0.0
+    t.date     "date_value",            :default => '2011-12-03'
+    t.text     "text_value",            :default => ""
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
+    t.string   "text_with_photo_value"
   end
 
   add_index "report_records", ["check_point_id"], :name => "index_report_records_on_check_point_id"
@@ -177,13 +180,14 @@ ActiveRecord::Schema.define(:version => 20121009050931) do
     t.integer  "template_max_photo_num",  :default => 5
     t.integer  "template_max_video_num",  :default => 1
     t.integer  "site_admin_id"
-    t.datetime "created_at",                              :null => false
-    t.datetime "updated_at",                              :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
     t.integer  "check_point_photo_num",   :default => 2
     t.integer  "check_point_video_num",   :default => 1
     t.integer  "max_org_num",             :default => 5
     t.integer  "max_zone_supervisor_num", :default => 5
     t.integer  "max_backup_month",        :default => 10
+    t.boolean  "can_text_with_photo",     :default => false
   end
 
   create_table "zone_supervisor_relations", :force => true do |t|

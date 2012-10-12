@@ -59,6 +59,12 @@
               <%= f.text_field :max_backup_month %>
             </div>
           </div>
+          <div class="control-group">
+              <%= f.label :can_text_with_photo, "是否支持文字配图字段" ,class:"control-label"%>
+              <div class="controls">
+                <%= f.check_box :can_text_with_photo %>
+              </div>
+          </div>
           <div class="control-group"> 
             <%= f.label :password ,"密码",class:"control-label"%>
             <div class="controls">

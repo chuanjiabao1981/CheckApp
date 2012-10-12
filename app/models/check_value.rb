@@ -17,8 +17,19 @@
 
 class NullNameValidator < ActiveModel::Validator
   def validate(record)
-    if (record.boolean_name == ""   and record.int_name == ""   and record.float_name == ""   and record.date_name == ""  and record.text_name == "")  or \
-       (record.boolean_name == nil  and record.int_name == nil  and record.float_name == nil  and record.date_name == nil and record.text_name == nil)
+    if (record.boolean_name         == ""   and \
+        record.int_name             == ""   and \
+        record.float_name           == ""   and \
+        record.date_name            == ""   and \
+        record.text_name            == ""   and \
+        record.text_with_photo_name == ""      
+        )  or \
+       (record.boolean_name         == nil  and \
+        record.int_name             == nil  and \
+        record.float_name           == nil  and \
+        record.date_name            == nil  and \
+        record.text_name            == nil  and \
+        record.text_with_photo_name == nil) 
       record.errors[:base] = "不能全为空"
     end
   end
@@ -26,13 +37,14 @@ end
 
 class CheckValue < ActiveRecord::Base
   JSON_OPTS = {only:[:boolean_name,:int_name,:float_name,:date_name,:text_name]}
-  attr_accessible :boolean_name,:int_name,:float_name,:date_name,:text_name
+  attr_accessible :boolean_name,:int_name,:float_name,:date_name,:text_name,:text_with_photo_name
   belongs_to :template,inverse_of: :check_value
-  validates :boolean_name, length:{ maximum: 80} 
-  validates :int_name,     length:{ maximum: 80}
-  validates :float_name,   length:{ maximum: 80}
-  validates :date_name,    length:{ maximum: 80}
-  validates :text_name,    length:{ maximum: 80}
+  validates :boolean_name,            length:{ maximum: 80} 
+  validates :int_name,                length:{ maximum: 80}
+  validates :float_name,              length:{ maximum: 80}
+  validates :date_name,               length:{ maximum: 80}
+  validates :text_name,               length:{ maximum: 80}
+  validates :text_with_photo_name,    length:{ maximum: 80}
   validates_with NullNameValidator
   #这里只能用template不能用template_id
   #因为有可能template_id还不存在
@@ -56,6 +68,9 @@ class CheckValue < ActiveRecord::Base
   end
   def has_text_name?
     return true if not real_empty?(self.text_name)
+  end
+  def has_text_with_photo_name?
+    return true if not real_empty?(self.text_with_photo_name)
   end
 private 
   def real_empty?(v)

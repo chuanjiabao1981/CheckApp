@@ -19,24 +19,33 @@ video.addEventListener('click',function(){
     </td>
   </tr>
   <% if @report_record.check_point.can_photo? %>
+    <% nnn = 1 %>
     <% @report_record.media_infos.each do |p| %>
-      <% if not p.nil? and not p.photo_path.to_s.blank? %>
+      <% if not p.nil? and not p.photo_path.to_s.blank? and p.checkpointPhoto? %>
         <tr>
+          <td><%= nnn %></td>
           <td colspan="2"><img src="<%= p.photo_path.to_s %>"/></td>
         </tr>
       <% end %>
+      <% if p.checkpointPhoto? %>
+        <% nnn = nnn + 1 %>
+      <% end %>
     <% end %>
   <% elsif @report_record.check_point.can_video? %>
+    <% nnn = 1 %>
     <tr>
-      <td>视频</td>
-      <td>
-        <% @report_record.media_infos.each do |v| %>
-          <% if not v.nil? and not v.video_path.to_s.blank? %>
-            <a href="<%= v.video_path.to_s %>">视频</a>
-          <% end %>
-        <% end %>
-      </td>
+      <td colspan="2">视频</td>
     </tr>
+    <% @report_record.media_infos.each do |v| %>
+      <% if not v.nil? and not v.video_path.to_s.blank? and v.checkpointVideo? %>
+        <tr>      
+          <td><%= nnn%></td>
+          <td>
+            <a href="<%= v.video_path.to_s %>">视频</a>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
   <% end %>
   <% if @check_value.has_boolean_name? %>
     <tr>
@@ -68,6 +77,44 @@ video.addEventListener('click',function(){
       <td><%= @report_record.get_text_value%></td>
     </tr>
   <% end %>
-
+  <% if @check_value.has_text_with_photo_name? %>
+    <tr>
+      <td><%= @check_value.text_with_photo_name%></td>
+      <td><%= @report_record.get_text_with_photo_value%></td>
+    </tr>
+    <% if @report_record.check_point.can_photo? %>
+      <% nnn = 1 %>
+      <tr>
+        <td colspan="2"><center><%= @check_value.text_with_photo_name%>图片</center></td>
+      </tr>
+      <% @report_record.media_infos.each do |p| %>
+        <% if not p.nil? and not p.photo_path.to_s.blank? and p.textWithPhoto? %>
+          <tr>
+            <td><%= nnn %></td>
+            <td><img src="<%= p.photo_path.to_s %>"/></td>
+          </tr>
+        <% end %>
+        <% if p.textWithPhoto? %>
+          <% nnn = nnn + 1 %>
+        <% end %>
+      <% end %>
+    <% elsif @report_record.check_point.can_video? %>
+      <% nnn = 1 %>
+      <tr>
+        <td colspan="2"><%= @check_value.text_with_photo_name%>视频</td>
+      </tr>
+      <% @report_record.media_infos.each do |v| %>
+        <% if not v.nil? and not v.video_path.to_s.blank? and v.textWithVideo? %>
+          <tr>
+            <td><%= nnn %></td>
+            <td><a href="<%= v.video_path.to_s %>">视频</a></td>
+          </tr>
+        <% end %>
+        <% if v.textWithVideo? %>
+          <% nnn = nnn + 1 %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
 
 </table>
