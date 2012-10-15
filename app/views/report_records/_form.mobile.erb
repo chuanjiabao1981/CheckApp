@@ -15,6 +15,10 @@
           <%= p.file_field      :photo_path,style:"padding-bottom:40px"%>
           <%= p.hidden_field    :media_type,:value=>  p.object.media_type %>
           <%= p.hidden_field    :media_store_mode,:value=> p.object.media_store_mode %>
+          <% if media_caption_enable %>
+            <%= p.label      :photo_caption,"图像#{nnn}的说明" %>
+            <%= p.text_field :photo_caption %>
+          <% end %> 
           <% nnn = nnn + 1 %>
         <% end %>
     <% end %>
@@ -30,6 +34,10 @@
         <%= v.file_field        :video_path ,style:"padding-bottom:40px"%>
         <%= v.hidden_field      :media_type ,     :value=>v.object.media_type %>
         <%= v.hidden_field      :media_store_mode,:value=>v.object.media_store_mode  %>
+        <% if media_caption_enable %>
+            <%= v.label      :video_caption,"视频#{nnn}的说明" %>
+            <%= v.text_field :video_caption %>
+          <% end %> 
         <% nnn = nnn +1 %>
       <% end %>
     <% end %>
@@ -74,6 +82,10 @@
             <%= p.file_field      :photo_path,style:"padding-bottom:40px"%>
             <%= p.hidden_field    :media_type,:value=>  p.object.media_type %>
             <%= p.hidden_field    :media_store_mode,:value=> p.object.media_store_mode %>
+            <% if media_caption_enable %>
+              <%= p.label      :photo_caption,report.template.check_value.text_with_photo_name+"图像#{nnn}的说明" %>
+              <%= p.text_field :photo_caption %>
+            <% end %> 
             <% nnn = nnn + 1 %>
           <% end %>
         <% end %>
@@ -89,6 +101,10 @@
           <%= v.file_field        :video_path ,style:"padding-bottom:40px"%>
           <%= v.hidden_field      :media_type ,     :value=>v.object.media_type %>
           <%= v.hidden_field      :media_store_mode,:value=>v.object.media_store_mode  %>
+          <% if media_caption_enable %>
+            <%= v.label      :video_caption,report.template.check_value.text_with_photo_name+"视频#{nnn}的说明" %>
+            <%= v.text_field :video_caption %>
+          <% end %> 
           <% nnn = nnn +1 %>
         <% end %>
       <% end %>

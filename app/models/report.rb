@@ -29,6 +29,23 @@ class ReportValidator < ActiveModel::Validator
     end
   end
 end
+class ReportNumValidator < ActiveModel::Validator
+  def validate(record)
+    if not record.errors.empty?
+      return 
+    end
+    if record.supervisor_report?
+      if (record.template.zone_admin.get_all_supervisor_report_num + 1) >  record.template.zone_admin.max_supervisor_report_num 
+        record.errors[:base] = "您的账户仅能创建#{record.template.zone_admin.max_supervisor_report_num}个督察报告。"
+      end  
+    end
+    if record.worker_report?
+      if (record.template.zone_admin.get_all_worker_report_num + 1) > record.template.zone_admin.max_worker_report_num
+        record.errors[:base] = "您的账户仅能创建#{record.template.zone_admin.max_worker_report_num}个巡查报告。"
+      end
+    end
+  end
+end
 
 class Report < ActiveRecord::Base
   #attr_accessible :template_id,:organization_id,:reporter_name
@@ -46,6 +63,8 @@ class Report < ActiveRecord::Base
   validates :status,presence:true
 
   validates_with ReportValidator
+  validates_with ReportNumValidator, :on => :create
+
 
 
   def supervisor_report?

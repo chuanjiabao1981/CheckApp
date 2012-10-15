@@ -29,7 +29,7 @@ end
 class Template < ActiveRecord::Base
 
   JSON_OPTS = {only:[:id,:name],include:{check_value:CheckValue::JSON_OPTS,check_categories:CheckCategory::JSON_OPTS}}
-  attr_accessible :name,:for_supervisor,:for_worker,:check_value_attributes
+  attr_accessible :name,:for_supervisor,:for_worker,:check_value_attributes,:media_caption_enable
   belongs_to :zone_admin
   has_one :check_value,dependent:  :destroy,inverse_of: :template
 

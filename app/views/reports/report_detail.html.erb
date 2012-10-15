@@ -44,6 +44,8 @@
           <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.float_name}%>
           <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.date_name}%>
           <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.text_name}%>
+          <%= render partial:'reports/report_header_item',locals:{item:@report.template.check_value.text_with_photo_name}%>
+ 
         </tr>
         <% nnn = 0 %> 
         <% @report.template.check_categories.each do |cc| %>

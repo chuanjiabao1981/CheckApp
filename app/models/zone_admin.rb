@@ -1,7 +1,14 @@
 class ZoneAdmin < ActiveRecord::Base
   VALID_NAME_REGEX = /\A[a-zA-Z\d_]+\z/i
 
-  attr_accessible :name,:des,:password,:password_confirmation,:template_max_num,:template_max_video_num,:template_max_photo_num,:check_point_photo_num,:check_point_video_num ,:max_org_num,:max_zone_supervisor_num,:max_backup_month,:can_text_with_photo
+  attr_accessible :name,:des,:password,:password_confirmation,\
+                  :template_max_num,:template_max_video_num,\
+                  :template_max_photo_num,:check_point_photo_num,\
+                  :check_point_video_num ,:max_org_num,:max_zone_supervisor_num,\
+                  :max_backup_month,\
+                  :can_text_with_photo,:can_media_caption,\
+                  :max_supervisor_report_num,\
+                  :max_worker_report_num
 
   before_save :create_remember_token
 
@@ -40,9 +47,26 @@ class ZoneAdmin < ActiveRecord::Base
   def get_all_zone_supervisors_num
     return self.zone_supervisors.size
   end
+  def get_all_supervisor_report_num
+    return get_all_report_num('ZoneSupervisor')
+  end
+  def get_all_worker_report_num
+    return get_all_report_num('Worker')
+  end
+
 
 
 private 
+  def get_all_report_num(reportType)
+    s = 0
+    self.templates.each do |t|
+      k = t.reports.where("committer_type=?",reportType.to_s).size
+      s = s + k
+      Rails.logger.debug("Template["+t.name+"] has "+k.to_s + " "+reportType + " reports")
+    end
+    Rails.logger.debug("zone admin has "+s.to_s + " "+reportType + " reports")
+    return s
+  end
   def create_remember_token
     session = self.build_session()
     session.remember_token = SecureRandom.urlsafe_base64

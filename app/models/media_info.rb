@@ -2,7 +2,7 @@ require 'file_size_validator'
 
 class MediaInfo < ActiveRecord::Base
   require 'carrierwave/orm/activerecord'
-  attr_accessible :photo_path,:video_path,:media_type,:media_store_mode
+  attr_accessible :photo_path,:video_path,:media_type,:media_store_mode,:photo_caption,:video_caption
 
   belongs_to :report_record
   mount_uploader :photo_path,MediaInfoPhotoUploader

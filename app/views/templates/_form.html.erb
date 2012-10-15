@@ -15,6 +15,15 @@
             <%= f.hidden_field  :for_supervisor,:value=>"1" %>
             <%= f.hidden_field  :for_worker,:value=>"1" %>
           <% end %>
+          <% if @zone_admin.can_media_caption %>
+            <div class="control-group">
+              <%= f.label :media_caption_enable,"是否启用图片说明功能" ,class:"control-label"%>
+                <div class="controls">
+                  <%= f.check_box :media_caption_enable %>
+                  <p class="help-block">允许巡查员、督察员检查，对拍摄的图片和视频进行文字说明</p>
+                </div>
+            </div>
+          <% end %>
           <legend>报告结果设定</legend>
           <%= f.fields_for :check_value do |check_value| %>
             <div class="control-group">
@@ -57,10 +66,11 @@
                 <%= check_value.label :text_with_photo_name,"文字配图" ,class:"control-label"%>
                   <div class="controls">
                     <%= check_value.text_field :text_with_photo_name %>
-                    <p class="help-block">这个检查项，主要让工作人员填写：检查过程中的反馈信息。</p>
+                    <p class="help-block">这个检查项，主要让工作人员填写：检查后的整改情况。（只有检查点启用图片功能后，此项才可以拍摄照片)</p>
                   </div>
               </div>
             <% end %>
+
           <% end %>
           <div class="form-actions">
             <%= f.submit  action_name,class:"btn btn-primary"%> 

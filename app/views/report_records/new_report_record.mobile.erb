@@ -1,4 +1,5 @@
 <%= render partial:'report_records/form',locals:{
 	report_record:@report_record,
 	report:@report,
+	media_caption_enable:@report.template.media_caption_enable,
 	post_url:create_report_record_path(@report,@check_point,format: :mobile),button_name:'新建'} %>

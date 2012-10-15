@@ -65,6 +65,24 @@
                 <%= f.check_box :can_text_with_photo %>
               </div>
           </div>
+          <div class="control-group">
+              <%= f.label :can_media_caption, "是否支持图字title说明" ,class:"control-label"%>
+              <div class="controls">
+                <%= f.check_box :can_media_caption %>
+              </div>
+          </div>
+          <div class="control-group">
+            <%= f.label :max_supervisor_report_num,"督察报告数量",class:"control-label" %>
+            <div class="controls">
+              <%= f.text_field :max_supervisor_report_num %>
+            </div>
+          </div>
+          <div class="control-group">
+            <%= f.label :max_worker_report_num,"巡查报告数量",class:"control-label" %>
+            <div class="controls">
+              <%= f.text_field :max_worker_report_num %>
+            </div>
+          </div>
           <div class="control-group"> 
             <%= f.label :password ,"密码",class:"control-label"%>
             <div class="controls">

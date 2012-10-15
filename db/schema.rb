@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121011130159) do
+ActiveRecord::Schema.define(:version => 20121015054405) do
 
   create_table "check_categories", :force => true do |t|
     t.string   "category"
@@ -81,6 +81,8 @@ ActiveRecord::Schema.define(:version => 20121011130159) do
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
     t.string   "media_store_mode", :default => "local"
+    t.string   "photo_caption",    :default => ""
+    t.string   "video_caption",    :default => ""
   end
 
   create_table "organization_worker_relations", :force => true do |t|
@@ -158,8 +160,9 @@ ActiveRecord::Schema.define(:version => 20121011130159) do
     t.boolean  "for_supervisor"
     t.boolean  "for_worker"
     t.integer  "zone_admin_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+    t.boolean  "media_caption_enable", :default => false
   end
 
   create_table "workers", :force => true do |t|
@@ -176,18 +179,21 @@ ActiveRecord::Schema.define(:version => 20121011130159) do
     t.string   "name"
     t.string   "des"
     t.string   "password_digest"
-    t.integer  "template_max_num",        :default => 2
-    t.integer  "template_max_photo_num",  :default => 5
-    t.integer  "template_max_video_num",  :default => 1
+    t.integer  "template_max_num",          :default => 2
+    t.integer  "template_max_photo_num",    :default => 5
+    t.integer  "template_max_video_num",    :default => 1
     t.integer  "site_admin_id"
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
-    t.integer  "check_point_photo_num",   :default => 2
-    t.integer  "check_point_video_num",   :default => 1
-    t.integer  "max_org_num",             :default => 5
-    t.integer  "max_zone_supervisor_num", :default => 5
-    t.integer  "max_backup_month",        :default => 10
-    t.boolean  "can_text_with_photo",     :default => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.integer  "check_point_photo_num",     :default => 2
+    t.integer  "check_point_video_num",     :default => 1
+    t.integer  "max_org_num",               :default => 5
+    t.integer  "max_zone_supervisor_num",   :default => 5
+    t.integer  "max_backup_month",          :default => 10
+    t.boolean  "can_text_with_photo",       :default => false
+    t.boolean  "can_media_caption",         :default => false
+    t.integer  "max_worker_report_num",     :default => 50
+    t.integer  "max_supervisor_report_num", :default => 10
   end
 
   create_table "zone_supervisor_relations", :force => true do |t|

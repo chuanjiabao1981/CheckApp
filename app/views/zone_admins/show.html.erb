@@ -44,8 +44,22 @@
 					</td>
 				</tr>
 				<tr>
+					<th>是否支持图片title</th>
+					<td>
+						<%= @zone_admin_user.can_media_caption? ? '是' : '否' %>
+					</td>
+				</tr>
+				<tr>
 					<th>数据备份的月份数</th>
 					<td><%= @zone_admin_user.max_backup_month %></td>
+				</tr>
+				<tr>
+					<th>督察报告数量</th>
+					<td><%= @zone_admin_user.max_supervisor_report_num %></td>
+				</tr>
+				<tr>
+					<th>巡查报告数量</th>
+					<td><%= @zone_admin_user.max_worker_report_num %></td>
 				</tr>
 			    <tr>
 			        <th>备注</th>

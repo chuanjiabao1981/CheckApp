@@ -1,23 +1,26 @@
 <td>
   <%= check_point_index_no %>.<%= check_point.content %>
   <% if not report_record.nil? and check_point.can_photo? %>
+    <br/>
     <% report_record.media_infos.each do |p| %>
-      <% if not p.photo_path.to_s.blank? %>
-        <%= link_to(p.photo_path.to_s,id:"single_image",class:"grouped_elements",rel:"group_1",title:check_point.content) do %>
+      <% if not p.photo_path.to_s.blank? and p.checkpointPhoto? %>
+        <%= link_to(p.photo_path.to_s,id:"single_image",class:"grouped_elements",rel:"group_1",title:check_point.content+",检查情况:<br/><br/>"+p.photo_caption+"") do %>
           <span class="label label-info">图</span>
         <% end %>
       <% end %>
     <% end %>
   <% elsif not report_record.nil? and check_point.can_video? %>
     <% report_record.media_infos.each do |v| %>
-      <div id="single_video">
-        <video width="640" height="480" controls preload style="display:none">
-          <source src="<%= v.video_path.to_s %>" type="video/mp4">
-        </video>
-      </div>
-      <a href="javascript();">
-        <span id="video_content" class="label label-info">视频</span>
-      </a> 
+      <% if v.checkpointVideo? %>
+        <div id="single_video">
+          <video width="640" height="480" controls preload style="display:none">
+            <source src="<%= v.video_path.to_s %>" type="video/mp4">
+          </video>
+        </div>
+        <a href="javascript();">
+          <span id="video_content" class="label label-info">视频</span>
+        </a> 
+      <% end %>
     <% end %>
   <% end %>
 </td>
@@ -67,6 +70,39 @@
     <td>未完成</td>
   <% else %>
     <td><%= report_record.get_text_value %></td>
+  <% end %>
+<% else %>
+  <td style="display:none">未设置</td>
+<% end %>
+<% if check_value.has_text_with_photo_name? %>
+  <% if report_record.nil? %>
+    <td>未完成</td>
+  <% else %> 
+    <td>
+      <%= report_record.get_text_with_photo_value %></br>
+      <% if not report_record.nil? and check_point.can_photo? %>
+        <% report_record.media_infos.each do |p| %>
+          <% if not p.photo_path.to_s.blank? and p.textWithPhoto? %>
+            <%= link_to(p.photo_path.to_s,id:"single_image",class:"grouped_elements",rel:"group_1",title:check_value.text_with_photo_name.strip+"现场图片:<br/><br/>"+p.photo_caption+"") do %>
+              <span class="label label-info">图</span>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% elsif not report_record.nil? and check_point.can_video? %>
+        <% report_record.media_infos.each do |v| %>
+          <% if v.textWithVideo? %>
+            <div id="single_video">
+              <video width="640" height="480" controls preload style="display:none">
+                <source src="<%= v.video_path.to_s %>" type="video/mp4">
+              </video>
+            </div>
+            <a href="javascript();">
+              <span id="video_content" class="label label-info">视频</span>
+            </a> 
+          <% end %>
+        <% end %>
+      <% end %>
+    </td>
   <% end %>
 <% else %>
   <td style="display:none">未设置</td>
