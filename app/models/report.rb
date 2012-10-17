@@ -75,6 +75,24 @@ class Report < ActiveRecord::Base
     return true if self.committer_type == 'Worker'
     return false
   end
+  def get_report_type_text
+    if self.supervisor_report?
+      return I18n.t "text.report.type.supervisor"
+    elsif self.worker_report?
+      return I18n.t "text.report.type.worker"
+    else
+      return I18n.t "text.report.type.err"
+    end
+  end
+  def get_status_text
+    if self.status_is_finished?
+      return I18n.t "text.report.status.finished"
+    elsif self.status_is_new?
+      return I18n.t "text.report.status.new"
+    else
+      return I18n.t "text.report.status.error"
+    end
+  end
   def status_is_finished?
     return true if self.status == 'finished'
     return false

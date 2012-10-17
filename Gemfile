@@ -9,6 +9,8 @@ gem 'bootstrap-sass', '2.0.0'
 gem "fancybox-rails", "~> 0.1.4"
 gem 'will_paginate', '~> 3.0'
 gem 'voyeur'
+gem 'prawn', git: 'git://github.com/prawnpdf/prawn', branch: 'master'
+
 
 
 # Bundle edge Rails instead:

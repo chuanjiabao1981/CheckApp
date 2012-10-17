@@ -1,4 +1,5 @@
 #encoding:utf-8
+require "prawn"
 class ReportsController < ApplicationController
   before_filter :singed_in_user
   before_filter :validate_format,                         only:[:worker_report,:check_categories,:check_points,:new,:edit,:supervisor_report,:report_detail,:pass,:reject]
@@ -115,6 +116,14 @@ class ReportsController < ApplicationController
   def report_detail
     @zone_admin = @report.organization.zone.zone_admin
     @checker    = @report.organization.checker
+    respond_to do |format|
+      format.html
+      format.pdf do 
+        send_data generate_pdf(@report),\
+        filename:"#{@organization.zone.name}_(#{@report.get_report_type_text})#{@organization.name}_#{@report.template.name}_#{I18n.localize(@report.created_at, format: :normal)}.pdf",\
+        type: "application/pdf"
+      end
+    end
   end
   def pass
     if @report.finished?
@@ -211,5 +220,62 @@ private
       return redirect_to root_path unless current_user.zone_ids.include?(@organization.zone.id)
     end
   end
+  def generate_pdf(report)
+    Prawn::Document.new do
+      font "#{Prawn::BASEDIR}/data/fonts/simsun.ttf"
+      title_1_font_size             = 30
+      title_2_font_size             = 20
+      section_pad_size              = 15  
+      section_line_pad_size         = 10
+      section_line_transparent      = 0.2
+      # title
+      text report.organization.name ,:align => :center,:size => title_1_font_size
+      text report.template.name,:align => :center,:size => title_1_font_size
+      # part_1:  summary
+      pad_top(section_pad_size) do 
+        text I18n.t("text.report.summary"),:size => title_2_font_size
+      end
+      pad(section_line_pad_size) do
+        transparent(section_line_transparent) {stroke_horizontal_rule}
+      end
+      summary_text_items = 
+                    [ 
+                      I18n.t("text.report.template.name")+":\t" + report.template.name  ,
+                      I18n.t("text.report.template.checkpoint_num")+":\t"+report.template.get_check_ponits_num.to_s + "个",
+                      I18n.t("text.report.template.finished_checkpoint_num")+":\t"+report.get_finished_check_points_num.to_s + "个",
+                      I18n.t("text.report.committer.name")+":\t"+report.committer.name,
+                      I18n.t("text.report.reporter_name")+":\t"+report.reporter_name,
+                      I18n.t("text.report.created_at")+":\t" + I18n.localize(report.created_at,format: :long),
+                      I18n.t("text.report.status.name")+":\t" + report.get_status_text
+                     ] 
+      summary_text        = ""
+      summary_text_items.each_with_index do |s,i|
+        summary_text += "#{i+1}.#{s}\n"
+      end
+      text summary_text,:leading=>10
+      move_down 40
+      # part_2:  detail
+      pad_top(section_pad_size) do 
+        text I18n.t("text.report.detail"),:size => title_2_font_size
+      end
+      pad(section_line_pad_size) do
+        transparent(section_line_transparent) {stroke_horizontal_rule}
+      end
 
+      t ="你"*100
+      text t
+      sumary_table = [
+                      [{:content=> (I18n.t "text.report.summary"),:colspan=>2}],
+                      [( I18n.t "text.report.template.name" ),report.template.name],
+                      [( I18n.t "text.report.template.checkpoint_num"),report.template.get_check_ponits_num.to_s]
+                     ]
+      table(sumary_table) do 
+        row(0).align = :center
+      end
+      text "<table><tr><td>xxx</td></tr><tr><td></td></tr></table>"
+      text ( I18n.t "text.report.template.name" )+ report.template.name
+      text report.template.get_check_ponits_num.to_s
+      text report.get_finished_check_points_num.to_s
+    end.render
+  end
 end

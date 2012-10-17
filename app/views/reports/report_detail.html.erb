@@ -28,6 +28,7 @@
         <% end %>
         <p>
           <%= link_to '删除',report_path(@report),method: :delete,confirm:'确定要删除这个报告吗?', class:"btn btn-danger"%>
+          <%= link_to '下载',report_detail_report_path(@report,format: :pdf),class:"btn btn-info" %>
         </p>
 <% end %>
 <div class="box">

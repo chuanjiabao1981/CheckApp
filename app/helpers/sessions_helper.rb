@@ -30,6 +30,7 @@ module SessionsHelper
     respond_to do |format| 
       format.html   {redirect_to root_path unless signed_in? }
       format.mobile {redirect_to root_path(format: :mobile) unless signed_in? }
+      format.pdf    {redirect_to root_path(format: :html) unless signed_in? }
     end
   end
 

@@ -1,4 +1,25 @@
 cn:
+  text:
+    report:
+      summary: 报告基本情况
+      detail: 报告详情
+      template:
+        name: 报告名称
+        checkpoint_num: 检查点个数
+        finished_checkpoint_num: 已完成检查点个数
+      committer:
+        name: 账号
+      reporter_name: 提交人
+      created_at: 提交时间
+      type:
+        supervisor: 督察报告
+        worker: 巡查报告
+        err: 报告
+      status:
+        name: 报告状态
+        finished: 审核通过
+        new: 进行中
+        error: 错误
   date:
     abbr_day_names:
     - 日
@@ -59,6 +80,7 @@ cn:
       long: ! '%Y年%b%d日 %H:%M'
       short: ! '%b%d日 %H:%M'
       brief: ! '%b%d日'
+      normal: ! '%Y年%b%d日'
     pm: 下午
   helpers:
     select:
