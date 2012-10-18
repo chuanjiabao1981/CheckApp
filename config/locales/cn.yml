@@ -1,12 +1,18 @@
 cn:
   text:
+    report_record:
+      not_begin: 未完成
     report:
       summary: 报告基本情况
       detail: 报告详情
+      location: 检查地点
       template:
         name: 报告名称
         checkpoint_num: 检查点个数
         finished_checkpoint_num: 已完成检查点个数
+      check_category: 检查类别
+      check_point: 检查点
+      check_time: 检查时间
       committer:
         name: 账号
       reporter_name: 提交人

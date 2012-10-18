@@ -76,7 +76,6 @@ class ReportsController < ApplicationController
         @template_list = Template.where(for_supervisor:true,zone_admin_id:@organization.zone.zone_admin_id)
       end
       @location_list  = @organization.zone.zone_admin.locations
-      Rails.logger.debug("======================")
       render 'new',formats: [:mobile]
     end
   end
@@ -119,6 +118,8 @@ class ReportsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do 
+        @report.download_num += 1
+        @report.save
         send_data generate_pdf(@report),\
         filename:"#{@organization.zone.name}_(#{@report.get_report_type_text})#{@organization.name}_#{@report.template.name}_#{I18n.localize(@report.created_at, format: :normal)}.pdf",\
         type: "application/pdf"
@@ -221,22 +222,23 @@ private
     end
   end
   def generate_pdf(report)
-    Prawn::Document.new do
-      font "#{Prawn::BASEDIR}/data/fonts/simsun.ttf"
+    Prawn::Document.new do |report_pdf|
+
+      report_pdf.font "#{Prawn::BASEDIR}/data/fonts/simsun.ttf"
       title_1_font_size             = 30
       title_2_font_size             = 20
       section_pad_size              = 15  
       section_line_pad_size         = 10
       section_line_transparent      = 0.2
       # title
-      text report.organization.name ,:align => :center,:size => title_1_font_size
-      text report.template.name,:align => :center,:size => title_1_font_size
+      report_pdf.text report.organization.name ,:align => :center,:size => title_1_font_size
+      report_pdf.text report.template.name,:align => :center,:size => title_2_font_size
       # part_1:  summary
-      pad_top(section_pad_size) do 
-        text I18n.t("text.report.summary"),:size => title_2_font_size
+      report_pdf.pad_top(section_pad_size) do 
+        report_pdf.text I18n.t("text.report.summary"),:size => title_2_font_size
       end
-      pad(section_line_pad_size) do
-        transparent(section_line_transparent) {stroke_horizontal_rule}
+      report_pdf.pad(section_line_pad_size) do
+        report_pdf.transparent(section_line_transparent) {report_pdf.stroke_horizontal_rule}
       end
       summary_text_items = 
                     [ 
@@ -252,30 +254,236 @@ private
       summary_text_items.each_with_index do |s,i|
         summary_text += "#{i+1}.#{s}\n"
       end
-      text summary_text,:leading=>10
-      move_down 40
+      report_pdf.text summary_text,:leading=>10
+      report_pdf.move_down 40
       # part_2:  detail
-      pad_top(section_pad_size) do 
-        text I18n.t("text.report.detail"),:size => title_2_font_size
+      report_pdf.pad_top(section_pad_size) do 
+        report_pdf.text I18n.t("text.report.detail"),:size => title_2_font_size
       end
-      pad(section_line_pad_size) do
-        transparent(section_line_transparent) {stroke_horizontal_rule}
+      report_pdf.pad(section_line_pad_size) do
+        report_pdf.transparent(section_line_transparent) {report_pdf.stroke_horizontal_rule}
       end
+      detail_table_header = [
+                              I18n.t("text.report.check_category"),
+                              I18n.t("text.report.check_point"),
+                              I18n.t("text.report.check_time")
+                            ]
+      header_num = 0
+      if report.template.check_value.has_boolean_name?
+        detail_table_header.push(report.template.check_value.boolean_name)
+        header_num +=1
+      end
+      if report.template.check_value.has_int_name?
+        detail_table_header.push(report.template.check_value.int_name)
+        header_num +=1
+      end
+      if report.template.check_value.has_float_name?
+        detail_table_header.push(report.template.check_value.float_name)
+        header_num +=1
+      end
+      if report.template.check_value.has_date_name?
+        detail_table_header.push(report.template.check_value.date_name)
+        header_num +=1
+      end
+      if report.template.check_value.has_text_name?
+        detail_table_header.push(report.template.check_value.text_name)
+        header_num +=1
+      end
+      if report.template.check_value.has_text_with_photo_name?
+        detail_table_header.push(report.template.check_value.text_with_photo_name)
+        header_num +=1
+      end
+      check_result  = ""
+      tab_num       = 1
+      report.template.check_categories.each_with_index do |cc,cci|
+        check_points_array   =   cc.check_points
+        check_result        +=   "#{cci+1}、#{cc.category}\n"
+        check_points_array.each_with_index do |cp,cpi|
+          items = report_body_text_item2(report.template.check_value,
+                                cp,
+                                report.get_report_record_by_check_point_id(cp.id)
+                                )
+          check_result      += "#{Prawn::Text::NBSP * tab_num * 1}#{cpi}、#{cp.content}\n"
+          Rails.logger.debug(items)
+          items.each_with_index do |item,item_index|
+            check_result += "#{Prawn::Text::NBSP * tab_num * 2}"+ "» " + item[0]+":\n" 
+            check_result += "#{Prawn::Text::NBSP * tab_num * 5}"+ item[1]+"\n"
+          end
+        end
+      end
+      #report_pdf.text check_result,:leading=>10
+      summary_table = [
+                        detail_table_header
+                      ]
 
-      t ="你"*100
-      text t
+      report.template.check_categories.each_with_index do |cc,cci|
+        check_points_array  = cc.check_points
+        check_points_num    = check_points_array.size
+        next if check_points_num == 0
+        #first_check_point   = check_points_array.shift
+        check_points_array.each_with_index do |cp,cpi|
+          if cpi == 0
+            tmp = []
+            tmp.push({:content=>cc.category,:rowspan=>check_points_num})
+            tmp.concat(self.report_body_text_item(report.template.check_value,
+                                           cp,
+                                           report.get_report_record_by_check_point_id(cp.id)
+                                           )
+                    )
+            summary_table.push(tmp)
+          else
+            summary_table.push(self.report_body_text_item(report.template.check_value,
+                                                         cp,
+                                                         report.get_report_record_by_check_point_id(cp.id)))
+          end
+        end
+      end   
+
       sumary_table = [
+                      [{:content=>"x"*100,:colspan=>3+header_num}],
+                      detail_table_header,
                       [{:content=> (I18n.t "text.report.summary"),:colspan=>2}],
                       [( I18n.t "text.report.template.name" ),report.template.name],
                       [( I18n.t "text.report.template.checkpoint_num"),report.template.get_check_ponits_num.to_s]
                      ]
-      table(sumary_table) do 
+      Rails.logger.debug(summary_table)
+
+
+      report_pdf.move_down 20
+      #report_pdf.stroke_bounds
+
+      report_pdf.table(summary_table,:width=>report_pdf.bounds.width) do 
+        cells.padding = 8
+        cells.size    = 8
+        row(0).background_color ="F0F0F0"
+        row(0).border_width = 1.5
+        columns(0).align = :center
+        columns(0).width = 50
+        columns(1).width =100
+
         row(0).align = :center
       end
-      text "<table><tr><td>xxx</td></tr><tr><td></td></tr></table>"
-      text ( I18n.t "text.report.template.name" )+ report.template.name
-      text report.template.get_check_ponits_num.to_s
-      text report.get_finished_check_points_num.to_s
+      #text "<table><tr><td>xxx</td></tr><tr><td></td></tr></table>"
+      #text ( I18n.t "text.report.template.name" )+ report.template.name
+      #text report.template.get_check_ponits_num.to_s
+      #text report.get_finished_check_points_num.to_s
+
     end.render
+  end
+
+public
+  def report_body_text_item(check_value,check_point,report_record)
+    r = []
+    r.push(check_point.content)
+    if report_record.nil?
+      r.push("N/A")
+    else
+      r.push(I18n.localize(report_record.created_at,format: :long))
+    end
+    if check_value.has_boolean_name?
+      if report_record.nil?
+        r.push(I18n.t "text.report_record.not_begin")
+      else
+        r.push(report_record.get_boolean_value)
+      end
+    end
+
+    if check_value.has_int_name?
+      if report_record.nil?
+        r.push(I18n.t "text.report_record.not_begin")
+      else
+        r.push(report_record.get_int_value)
+      end
+    end
+
+    if check_value.has_float_name?
+      if report_record.nil?
+        r.push(I18n.t "text.report_record.not_begin")
+      else
+        r.push(report_record.get_float_value)
+      end
+    end
+
+    if check_value.has_date_name?
+      if report_record.nil?
+        r.push(I18n.t "text.report_record.not_begin")
+      else
+        r.push(report_record.get_date_value)
+      end
+    end
+
+    if check_value.has_text_name?
+      if report_record.nil?
+        r.push(I18n.t "text.report_record.not_begin")
+      else
+        r.push(report_record.get_text_value)
+      end
+    end
+
+    if check_value.has_text_with_photo_name?
+      if report_record.nil?
+        r.push(I18n.t "text.report_record.not_begin")
+      else
+        r.push(report_record.get_text_with_photo_value)
+      end
+    end
+    r
+  end
+  def report_body_text_item2(check_value,check_point,report_record)
+    r = []
+    #r.push(check_point.content)
+    if report_record.nil?
+      r.push([I18n.t("text.report.check_time"),"N/A"])
+    else
+      r.push([I18n.t("text.report.check_time"),I18n.localize(report_record.created_at,format: :long)])
+    end
+    if check_value.has_boolean_name?
+      if report_record.nil?
+        r.push([check_value.boolean_name,I18n.t("text.report_record.not_begin")])
+      else
+        r.push([check_value.boolean_name,report_record.get_boolean_value])
+      end
+    end
+
+    if check_value.has_int_name?
+      if report_record.nil?
+        r.push([check_value.int_name,I18n.t("text.report_record.not_begin")])
+      else
+        r.push([check_value.int_name,report_record.get_int_value])
+      end
+    end
+
+    if check_value.has_float_name?
+      if report_record.nil?
+        r.push([check_value.float_name,I18n.t("text.report_record.not_begin")])
+      else
+        r.push([check_value.float_name,report_record.get_float_value])
+      end
+    end
+
+    if check_value.has_date_name?
+      if report_record.nil?
+        r.push([check_value.date_name,I18n.t("text.report_record.not_begin")])
+      else
+        r.push([check_value.date_name,report_record.get_date_value])
+      end
+    end
+
+    if check_value.has_text_name?
+      if report_record.nil?
+        r.push([check_value.text_name,I18n.t("text.report_record.not_begin")])
+      else
+        r.push([check_value.text_name,report_record.get_text_value])
+      end
+    end
+
+    if check_value.has_text_with_photo_name?
+      if report_record.nil?
+        r.push([check_value.text_with_photo_name,I18n.t("text.report_record.not_begin")])
+      else
+        r.push([check_value.text_with_photo_name,report_record.get_text_with_photo_value])
+      end
+    end
+    r
   end
 end

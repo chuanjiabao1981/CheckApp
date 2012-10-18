@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121015054405) do
+ActiveRecord::Schema.define(:version => 20121017093722) do
 
   create_table "check_categories", :force => true do |t|
     t.string   "category"
@@ -129,9 +129,10 @@ ActiveRecord::Schema.define(:version => 20121015054405) do
     t.integer  "committer_id"
     t.string   "committer_type"
     t.string   "status"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.integer  "location_id"
+    t.integer  "download_num",    :default => 0
   end
 
   add_index "reports", ["organization_id"], :name => "index_reports_on_organization_id"

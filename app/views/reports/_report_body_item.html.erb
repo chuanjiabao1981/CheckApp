@@ -17,9 +17,11 @@
             <source src="<%= v.video_path.to_s %>" type="video/mp4">
           </video>
         </div>
-        <a href="javascript();">
-          <span id="video_content" class="label label-info">视频</span>
-        </a> 
+        <% if not v.video_path.to_s.blank? %>
+          <a href="javascript();">
+            <span id="video_content" class="label label-info">视频</span>
+          </a> 
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
@@ -96,9 +98,11 @@
                 <source src="<%= v.video_path.to_s %>" type="video/mp4">
               </video>
             </div>
-            <a href="javascript();">
-              <span id="video_content" class="label label-info">视频</span>
-            </a> 
+            <% if not v.video_path.to_s.blank? %>
+              <a href="javascript();">
+                <span id="video_content" class="label label-info">视频</span>
+              </a> 
+            <% end %>
           <% end %>
         <% end %>
       <% end %>

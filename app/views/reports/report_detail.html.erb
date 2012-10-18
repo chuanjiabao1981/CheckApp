@@ -30,6 +30,9 @@
           <%= link_to '删除',report_path(@report),method: :delete,confirm:'确定要删除这个报告吗?', class:"btn btn-danger"%>
           <%= link_to '下载',report_detail_report_path(@report,format: :pdf),class:"btn btn-info" %>
         </p>
+        <p>
+          <span class="label label-important">已下载 <%=  @report.download_num %> 次</span>
+        </p>
 <% end %>
 <div class="box">
   <div class="row">
