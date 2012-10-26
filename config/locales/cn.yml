@@ -3,6 +3,7 @@ cn:
     report_record:
       not_begin: 未完成
     report:
+      photo: 现场照片
       summary: 报告基本情况
       detail: 报告详情
       location: 检查地点

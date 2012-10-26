@@ -72,6 +72,12 @@
               </div>
           </div>
           <div class="control-group">
+            <%= f.label :can_download_report,"是否支持报告下载",class:"control-label"%>
+            <div class="controls">
+              <%= f.check_box :can_download_report %>
+            </div>
+          </div> 
+          <div class="control-group">
             <%= f.label :max_supervisor_report_num,"督察报告数量",class:"control-label" %>
             <div class="controls">
               <%= f.text_field :max_supervisor_report_num %>
@@ -89,6 +95,7 @@
               <%= f.password_field :password %>
             </div>
           </div>
+
           <div class="control-group">
             <%= f.label :password_confirmation, "确认密码" ,class:"control-label"%>
             <div class="controls">

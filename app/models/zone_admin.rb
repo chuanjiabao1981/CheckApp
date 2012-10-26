@@ -8,7 +8,8 @@ class ZoneAdmin < ActiveRecord::Base
                   :max_backup_month,\
                   :can_text_with_photo,:can_media_caption,\
                   :max_supervisor_report_num,\
-                  :max_worker_report_num
+                  :max_worker_report_num,
+                  :can_download_report
 
   before_save :create_remember_token
 

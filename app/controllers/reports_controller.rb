@@ -118,11 +118,16 @@ class ReportsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do 
-        @report.download_num += 1
-        @report.save
-        send_data generate_pdf(@report),\
-        filename:"#{@organization.zone.name}_(#{@report.get_report_type_text})#{@organization.name}_#{@report.template.name}_#{I18n.localize(@report.created_at, format: :normal)}.pdf",\
-        type: "application/pdf"
+        #权限控制
+        if not @zone_admin.can_download_report?
+          redirect_to report_detail_report_path(@report,format: :html)
+        else
+          @report.download_num += 1
+          @report.save
+          send_data generate_pdf(@report),\
+          filename:"#{@organization.zone.name}_(#{@report.get_report_type_text})#{@organization.name}_#{@report.template.name}_#{I18n.localize(@report.created_at, format: :normal)}.pdf",\
+          type: "application/pdf"
+        end
       end
     end
   end
@@ -224,15 +229,18 @@ private
   def generate_pdf(report)
     Prawn::Document.new do |report_pdf|
 
-      report_pdf.font "#{Prawn::BASEDIR}/data/fonts/simsun.ttf"
+      report_pdf.font Rails.application.config.pdf_normal_font_location
       title_1_font_size             = 30
       title_2_font_size             = 20
+      title_3_font_size             = 15
+      title_4_font_size             = 10
       section_pad_size              = 15  
       section_line_pad_size         = 10
       section_line_transparent      = 0.2
       # title
       report_pdf.text report.organization.name ,:align => :center,:size => title_1_font_size
       report_pdf.text report.template.name,:align => :center,:size => title_2_font_size
+      report_pdf.text I18n.localize(report.created_at,format: :normal),:align => :center,:size => title_4_font_size
       # part_1:  summary
       report_pdf.pad_top(section_pad_size) do 
         report_pdf.text I18n.t("text.report.summary"),:size => title_2_font_size
@@ -293,66 +301,51 @@ private
         detail_table_header.push(report.template.check_value.text_with_photo_name)
         header_num +=1
       end
-      check_result  = ""
-      tab_num       = 1
-      report.template.check_categories.each_with_index do |cc,cci|
-        check_points_array   =   cc.check_points
-        check_result        +=   "#{cci+1}、#{cc.category}\n"
-        check_points_array.each_with_index do |cp,cpi|
-          items = report_body_text_item2(report.template.check_value,
-                                cp,
-                                report.get_report_record_by_check_point_id(cp.id)
-                                )
-          check_result      += "#{Prawn::Text::NBSP * tab_num * 1}#{cpi}、#{cp.content}\n"
-          Rails.logger.debug(items)
-          items.each_with_index do |item,item_index|
-            check_result += "#{Prawn::Text::NBSP * tab_num * 2}"+ "» " + item[0]+":\n" 
-            check_result += "#{Prawn::Text::NBSP * tab_num * 5}"+ item[1]+"\n"
-          end
-        end
-      end
-      #report_pdf.text check_result,:leading=>10
       summary_table = [
                         detail_table_header
                       ]
+
+      summary_photo_table = []
 
       report.template.check_categories.each_with_index do |cc,cci|
         check_points_array  = cc.check_points
         check_points_num    = check_points_array.size
         next if check_points_num == 0
-        #first_check_point   = check_points_array.shift
+        images = []
         check_points_array.each_with_index do |cp,cpi|
+
+          a_report_record = report.get_report_record_by_check_point_id(cp.id)
+          if not a_report_record.nil?
+            a_report_record.media_infos.each do |m|
+              if not m.photo_path.blank?
+                images.push([{:image=>m.photo_path.current_path.to_s,:scale => 0.4}])
+              end
+            end
+          end
           if cpi == 0
             tmp = []
             tmp.push({:content=>cc.category,:rowspan=>check_points_num})
             tmp.concat(self.report_body_text_item(report.template.check_value,
                                            cp,
-                                           report.get_report_record_by_check_point_id(cp.id)
+                                           a_report_record
                                            )
                     )
             summary_table.push(tmp)
           else
             summary_table.push(self.report_body_text_item(report.template.check_value,
                                                          cp,
-                                                         report.get_report_record_by_check_point_id(cp.id)))
+                                                         a_report_record))
           end
+        end
+        if not images.empty?
+          summary_photo_table.concat(images)
         end
       end   
 
-      sumary_table = [
-                      [{:content=>"x"*100,:colspan=>3+header_num}],
-                      detail_table_header,
-                      [{:content=> (I18n.t "text.report.summary"),:colspan=>2}],
-                      [( I18n.t "text.report.template.name" ),report.template.name],
-                      [( I18n.t "text.report.template.checkpoint_num"),report.template.get_check_ponits_num.to_s]
-                     ]
-      Rails.logger.debug(summary_table)
+      #Rails.logger.debug(summary_table)
+      #Rails.logger.debug(summary_photo_table)
 
-
-      report_pdf.move_down 20
-      #report_pdf.stroke_bounds
-
-      report_pdf.table(summary_table,:width=>report_pdf.bounds.width) do 
+      report_pdf.table(summary_table,:width=>report_pdf.bounds.width,:header => true) do 
         cells.padding = 8
         cells.size    = 8
         row(0).background_color ="F0F0F0"
@@ -363,11 +356,98 @@ private
 
         row(0).align = :center
       end
-      #text "<table><tr><td>xxx</td></tr><tr><td></td></tr></table>"
-      #text ( I18n.t "text.report.template.name" )+ report.template.name
-      #text report.template.get_check_ponits_num.to_s
-      #text report.get_finished_check_points_num.to_s
+      report_pdf.move_down 40
 
+
+      #part2:photo
+      report_pdf.start_new_page
+
+      report_pdf.pad_top(section_pad_size) do 
+        report_pdf.text I18n.t("text.report.photo"),:size => title_2_font_size
+      end
+      report_pdf.pad(section_line_pad_size) do
+        report_pdf.transparent(section_line_transparent) {report_pdf.stroke_horizontal_rule}
+      end
+      cp_num = 1;
+      report.template.check_categories.each_with_index do |cc,cci|
+        check_points_array  = cc.check_points
+        check_points_num    = check_points_array.size
+        next if check_points_num == 0
+
+        check_points_array.each_with_index do |cp,cpi|
+          a_check_point_photos              = []
+          a_check_point_text_with_photos    = []
+          cp_num                                = cp_num + 1
+          a_report_record                       = report.get_report_record_by_check_point_id(cp.id)
+          next if a_report_record.nil?
+          a_report_record_check_point_photo_num = a_report_record.get_check_point_photo_num
+          a_report_record_text_with_photo_num   = a_report_record.get_text_with_photo_num 
+          check_photo_no            = 0
+          text_with_photo_no        = 0
+          a_report_record.media_infos.each_with_index do |m,mi|
+
+            if not m.photo_path.to_s.blank?
+              if m.media_store_mode == Rails.application.config.MediaStoreLocalMode
+                  image_caption         = {:content => "图片描述:"}
+                  image_cell            = {:image=>m.photo_path.current_path.to_s,:scale=>0.3,:position=>:center}
+                else
+                  image_cell            = nil
+                  image_caption         = nil
+              end 
+              if m.checkpointPhoto? 
+                check_photo_no= check_photo_no+1
+                if check_photo_no == 1
+                  photo_table_first_line = [{:content=>cp.content,:colspan=>2}]
+                  a_check_point_photos.push(photo_table_first_line)
+                end
+                if (check_photo_no[0] == 1)#奇数
+                  a_check_point_photos.push([image_caption])
+                  a_check_point_photos.push([image_cell])
+                else
+                  index = a_check_point_photos.size - 2
+                  a_check_point_photos[index].push(image_caption)
+                  a_check_point_photos[index+1].push(image_cell)
+                end
+              end
+              if m.textWithPhoto?
+                text_with_photo_no = text_with_photo_no + 1
+                if text_with_photo_no == 1
+                  photo_table_first_line = [{:content=>"#{cp.content}•#{report.template.check_value.text_with_photo_name}",:colspan=>2} ]
+                  a_check_point_text_with_photos.push(photo_table_first_line)
+                end
+                if (text_with_photo_no[0] == 1)#奇数
+                  a_check_point_text_with_photos.push([image_caption])
+                  a_check_point_text_with_photos.push([image_cell])
+                else
+                  index = a_check_point_text_with_photos.size - 2
+                  a_check_point_text_with_photos[index].push(image_caption)
+                  a_check_point_text_with_photos[index+1].push(image_cell)
+                end
+              end
+            end
+          end
+          [a_check_point_photos,a_check_point_text_with_photos].each do |t|
+            if not t.empty?
+              if (t[-1].size == 1 and t[-2].size ==1)
+                t[-1][0][:colspan]=2
+                t[-2][0][:colspan]=2
+                Rails.logger.debug(t[-2][0][:content])
+              end
+              report_pdf.table(t) do
+                row(0).align = :center
+                columns(0).width =270
+                columns(1).width =270
+                cells.style do |c|
+                  if c.row[0] == 1
+                    c.background_color = 'F0F0F0'
+                  end
+                end
+              end
+            end
+            report_pdf.move_down 20
+          end
+        end
+      end
     end.render
   end
 
@@ -425,63 +505,6 @@ public
         r.push(I18n.t "text.report_record.not_begin")
       else
         r.push(report_record.get_text_with_photo_value)
-      end
-    end
-    r
-  end
-  def report_body_text_item2(check_value,check_point,report_record)
-    r = []
-    #r.push(check_point.content)
-    if report_record.nil?
-      r.push([I18n.t("text.report.check_time"),"N/A"])
-    else
-      r.push([I18n.t("text.report.check_time"),I18n.localize(report_record.created_at,format: :long)])
-    end
-    if check_value.has_boolean_name?
-      if report_record.nil?
-        r.push([check_value.boolean_name,I18n.t("text.report_record.not_begin")])
-      else
-        r.push([check_value.boolean_name,report_record.get_boolean_value])
-      end
-    end
-
-    if check_value.has_int_name?
-      if report_record.nil?
-        r.push([check_value.int_name,I18n.t("text.report_record.not_begin")])
-      else
-        r.push([check_value.int_name,report_record.get_int_value])
-      end
-    end
-
-    if check_value.has_float_name?
-      if report_record.nil?
-        r.push([check_value.float_name,I18n.t("text.report_record.not_begin")])
-      else
-        r.push([check_value.float_name,report_record.get_float_value])
-      end
-    end
-
-    if check_value.has_date_name?
-      if report_record.nil?
-        r.push([check_value.date_name,I18n.t("text.report_record.not_begin")])
-      else
-        r.push([check_value.date_name,report_record.get_date_value])
-      end
-    end
-
-    if check_value.has_text_name?
-      if report_record.nil?
-        r.push([check_value.text_name,I18n.t("text.report_record.not_begin")])
-      else
-        r.push([check_value.text_name,report_record.get_text_value])
-      end
-    end
-
-    if check_value.has_text_with_photo_name?
-      if report_record.nil?
-        r.push([check_value.text_with_photo_name,I18n.t("text.report_record.not_begin")])
-      else
-        r.push([check_value.text_with_photo_name,report_record.get_text_with_photo_value])
       end
     end
     r

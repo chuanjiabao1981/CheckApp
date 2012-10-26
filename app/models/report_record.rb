@@ -74,6 +74,24 @@ class ReportRecord < ActiveRecord::Base
     b.media_type          = Rails.application.config.MediaTypeTextWithPhoto
     b.media_store_mode    = Rails.application.config.media_store_mode
   end
+  def get_check_point_photo_num
+    n = 0
+    self.media_infos.each do |m|
+      if m.checkpointPhoto? and not m.photo_path.blank?
+        n = n+ 1
+      end
+    end
+    return n
+  end
+  def get_text_with_photo_num
+    n = 0
+    self.media_infos.each do |m|
+      if m.textWithPhoto? and not m.photo_path.blank?
+        n = n+ 1
+      end
+    end
+    return n
+  end
   def get_boolean_value
     return "是" if self.boolean_value
     return "否" if not self.boolean_value

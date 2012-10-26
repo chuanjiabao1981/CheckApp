@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121017093722) do
+ActiveRecord::Schema.define(:version => 20121026053038) do
 
   create_table "check_categories", :force => true do |t|
     t.string   "category"
@@ -195,6 +195,7 @@ ActiveRecord::Schema.define(:version => 20121017093722) do
     t.boolean  "can_media_caption",         :default => false
     t.integer  "max_worker_report_num",     :default => 50
     t.integer  "max_supervisor_report_num", :default => 10
+    t.boolean  "can_download_report",       :default => false
   end
 
   create_table "zone_supervisor_relations", :force => true do |t|
