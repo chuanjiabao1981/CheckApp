@@ -1,0 +1,3 @@
+在clone完项目后，执行bundle install 之前
+1. port install rb19-mysql
+2. port install ImageMagick

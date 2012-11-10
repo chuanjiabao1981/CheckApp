@@ -30,4 +30,6 @@
 7. 2012-10-26
    a. 支持pdf版本的报告下载
    b. 管理后台可以看到当前用户的报告数
-   
+8. 2012-11-08
+   a. bug fix 下载pdf文件的时候添加photo_caption
+   b. bug fix mobile不显示用户名称   

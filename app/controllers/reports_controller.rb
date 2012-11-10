@@ -388,7 +388,7 @@ private
 
             if not m.photo_path.to_s.blank?
               if m.media_store_mode == Rails.application.config.MediaStoreLocalMode
-                  image_caption         = {:content => "图片描述:"}
+                  image_caption         = {:content => "图片描述:#{m.photo_caption}"}
                   image_cell            = {:image=>m.photo_path.current_path.to_s,:scale=>0.3,:position=>:center}
                 else
                   image_cell            = nil

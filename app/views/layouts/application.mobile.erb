@@ -14,15 +14,7 @@
         <ul class="nav">
           <li><a class="brand" href="#">“云”检</a></li>
           <li><%= link_to "首页", root_path(format: :mobile) %></li>
-          <% if not signed_in? %>
-            <li><%= link_to "关于", root_path(format: :mobile) %></li>
-          <% else %>
-            <% if current_user.session.worker? %>
-              <li><%= link_to current_user.name,'#' %></li>
-            <% else %>
-              <li><%= link_to current_user.name,'#' %></li>
-            <% end %>
-          <% end %>
+          <li><%= link_to "关于", root_path(format: :mobile) %></li>
         </ul>
         <ul class="nav pull-right">              
           <% if signed_in? %>
