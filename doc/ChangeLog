@@ -33,3 +33,5 @@
 8. 2012-11-08
    a. bug fix 下载pdf文件的时候添加photo_caption
    b. bug fix mobile不显示用户名称   
+9. 2012-11-11
+   a. bug fix 美化图片caption的展现。去处不需要的名称和标点

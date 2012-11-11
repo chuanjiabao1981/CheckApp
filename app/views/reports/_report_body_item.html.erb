@@ -4,7 +4,7 @@
     <br/>
     <% report_record.media_infos.each do |p| %>
       <% if not p.photo_path.to_s.blank? and p.checkpointPhoto? %>
-        <%= link_to(p.photo_path.to_s,id:"single_image",class:"grouped_elements",rel:"group_1",title:check_point.content+",检查情况:<br/><br/>"+p.photo_caption+"") do %>
+        <%= link_to(p.photo_path.to_s,id:"single_image",class:"grouped_elements",rel:"group_1",title:check_point.content+"<br/>"+p.photo_caption+"") do %>
           <span class="label label-info">图</span>
         <% end %>
       <% end %>
@@ -85,7 +85,7 @@
       <% if not report_record.nil? and check_point.can_photo? %>
         <% report_record.media_infos.each do |p| %>
           <% if not p.photo_path.to_s.blank? and p.textWithPhoto? %>
-            <%= link_to(p.photo_path.to_s,id:"single_image",class:"grouped_elements",rel:"group_1",title:check_value.text_with_photo_name.strip+"现场图片:<br/><br/>"+p.photo_caption+"") do %>
+            <%= link_to(p.photo_path.to_s,id:"single_image",class:"grouped_elements",rel:"group_1",title:check_value.text_with_photo_name.strip+"现场图片。<br/>"+p.photo_caption+"") do %>
               <span class="label label-info">图</span>
             <% end %>
           <% end %>
