@@ -5,8 +5,8 @@ class StatisticsController < ApplicationController
   def search
     ##TODO:: 不能超过一个月
     if @start_date_ts != 0 and @end_date_ts != 0
-      if ((@end_date_ts - @start_date_ts)/86400) > 6
-        flash.now[:error] = '您的账户仅能查询6天以内的数据。'
+      if ((@end_date_ts - @start_date_ts)/86400) > 31
+        flash.now[:error] = '您的账户仅能查询一个月以内的数据。'
       else
         @reports            = find_report_in_time_range(@template,@start_date,@end_date)
         @report_statistics  = ReportStatistics.new(@template)

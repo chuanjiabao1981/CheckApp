@@ -35,3 +35,5 @@
    b. bug fix mobile不显示用户名称   
 9. 2012-11-11
    a. bug fix 美化图片caption的展现。去处不需要的名称和标点
+10. 2012-11-20
+   a. 用highcharts替换googlechart

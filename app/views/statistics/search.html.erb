@@ -25,10 +25,13 @@
 		<%= render partial:'statistics/report_statistics_detail',
 		     locals:{
 		     	chart_div:                "worker_report_chart_div", 
-		     	report_type:              "巡检统计", 
+		     	report_type:              "巡查统计", 
 		     	total_report_num:         @report_statistics.get_total_worker_report_num,
 		     	total_check_points_num:   @report_statistics.get_total_check_points_num,
 		     	total_org_has_report_num: @report_statistics.get_total_org_has_worker_report_num,
+		     	template: 				  @template,
+		     	start_date:  			  @start_date,
+		     	end_date: 				  @end_date,
 		     	report_num_according_to_success_percent_1:
 		     	@report_statistics.get_worker_report_num_according_to_success_percent(1,0.9),
 		     	report_num_according_to_success_percent_2:
@@ -58,6 +61,9 @@
      		total_report_num:         @report_statistics.get_total_supervisor_report_num,
      		total_check_points_num:   @report_statistics.get_total_check_points_num,
      		total_org_has_report_num: @report_statistics.get_total_org_has_supervisor_report_num,
+     		template: 				  @template,
+     		start_date: 			  @start_date,
+     		end_date: 				  @end_date,
      		report_num_according_to_success_percent_1:@report_statistics.get_supervisor_report_num_according_to_success_percent(1,0.9),
      		report_num_according_to_success_percent_2:@report_statistics.get_supervisor_report_num_according_to_success_percent(0.9,0.8), 
      		report_num_according_to_success_percent_3:@report_statistics.get_supervisor_report_num_according_to_success_percent(0.8,0.7),

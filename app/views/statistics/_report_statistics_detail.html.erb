@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<!--script type="text/javascript">
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
       function drawChart() {
@@ -32,11 +32,101 @@
         var finish_chart = new google.visualization.PieChart(document.getElementById("<%= chart_div %>_finish"));
         finish_chart.draw(finish_data,finish_options);
       }
+</script-->
+
+<script type="text/javascript">
+$(function () {
+    var chart_finish;
+    var chart_success;
+    $(document).ready(function() {
+        chart_finish = new Highcharts.Chart({
+            chart: {
+                renderTo: '<%= chart_div %>_finish',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: '<%= "#{template.name}报告完成率, #{start_date}~#{end_date}" %>'
+            },
+            tooltip: {
+        	    pointFormat: '{point.percentage}%',
+            	percentageDecimals: 1
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        formatter: function() {
+                            return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: '工作报告',
+                data: [
+                	['完成率高于90%的工作报告占',  <%=report_num_according_to_finished_percent_1 %>  ],
+                	['完成率在80%~90%之间的工作报告占', <%=report_num_according_to_finished_percent_2 %>],
+                	['完成率在70%~80%之间的工作报告占',      <%=report_num_according_to_finished_percent_3 %>],
+                	['完成率在70%以下的工作报告占', <%=report_num_according_to_finished_percent_4 %>]
+                ]
+            }]
+        });
+		chart_finish = new Highcharts.Chart({
+            chart: {
+                renderTo: '<%= chart_div %>_sucess',
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: '<%= "#{template.name}报告通过率, #{start_date}~#{end_date}" %>'
+            },
+            tooltip: {
+        	    pointFormat: '{point.percentage}%',
+            	percentageDecimals: 1
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        formatter: function() {
+                            return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: '工作报告',
+                data: [
+               		['通过率大于90%的工作报告占',  <%=report_num_according_to_success_percent_1 %>  ],
+          			['通过率在80%~90%之间的工作报告占',      <%=report_num_according_to_success_percent_2 %>],
+          			['通过率在70%~80%之间的工作报告占',      <%=report_num_according_to_success_percent_3 %>],
+          			['通过率在70%以下的工作报告占', <%=report_num_according_to_success_percent_4 %>] 
+                ]
+            }]
+        });
+	
+    });
+});
 </script>
 <div class="box">
 	<div class="row">
 		<div class="span10 offset1">
 			<legend><%= report_type%></legend>
+			<div id="<%= chart_div %>_sucess" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+			<div id="<%= chart_div %>_finish" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 			<table class="table table-striped table-bordered">
 				<tr>
 					<th colspan="2"><center>统计信息</center></th>
@@ -92,8 +182,7 @@
 					<td><%= report_num_according_to_finished_percent_4 %></td>
 				</tr>
 			</table>
-			<div id="<%= chart_div %>_sucess" style="height: 350px;"></div>
-			<div id="<%= chart_div %>_finish" style="height: 350px;"></div>
+
 		</div>
 	</div>
 </div>
