@@ -14,14 +14,14 @@ su work
 /usr/bin/apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
 sudo apt-get install imagemagick libmagickcore-dev	
 sudo apt-get install libmagickwand-dev
-sudo apt-get install nodejs
+sudo apt-get install nodejs pkg-config
 
 ##安装rvm
 1. curl -L get.rvm.io | bash -s stable
 2. source ~/.rvm/scripts/rvm
 3. rvm requirements
    根据提示缺啥装啥
-4.rvm install 1.9.3 
+4. rvm install 1.9.3 
 5. rvm --default use 1.9.3
 6. rvm gemset use global
 7. gem install bundler
@@ -49,7 +49,7 @@ sudo apt-get install nodejs
 1. sudo apt-get install mysql-server mysql-client 
 2. sudo apt-get install libmysql-ruby libmysqlclient-dev
 3. gem install mysql2 
-   gem install activerecord-mysql-adapter
+   gem install activerecord-mysql2-adapter
 4. sudo vim /etc/mysql/my.cnf  #运行配置文件
    [client] 
     default-character-set = utf8 
@@ -67,6 +67,7 @@ bundle exec rake assets:precompile
 编译后要重启
 sudo /etc/init.d/nginx restart
 
+mysql 安装运行前完成后执行 mysql_secure_installation
 
 
 
