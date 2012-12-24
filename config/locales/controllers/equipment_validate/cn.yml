@@ -1,0 +1,8 @@
+cn:
+  errors:
+    equipment:
+      not_register: 您的设备未注册，无法登陆！
+      fee_expires: 您设备的服务费已用完，请续费！
+  warnnings:
+    equipment:
+      fee_left_day: "您设备的服务费用还有%{fee_left_day}天到期，请及时续费，避免影响您的工作,谢谢！"

@@ -1,7 +1,7 @@
 #encoding:utf-8
 class MainController < ApplicationController
   before_filter 
-  before_filter :validate_equipment,  only:[:zone_supervisor_home,:worker_home]
+  before_filter :check_equipment_status,  only:[:zone_supervisor_home,:worker_home]
   before_filter :checkapp_client_need_update
   def home
   	if signed_in? and current_user.session.worker?
@@ -26,10 +26,6 @@ class MainController < ApplicationController
     if signed_in? and current_user.session.site_admin?
       return redirect_to zone_admins_path
     end
-    # render layout:'application_one_column'
-    #if request.format == 'mobile' and current_equipment_left_time <=0
-    #  flash.now[:error] = "设备费用已用完，请续费，谢谢！"
-    #end
 
     respond_to do |format|
       format.mobile {render layout:'application'}

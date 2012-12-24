@@ -2,7 +2,7 @@ class OrganizationsController < ApplicationController
   before_filter :site_or_zone_admin_user,       only: [:new, :create,:edit,:update,:show,:index,:destroy]
   before_filter :correct_user_for_member,       only: [:edit,:update,:show,:destroy]
   before_filter :correct_user_for_collection,   only: [:new, :create,:index]
-  before_filter :validate_equipment,            only: [:supervisor_reports,:worker_reports]
+  before_filter :check_equipment_status,         only: [:supervisor_reports,:worker_reports]
   before_filter :checkapp_client_need_update,   only: [:supervisor_reports,:worker_reports]
 
 

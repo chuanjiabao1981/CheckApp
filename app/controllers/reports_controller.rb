@@ -9,7 +9,7 @@ class ReportsController < ApplicationController
   before_filter :validate_report_creater,                 only:[:new,:create]
   before_filter :validate_report_template_when_create,    only:[:create]
   before_filter :validate_report_edit_and_update_and_destroy,         only:[:edit,:update,:destroy,:pass,:reject]
-  before_filter :validate_equipment#,                      only:[:worker_report,:check_categories,:supervisor_report]
+  before_filter :check_equipment_status   
   before_filter :checkapp_client_need_update
   def worker_report
     #if current_user.session.zone_admin? or current_user.session.zone_supervisor?

@@ -1,11 +1,15 @@
 #encoding:utf-8
 class SessionsController < ApplicationController
 
+  before_filter :check_equipment_status , only:[:zone_supervisor_create,:worker_create]
+
   def site_admin_new
     render layout:'application_one_column'
   end
   def site_admin_create
     site_admin = SiteAdmin.find_by_name(params[:session][:name])
+    Rails.logger.debug(site_admin)
+    Rails.logger.debug(params[:session][:password])
     if site_admin && site_admin.authenticate(params[:session][:password])
       sign_in(site_admin)
       redirect_to root_path
@@ -51,18 +55,6 @@ class SessionsController < ApplicationController
   end
 
   def worker_create
-    if request.format == :mobile
-      if not current_equipment_register?
-        flash.now[:error] = '您的设备未注册，无法登陆！'
-        render 'worker_new'
-        return
-      end
-      if current_equipment_left_time <= 0
-        flash.now[:error] = '您设备的服务费已用完，请续费.'
-        render 'worker_new'
-        return 
-      end
-    end
     worker = Worker.find_by_name(params[:session][:name])
     if worker && worker.authenticate(params[:session][:password])
       sign_in(worker)
@@ -88,20 +80,6 @@ class SessionsController < ApplicationController
     end
   end
   def zone_supervisor_create
-    if request.format == :mobile
-      if not current_equipment_register?
-        flash.now[:error] = '您的设备未注册，无法登陆！'
-        ## render会提供format = mobile的
-        render 'zone_supervisor_new'
-        return 
-      end
-      if current_equipment_left_time <= 0
-        flash.now[:error] = '您设备的服务费已用完，请续费.'
-        ## render会提供format = mobile
-        render 'zone_supervisor_new'
-        return 
-      end
-    end
     zone_supervisor = ZoneSupervisor.find_by_name(params[:session][:name])
     if zone_supervisor and zone_supervisor.authenticate(params[:session][:password])
       sign_in(zone_supervisor)
