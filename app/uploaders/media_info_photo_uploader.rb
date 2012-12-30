@@ -58,9 +58,9 @@ class MediaInfoPhotoUploader < CarrierWave::Uploader::Base
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
-  def extension_white_list
-    %w(jpg jpeg gif png)
-  end
+  #def extension_white_list
+  #  %w(jpg jpeg gif png)
+  #end
 
   def date_watermark
     manipulate! do |img|
@@ -97,7 +97,13 @@ class MediaInfoPhotoUploader < CarrierWave::Uploader::Base
   #   "something.jpg" if original_filename
   # end
   def filename
-     @name ||= "#{secure_token}.#{file.extension}" if original_filename.present?
+    if original_filename.present?
+      if not file.extension.empty?
+        @name ||= "#{secure_token}.#{file.extension}" 
+      else
+        @name ||= "#{secure_token}.jpg"
+      end
+    end
   end
 
   protected

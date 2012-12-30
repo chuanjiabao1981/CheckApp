@@ -70,9 +70,9 @@ class MediaInfoVideoUploader < CarrierWave::Uploader::Base
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
-  def extension_white_list
-     %w(3gp mp4 m4v)
-  end
+  #def extension_white_list
+  #   %w(3gp mp4 m4v)
+  #end
    # store! nil's the cache_id after it finishes so we need to remember it for deletion
   def remember_cache_id(new_file)
     @cache_id_was = cache_id
@@ -92,7 +92,13 @@ class MediaInfoVideoUploader < CarrierWave::Uploader::Base
   # end
 
   def filename
-     @name ||= "#{secure_token}.#{file.extension}" if original_filename.present?
+    if original_filename.present?
+      if not file.extension.empty?
+        @name ||= "#{secure_token}.#{file.extension}" 
+      else
+        @name ||= "#{secure_token}.mp4"
+      end
+    end
   end
 
   protected

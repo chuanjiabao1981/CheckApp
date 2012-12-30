@@ -8,8 +8,6 @@ class SessionsController < ApplicationController
   end
   def site_admin_create
     site_admin = SiteAdmin.find_by_name(params[:session][:name])
-    Rails.logger.debug(site_admin)
-    Rails.logger.debug(params[:session][:password])
     if site_admin && site_admin.authenticate(params[:session][:password])
       sign_in(site_admin)
       redirect_to root_path
