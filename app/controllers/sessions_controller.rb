@@ -84,12 +84,14 @@ class SessionsController < ApplicationController
       respond_to do |format|
         format.mobile { return redirect_to root_path(format: :mobile)}
         format.html   { return redirect_to root_path}
+        format.json   { render json:{token:zone_supervisor.session.remember_token}}
       end
     else
       flash.now[:error] ='账号密码错误'
       respond_to do |format|
         format.mobile {render 'zone_supervisor_new'}
         format.html   {render 'zone_supervisor_new',layout:'application_one_column'}
+        format.json   {render json:{error:{base:"你好"}}}
       end
     end
   end
