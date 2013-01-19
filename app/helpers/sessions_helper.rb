@@ -37,18 +37,12 @@ module SessionsHelper
 
 
   def login_success_json(user)
-    return {token_key:"_remember_token", token_value:user.session.remember_token,}
+    json_add_data(:token_key,"_remember_token")
+    json_add_data(:token_value,user.session.remember_token)
   end
 
   def login_fail_json()
-    return base_fail_json( I18n.t('errors.session.login_fail') )
-  end
-
-
-  def base_fail_json(base_error_msg)
-    return  { JsonConstants::JSON_ERRORS => 
-             {JsonConstants::JSON_ERRORS_BASE => [ base_error_msg ] }
-            }
+    json_base_errors( I18n.t('errors.session.login_fail') )
   end
 
   def current_checkapp_client_version

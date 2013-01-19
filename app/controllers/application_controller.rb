@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   include ReportsHelper
   include EquipmentsHelper
+  include JsonResponseHelper
   include Api::V1::SessionsHelper
 
 end

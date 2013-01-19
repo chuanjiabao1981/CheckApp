@@ -20,3 +20,9 @@ curl -i -H "Content-Type: application/json" -H "Cookie: remember_token=qYUaz3vl5
 
 ###带有useragent的请求
  curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"-X POST -d "{\"session\":{\"name\":\"ceshi001\",\"password\":\"8\"}}" http://localhost:3000/worker/sessions.json 
+
+
+####带有useragent的请求、带有cookie的请求的  workerhome
+
+
+ curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"  -H "Cookie: remember_token=o5ArFSLsS8C77_zOsr5LrA" -X GET -d http://localhost:3000/worker_home.json

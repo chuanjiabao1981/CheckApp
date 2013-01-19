@@ -14,6 +14,7 @@ module EquipmentsHelper
         flash.now[:error]  =  I18n.t 'errors.equipment.fee_expires'
       elsif fee_left_day <= 60
         flash.now[:warn]  = I18n.t 'warnnings.equipment.fee_left_day',:fee_left_day => fee_left_day
+        json_base_warns(flash.now[:warn])
       end
       respond_to do |format|
         format.mobile do
@@ -24,7 +25,7 @@ module EquipmentsHelper
         end
         format.json do
           if not flash.now[:error].nil?
-            return render json:base_fail_json(flash.now[:error])
+            return render json:json_base_errors(flash.now[:error])
           end
         end
       end

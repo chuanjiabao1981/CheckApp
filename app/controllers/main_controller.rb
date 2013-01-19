@@ -45,9 +45,11 @@ class MainController < ApplicationController
 
   def worker_home
     @organizations = current_user.organizations.paginate(page:params[:page],per_page:Rails.application.config.organization_report_page_num)
+    Rails.logger.debug(@organizations.current_page)
     respond_to do |format|
       format.mobile
       format.html
+      format.json { return render json:@organizations}
     end
   end
 
