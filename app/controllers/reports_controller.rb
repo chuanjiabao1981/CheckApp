@@ -76,7 +76,13 @@ class ReportsController < ApplicationController
         @template_list = Template.where(for_supervisor:true,zone_admin_id:@organization.zone.zone_admin_id)
       end
       @location_list  = @organization.zone.zone_admin.locations
-      render 'new',formats: [:mobile]
+      render 'new',formats: [:mobile] 
+
+      #respond_to do |format|
+        #format.mobile { render 'new',formats: [:mobile] }
+      #  @report.errors[:ttttt]="2222222";
+      #  format.json   { return render json:{errors:@report.errors}} 
+      #end
     end
   end
 

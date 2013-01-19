@@ -3,3 +3,9 @@
 
  git push origin master
  rake db:rollback RAILS_ENV="production"
+
+
+在启动production rails console
+RAILS_ENV=production rails c
+
+ Ascii85-1.0.2 找不到

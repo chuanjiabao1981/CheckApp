@@ -1,0 +1,22 @@
+curl -i -H "Content-Type: application/json" -X POST -d "{\"session\":{\"name\":\"a\",\"password\":\"1\"}}" http://localhost:3000//zone_supervisor/sessions/?format=json
+
+
+
+curl -i -H "Content-Type: application/json" -X POST -d "{\"session\":{\"name\":\"a\",\"password\":\"8\"}}" http://localhost:3000//zone_supervisor/sessions/?format=json
+
+
+
+
+curl -i -H "Content-Type: application/json" -X POST -d "{\"session\":{\"name\":\"ceshi001\",\"password\":\"8\"}}" http://localhost:3000/zone_supervisor/sessions.json
+
+Cookie:remember_token=1TmlbxpChFqRMHqNsRc9tQ
+/organizations/32/reports.mobile
+
+{\"report\":{\"template_id\":10,\"reportor_name\":\"wwww\"}}
+
+
+
+curl -i -H "Content-Type: application/json" -H "Cookie: remember_token=qYUaz3vl5cJleNjwzNJ7ons/32/reports.json"report\":{\"template_id\":\"32\"}}" http://localhost:3000//organizatio
+
+###带有useragent的请求
+ curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"-X POST -d "{\"session\":{\"name\":\"ceshi001\",\"password\":\"8\"}}" http://localhost:3000/worker/sessions.json 

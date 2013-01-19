@@ -72,7 +72,7 @@ CheckApp::Application.routes.draw do
   match '/checker/signin'                 ,to:'sessions#checker_new'
   match '/checker/sessions'               ,to:'sessions#checker_create',via: :post
   match '/worker/signin'                  ,to:'sessions#worker_new',format:'mobile'
-  match '/worker/sessions'                ,to:'sessions#worker_create',via: :post,format:'mobile'
+  match '/worker/sessions'                ,to:'sessions#worker_create',via: :post 
   match '/zone_supervisor/signin'         ,to:'sessions#zone_supervisor_new'
   match '/zone_supervisor/sessions'       ,to:'sessions#zone_supervisor_create',via: :post
 

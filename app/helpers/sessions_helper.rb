@@ -31,7 +31,24 @@ module SessionsHelper
       format.html   {redirect_to root_path unless signed_in? }
       format.mobile {redirect_to root_path(format: :mobile) unless signed_in? }
       format.pdf    {redirect_to root_path(format: :html) unless signed_in? }
+      format.json   {return render json:{error:"aaa"} unless signed_in? }
     end
+  end
+
+
+  def login_success_json(user)
+    return {token_key:"_remember_token", token_value:user.session.remember_token,}
+  end
+
+  def login_fail_json()
+    return base_fail_json( I18n.t('errors.session.login_fail') )
+  end
+
+
+  def base_fail_json(base_error_msg)
+    return  { JsonConstants::JSON_ERRORS => 
+             {JsonConstants::JSON_ERRORS_BASE => [ base_error_msg ] }
+            }
   end
 
   def current_checkapp_client_version

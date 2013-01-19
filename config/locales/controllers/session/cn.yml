@@ -1,0 +1,4 @@
+cn:
+  errors:
+    session:
+      login_fail: 用户名或者密码错误!

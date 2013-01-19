@@ -59,14 +59,14 @@ class SessionsController < ApplicationController
       respond_to do |format|
         format.mobile { return redirect_to root_path(format: :mobile)}
         format.html   { return redirect_to root_path}       
+        format.json   { return render json:login_success_json(worker)}
       end
-      return redirect_to root_path
-      #redirect_to worker_organization_reports_path(worker.organization,format: :mobile)
     else
-      flash.now[:error] = '账号密码错误'
+      flash.now[:error] = I18n.t 'errors.session.login_fail'
       respond_to do |format|
         format.mobile   {render 'worker_new'}
         format.html     {render 'worker_new',layout:'application_one_column'}
+        format.json     {return render json:login_fail_json}
       end
     end
   end
@@ -84,14 +84,14 @@ class SessionsController < ApplicationController
       respond_to do |format|
         format.mobile { return redirect_to root_path(format: :mobile)}
         format.html   { return redirect_to root_path}
-        format.json   { render json:{token:zone_supervisor.session.remember_token}}
+        format.json   { return render json:login_success_json(zone_supervisor)}
       end
     else
-      flash.now[:error] ='账号密码错误'
+      flash.now[:error] = I18n.t 'errors.session.login_fail'
       respond_to do |format|
         format.mobile {render 'zone_supervisor_new'}
         format.html   {render 'zone_supervisor_new',layout:'application_one_column'}
-        format.json   {render json:{error:{base:"你好"}}}
+        format.json   {return render json:login_fail_json}
       end
     end
   end

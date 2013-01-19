@@ -6,18 +6,27 @@ module EquipmentsHelper
   end
 
   def check_equipment_status
-    if request.format == :mobile
+    if request.format == :mobile or request.format =:json
       fee_left_day = current_equipment_left_time
       if not current_equipment_register?
-        sign_out
         flash.now[:error]  = I18n.t 'errors.equipment.not_register'
-        return render 'main/home',formats: [:mobile]
       elsif fee_left_day <= 0 
-        sign_out
         flash.now[:error]  =  I18n.t 'errors.equipment.fee_expires'
-        return render 'main/home',formats: [:mobile]
       elsif fee_left_day <= 60
-        flash.now[:error]  = I18n.t 'warnnings.equipment.fee_left_day',:fee_left_day => fee_left_day
+        flash.now[:warn]  = I18n.t 'warnnings.equipment.fee_left_day',:fee_left_day => fee_left_day
+      end
+      respond_to do |format|
+        format.mobile do
+          if not flash.now[:error].nil?
+            sign_out
+            return render 'main/home',formats: [:mobile]
+          end
+        end
+        format.json do
+          if not flash.now[:error].nil?
+            return render json:base_fail_json(flash.now[:error])
+          end
+        end
       end
     end
   end
