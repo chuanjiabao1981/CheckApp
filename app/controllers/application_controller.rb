@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   include ReportsHelper
   include EquipmentsHelper
   include JsonResponseHelper
+  include WorkersHelper
+  include MainHelper
   include Api::V1::SessionsHelper
 
 end

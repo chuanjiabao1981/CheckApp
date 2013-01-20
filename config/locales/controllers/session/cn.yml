@@ -2,3 +2,5 @@ cn:
   errors:
     session:
       login_fail: 用户名或者密码错误!
+      login_expected: 请登录后再访问!
+      type_wrong: 用户类型错误!

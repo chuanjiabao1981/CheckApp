@@ -6,7 +6,7 @@ module EquipmentsHelper
   end
 
   def check_equipment_status
-    if request.format == :mobile or request.format =:json
+    if request.format == :mobile or request.format == :json
       fee_left_day = current_equipment_left_time
       if not current_equipment_register?
         flash.now[:error]  = I18n.t 'errors.equipment.not_register'

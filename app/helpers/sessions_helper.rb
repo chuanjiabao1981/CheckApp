@@ -31,10 +31,13 @@ module SessionsHelper
       format.html   {redirect_to root_path unless signed_in? }
       format.mobile {redirect_to root_path(format: :mobile) unless signed_in? }
       format.pdf    {redirect_to root_path(format: :html) unless signed_in? }
-      format.json   {return render json:{error:"aaa"} unless signed_in? }
+      format.json   {return render json:login_expected_json unless signed_in? }
     end
   end
 
+  def login_expected_json
+    json_base_errors (I18n.t('errors.session.login_expected'))
+  end
 
   def login_success_json(user)
     json_add_data(:token_key,"_remember_token")

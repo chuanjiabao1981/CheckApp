@@ -1,8 +1,10 @@
 #encoding:utf-8
 class MainController < ApplicationController
   before_filter 
-  before_filter :check_equipment_status,  only:[:zone_supervisor_home,:worker_home]
+  before_filter :check_equipment_status,  only:[:zone_supervisor_home,:worker_home,:worker_organizations]
   before_filter :checkapp_client_need_update
+  before_filter :singed_in_user, only:[:worker_organizations]
+  before_filter :only_worker,only:[:worker_organizations]
   def home
   	if signed_in? and current_user.session.worker?
   		#return redirect_to worker_organization_reports_path(current_user.organization,format: :mobile)
@@ -45,11 +47,17 @@ class MainController < ApplicationController
 
   def worker_home
     @organizations = current_user.organizations.paginate(page:params[:page],per_page:Rails.application.config.organization_report_page_num)
-    Rails.logger.debug(@organizations.current_page)
     respond_to do |format|
       format.mobile
       format.html
-      format.json { return render json:@organizations}
+    end
+  end
+  def worker_organizations
+    @organizations = current_user.organizations.paginate(page:params[:page],per_page:Rails.application.config.organization_report_page_num)
+    respond_to do |format|
+      format.json do 
+        return render json:worker_organizations_json(@organizations)
+      end
     end
   end
 

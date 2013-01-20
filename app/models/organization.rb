@@ -9,7 +9,7 @@ class OrganizationValidator < ActiveModel::Validator
 end
 class Organization < ActiveRecord::Base
 
-  JSON_OPTS = {only:[:id,:name,:phone,:contact,:address]}
+  JSON_OPTS = {only:[:id,:name,:phone,:contact,:address,:zone_id]}
   attr_accessible :name,:phone,:contact,:address,:checker_attributes,:worker_ids
 
   belongs_to :zone
