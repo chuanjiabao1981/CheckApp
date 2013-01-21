@@ -1,4 +1,10 @@
 module JsonResponseHelper
+	
+	JSON_PAGINATE_CURRENT_PAGE		=:current_page
+	JSON_PAGINATE_PER_PAGE				=:per_page
+	JSON_PAGINATE_TOTAL_ENTRIES		=:total_entries
+
+
 	def json_response
 		@_json_response ||= {}
 	end
@@ -18,5 +24,13 @@ module JsonResponseHelper
 	def json_add_data(key,value)
 		json_response[key]=value
 		return json_response
+	end
+
+
+
+	def paginate_info_json(collection)
+		json_add_data(JSON_PAGINATE_CURRENT_PAGE,collection.current_page)
+		json_add_data(JSON_PAGINATE_PER_PAGE,collection.per_page)
+		json_add_data(JSON_PAGINATE_TOTAL_ENTRIES,collection.total_entries)
 	end
 end

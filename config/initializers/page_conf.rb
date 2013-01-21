@@ -4,5 +4,6 @@
 ###和翻页相关的配置
 CheckApp::Application.configure  do
 	config.organization_report_page_num 			= 12
+	config.zone_page_num							= 12
 
 end

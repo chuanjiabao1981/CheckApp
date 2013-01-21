@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   include EquipmentsHelper
   include JsonResponseHelper
   include WorkersHelper
+  include ZoneSupervisorsHelper
   include MainHelper
   include Api::V1::SessionsHelper
 

@@ -25,3 +25,11 @@ curl -i -H "Content-Type: application/json" -H "Cookie: remember_token=qYUaz3vl5
 ####带有useragent的请求、带有cookie的请求的  worker_organizations
 
  curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"  -H "Cookie: remember_token=o5ArFSLsS8C77_zOsr5LrA" -X GET  http://localhost:3000/worker_organizations.json
+
+####带有useragent的请求、带有cookie的请求的  zone_supervisor_zones
+
+ curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"  -H "Cookie: remember_token=qYUaz3vl5cJleNjwzNJ77Q" -X GET  http://localhost:3000/zone_supervisor_zones.json
+
+#####worker 用户请求 zone的organizations 的list
+curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"  -H "Cookie: remember_token=yt_ki6VK1L1K-IVPnA3xHw" -X GET  http://localhost:3000/zones/1/organizations.json
+ yt_ki6VK1L1K-IVPnA3xHw

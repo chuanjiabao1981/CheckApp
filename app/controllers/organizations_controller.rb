@@ -1,5 +1,9 @@
 class OrganizationsController < ApplicationController
-  before_filter :site_or_zone_admin_user,       only: [:new, :create,:edit,:update,:show,:index,:destroy]
+  include OrganizationsHelper
+  before_filter :site_or_zone_admin_user,       only: [:new, :create,:edit,:update,:show,:destroy]
+  before_filter :singed_in_user         ,       only: [:index]
+  ##目前只有zone_supervisor在客户端使用index接口,所以加这个限制
+  before_filter :only_zone_supervisor   ,       only: [:index] 
   before_filter :correct_user_for_member,       only: [:edit,:update,:show,:destroy]
   before_filter :correct_user_for_collection,   only: [:new, :create,:index]
   before_filter :check_equipment_status,         only: [:supervisor_reports,:worker_reports]
@@ -7,7 +11,8 @@ class OrganizationsController < ApplicationController
 
 
   def index
-    @organizations = Organization.find_all_by_zone_id(params[:zone_id])
+    @organizations = @zone.organizations.paginate(page:params[:page],per_page:Rails.application.config.zone_page_num)
+    return render json:organization_index_json(@organizations)
   end
   def show
   end
@@ -88,10 +93,31 @@ private
     return redirect_to root_path unless @zone_admin == current_user or current_user.session.site_admin?
   end
   def correct_user_for_collection
+    error = nil
     @zone = Zone.find_by_id(params[:zone_id])
-    return redirect_to root_path if @zone.nil?
-    @zone_admin = @zone.zone_admin
-    return redirect_to root_path if @zone_admin.nil?
-    return redirect_to root_path unless @zone_admin == current_user or current_user.session.site_admin?
+    if @zone.nil?
+      error=I18n.t('errors.organization.zone_id_not_exsits')
+    else
+      @zone_admin = @zone.zone_admin
+      if @zone_admin.nil?
+        error=I18n.t('errors.organization.zone_admin_not_exsits')
+      else
+        if current_user.session.zone_admin? and  current_user != @zone_admin
+          error= I18n.t('errors.organization.not_owner')
+        elsif current_user.session.zone_supervisor? and not current_user.zone_ids.include?(@zone.id)
+          ###测试
+          error= I18n.t('errors.organization.not_owner')
+        elsif not current_user.session.site_admin?
+          errors=I18n.t('errors.session.type_wrong')
+        end
+      end
+    end
+    if not error.nil?
+      Rails.logger.debug(error)
+      respond_to do |format|
+        format.html {return redirect_to root_path}
+        format.json {return render json:json_base_errors(error)}
+      end
+    end
   end
 end

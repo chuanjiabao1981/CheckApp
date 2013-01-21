@@ -81,6 +81,7 @@ CheckApp::Application.routes.draw do
   match '/zone_supervisor_home'           ,to:'main#zone_supervisor_home',via: :get
   match '/worker_home'                    ,to:'main#worker_home',via: :get
   match '/worker_organizations'           ,to:'main#worker_organizations',via: :get
+  match '/zone_supervisor_zones'          ,to:'main#zone_supervisor_zones',via: :get
   match '/zone_admin_home/:zone_admin_id' ,to:'main#zone_admin_home',via: :get,as:'zone_admin_home'
   match '/checker_home/:checker_id'       ,to:'main#checker_home',via: :get,as:'checker_home'
   match '/statistics/:zone_admin_id'      ,to:'statistics#search',via: :get,as:'statistics'

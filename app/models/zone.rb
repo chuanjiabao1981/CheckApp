@@ -1,6 +1,6 @@
 class Zone < ActiveRecord::Base
 
-  JSON_OPTS       = {only:[:name],include:{organizations:Organization::JSON_OPTS}}
+  JSON_OPTS       = {only:[:name,:id,:des,:zone_admin_id]}
   attr_accessible :name,:des,:zone_supervisor_ids
 
   belongs_to :zone_admin

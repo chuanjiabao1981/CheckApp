@@ -1,0 +1,6 @@
+cn:
+  errors:
+    organization:
+      zone_id_not_exsits: 不存在此分区!
+      zone_admin_not_exsits: 分区异常!（分区没有分区管理员）
+      not_owner: 此分区不属于当前用户!
