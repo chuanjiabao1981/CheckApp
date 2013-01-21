@@ -48,6 +48,14 @@ class ReportNumValidator < ActiveModel::Validator
 end
 
 class Report < ActiveRecord::Base
+  JSON_OPTS={
+              only:[:id,:committer_type,:reporter_name,:status,:created_at],
+              include:{
+                        template:{
+                                   only:[:id,:name]
+                                  }
+                      }
+          }
   #attr_accessible :template_id,:organization_id,:reporter_name
   attr_accessible :template_id,:reporter_name,:location_id
   belongs_to :template,inverse_of: :reports

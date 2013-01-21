@@ -2,6 +2,12 @@ module ReportsHelper
 	WORKER_BRANCH 				= 1
 	SUPERVISOR_BRANCH			= 2
 	NONE_BRANCH					= -1
+	JSON_REPORT					= :reports
+	def reports_json(collection)
+		paginate_info_json(collection)
+		json_add_data(JSON_REPORT,collection.as_json(Report::JSON_OPTS))
+	end
+
 	def find_report_in_time_range(template,start_time,end_time)
 		return Report.where(:created_at=>start_time.to_date..end_time.to_date,:template_id =>template.id)
 	end

@@ -12,30 +12,22 @@ class ReportsController < ApplicationController
   before_filter :check_equipment_status   
   before_filter :checkapp_client_need_update
   def worker_report
-    #if current_user.session.zone_admin? or current_user.session.zone_supervisor?
-    #  @worker_reports = @organization.get_all_finished_worker_report.paginate(page:params[:page],per_page:10)
-    #elsif
-    #  @worker_reports = @organization.get_all_worker_report.paginate(page:params[:page],per_page:10)
-    #end
     @worker_reports   = @organization.get_all_worker_report.paginate(page:params[:page],per_page:10)
     @zone             = @organization.zone
     respond_to do |format|
       format.mobile
       format.html
+      format.json {return render json:reports_json(@worker_reports)}
     end
   end
   def supervisor_report
-    #if current_user.session.checker? or current_user.session.worker?
-    #  @supervisor_reports = @organization.get_all_finished_supervisor_report.paginate(page:params[:page],per_page:10)
-    #elsif
-    #  @supervisor_reports = @organization.get_all_supervisor_report.paginate(page:params[:page],per_page:10)
-    #end
     @supervisor_reports   = @organization.get_all_supervisor_report.paginate(page:params[:page],per_page:10)
     @zone_admin = @organization.zone.zone_admin
     @zone       = @organization.zone
     respond_to do |format|
       format.mobile
       format.html
+      format.json {return render json:reports_json(@supervisor_reports)}
     end
   end
   def check_categories
@@ -210,26 +202,55 @@ private
     check_current_user_can_visit_the_organization(params[:organization_id])
   end
   def validate_format
-    if request.format == :mobile
-      return redirect_to root_path unless current_user.session.worker? or current_user.session.zone_supervisor?
+    error = nil
+    if request.format == :mobile or request.format == :json
+      #return redirect_to root_path unless current_user.session.worker? or current_user.session.zone_supervisor?
+      if not current_user.session.worker? and not current_user.session.zone_supervisor?
+        error=I18n.t('errors.session.type_wrong')
+      end
     else request.format == :html
-      return redirect_to root_path unless current_user.session.zone_admin? or current_user.session.checker? or current_user.session.site_admin? or current_user.session.zone_supervisor?
+      #return redirect_to root_path unless current_user.session.zone_admin? or current_user.session.checker? or current_user.session.site_admin? or current_user.session.zone_supervisor?
+      if not current_user.session.zone_admin? and \
+         not current_user.session.checker? and \
+         not current_user.session.site_admin? and \
+         not current_user.session.zone_supervisor?
+         error=I18n.t('errors.session.type_wrong')
+      end
+    end
+    if not error.nil?
+      Rails.logger.debug(error)
+      respond_to do |format|
+        format.html   { return redirect_to root_path }
+        format.json   { return render json:json_base_errors(error)}
+      end
     end
   end
   def check_current_user_can_visit_the_organization(organization_id)
+    error = nil
     @organization = Organization.find_by_id(organization_id)
-    return redirect_to root_path if @organization.nil?
-    if current_user.session.zone_admin?
-      return redirect_to root_path unless @organization.zone.zone_admin == current_user
+    #return redirect_to root_path if @organization.nil?
+    if @organization.nil?
+      error = I18n.t('errors.organization.id_not_exsits')
+    elsif current_user.session.zone_admin? and not @organization.zone.zone_admin == current_user
+      #return redirect_to root_path unless @organization.zone.zone_admin == current_user
+      error=I18n.t('errors.organization.not_owner')
+    elsif current_user.session.worker? and not current_user.organization_ids.include?(@organization.id)
+      #return redirect_to root_path unless current_user.organization_ids.include?(@organization.id)
+      error=I18n.t('errors.organization.not_owner')
+    elsif current_user.session.checker? and not @organization.checker == current_user
+      #return redirect_to root_path unless @organization.checker == current_user
+      error=I18n.t('errors.organization.not_owner')
+    elsif current_user.session.zone_supervisor? and not current_user.zone_ids.include?(@organization.zone.id)
+      #return redirect_to root_path unless current_user.zone_ids.include?(@organization.zone.id)
+      error=I18n.t('errors.organization.not_owner')
     end
-    if current_user.session.worker?
-      return redirect_to root_path unless current_user.organization_ids.include?(@organization.id)
-    end
-    if current_user.session.checker?
-      return redirect_to root_path unless @organization.checker == current_user
-    end
-    if current_user.session.zone_supervisor?
-      return redirect_to root_path unless current_user.zone_ids.include?(@organization.zone.id)
+    if not error.nil?
+      Rails.logger.debug(error)
+      respond_to do |format|
+        format.html   { return redirect_to root_path }
+        format.mobile { return redirect_to root_path(format: :mobile)}
+        format.json   { return render json:json_base_errors(error)}
+      end
     end
   end
   def generate_pdf(report)

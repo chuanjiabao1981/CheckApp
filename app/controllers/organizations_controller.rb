@@ -96,17 +96,17 @@ private
     error = nil
     @zone = Zone.find_by_id(params[:zone_id])
     if @zone.nil?
-      error=I18n.t('errors.organization.zone_id_not_exsits')
+      error=I18n.t('errors.zone.id_not_exsits')
     else
       @zone_admin = @zone.zone_admin
       if @zone_admin.nil?
-        error=I18n.t('errors.organization.zone_admin_not_exsits')
+        error=I18n.t('errors.zone.zone_admin_not_exsits')
       else
         if current_user.session.zone_admin? and  current_user != @zone_admin
-          error= I18n.t('errors.organization.not_owner')
+          error= I18n.t('errors.zone.not_owner')
         elsif current_user.session.zone_supervisor? and not current_user.zone_ids.include?(@zone.id)
           ###测试
-          error= I18n.t('errors.organization.not_owner')
+          error= I18n.t('errors.zone.not_owner')
         elsif not current_user.session.site_admin?
           errors=I18n.t('errors.session.type_wrong')
         end

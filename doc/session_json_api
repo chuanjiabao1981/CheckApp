@@ -19,7 +19,7 @@ Cookie:remember_token=1TmlbxpChFqRMHqNsRc9tQ
 curl -i -H "Content-Type: application/json" -H "Cookie: remember_token=qYUaz3vl5cJleNjwzNJ7ons/32/reports.json"report\":{\"template_id\":\"32\"}}" http://localhost:3000//organizatio
 
 ###带有useragent的请求
- curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"-X POST -d "{\"session\":{\"name\":\"ceshi001\",\"password\":\"8\"}}" http://localhost:3000/worker/sessions.json 
+ curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41" -X POST -d "{\"session\":{\"name\":\"ceshi001\",\"password\":\"8\"}}" http://localhost:3000/worker/sessions.json 
 
 
 ####带有useragent的请求、带有cookie的请求的  worker_organizations
