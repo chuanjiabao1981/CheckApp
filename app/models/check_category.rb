@@ -20,6 +20,13 @@ class CheckCategory < ActiveRecord::Base
   validates :des,length:{maximum:600}
   validates :template_id,presence:true
 
-  
+  def as_json(options={})
+  	json = super(options)
+  	if not options[:report].nil?
+  	  json[:finished_check_points_num] = options[:report].get_finished_check_points_num_by_check_category(self.id)
+  	  json[:check_points_num]		   = self.check_points.size
+  	end
+  	json
+  end
 
 end

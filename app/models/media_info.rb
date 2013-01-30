@@ -9,6 +9,13 @@ class MediaInfo < ActiveRecord::Base
   mount_uploader :video_path,MediaInfoVideoUploader
   validates :video_path,file_size:{:maximum => 20.megabytes.to_i }
 
+
+  def as_json(options={})
+    json=super(options)
+    json[:photo_path]=self.photo_path.to_s
+    json[:video_path]=self.video_path.to_s
+    json
+  end
   def checkpointPhoto?
   	return true if self.media_type == Rails.application.config.MediaTypeCheckPointPhoto
   	return false

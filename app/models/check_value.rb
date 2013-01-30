@@ -36,7 +36,7 @@ class NullNameValidator < ActiveModel::Validator
 end
 
 class CheckValue < ActiveRecord::Base
-  JSON_OPTS = {only:[:boolean_name,:int_name,:float_name,:date_name,:text_name]}
+  JSON_OPTS = {only:[:boolean_name,:int_name,:float_name,:date_name,:text_name,:text_with_photo_name]}
   attr_accessible :boolean_name,:int_name,:float_name,:date_name,:text_name,:text_with_photo_name
   belongs_to :template,inverse_of: :check_value
   validates :boolean_name,            length:{ maximum: 80} 
@@ -51,7 +51,7 @@ class CheckValue < ActiveRecord::Base
   validates_presence_of :template
 
   def as_json
-    super(only:[:boolean_name,:int_name,:float_name,:date_name,:text_name])
+    super(only:[:boolean_name,:int_name,:float_name,:date_name,:text_name,:text_with_photo_name])
   end
 
   def has_boolean_name?

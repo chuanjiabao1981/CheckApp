@@ -1,0 +1,4 @@
+cn:
+  errors:
+    report:
+      id_not_exsits: 此报告不存在!

@@ -53,7 +53,10 @@ class Report < ActiveRecord::Base
               include:{
                         template:{
                                    only:[:id,:name]
-                                  }
+                                  },
+                        location:{
+                                  only:[:id,:name]
+                        }
                       }
           }
   #attr_accessible :template_id,:organization_id,:reporter_name

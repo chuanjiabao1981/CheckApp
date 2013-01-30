@@ -55,7 +55,11 @@ class ReportRecord < ActiveRecord::Base
 
   #这个留给video用
   #validates :video_path,file_size:{:maximum => 20.megabytes.to_i }
-
+  def as_json(options={})
+    json = super(options)
+    json[:media_infos]=media_infos.as_json()
+    json
+  end
   def build_video_media
     a                     = self.media_infos.build
     a.media_type          = Rails.application.config.MediaTypeCheckPointVideo

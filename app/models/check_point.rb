@@ -51,4 +51,25 @@ class CheckPoint < ActiveRecord::Base
 
   has_many :report_records,dependent: :destroy
 
+  def as_json(option={})
+    Rails.logger.debug(option)
+    json = super(option)
+    report_record = nil
+    if not option[:report_records].nil?    
+      option[:report_records].each do |rr|
+        Rails.logger.debug(rr.check_category_id)
+        if rr.check_point_id == self.id
+          Rails.logger.debug(rr.check_category_id)
+          report_record = rr
+          break
+        end
+      end
+    end
+    if not report_record.nil?
+      json[:report_record]= report_record.as_json(include:{media_infos:{}})
+      json[:media_infos]  = report_record.media_infos.as_json()
+    end
+    json
+  end
+
 end

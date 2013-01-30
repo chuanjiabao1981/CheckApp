@@ -34,6 +34,7 @@ class ReportsController < ApplicationController
     @zone       = @organization.zone
     respond_to do |format|
       format.mobile
+      format.json {return render json:report_check_categories_json(@report) }
     end
   end
   def check_points
@@ -46,6 +47,7 @@ class ReportsController < ApplicationController
     end
     respond_to do |format|
       format.mobile
+      format.json {return render json:@check_category.check_points.as_json(report_records:ReportRecord.where(report_id:@report.id))}
     end
   end
   def new
@@ -127,6 +129,14 @@ class ReportsController < ApplicationController
           type: "application/pdf"
         end
       end
+      format.json do
+        #report_records=ReportRecord.where(report_id:@report.id)
+        #json_add_data(:check_value,@report.template.check_value.as_json)
+        #json_add_data(:check_categories,@report.template.check_categories.as_json(include:{check_points:{}}))
+        #json_add_data(:report_records,report_records.as_json)
+        #return render json:json_response
+        return render json:report_detail_json(@report)
+      end
     end
   end
   def pass
@@ -193,9 +203,20 @@ private
     check_current_user_can_visit_the_organization(@report.organization_id)
   end
   def validate_report_visitor
+    error   = nil
     @report = Report.find_by_id(params[:id]) 
-    # @report = Report.includes(:report_records).where(:id=>params[:id])
-    return redirect_to root_path if @report.nil?
+    if @report.nil?
+      error = I18n.t('errors.report.id_not_exsits')
+    end
+    #return redirect_to root_path if @report.nil?
+    if not error.nil?
+      Rails.logger.debug(error)
+      respond_to do |format|
+        format.html {return redirect_to root_path}
+        format.mobile { return redirect_to root_path(format: :mobile)}
+        format.json {return render json:json_base_errors(error)}
+      end
+    end
     check_current_user_can_visit_the_organization(@report.organization.id)
   end
   def validate_organization_visitor
@@ -204,8 +225,7 @@ private
   def validate_format
     error = nil
     if request.format == :mobile or request.format == :json
-      #return redirect_to root_path unless current_user.session.worker? or current_user.session.zone_supervisor?
-      if not current_user.session.worker? and not current_user.session.zone_supervisor?
+      if not current_user.session.worker? and not current_user.session.zone_supervisor? and not current_user.session.zone_admin?
         error=I18n.t('errors.session.type_wrong')
       end
     else request.format == :html
@@ -221,6 +241,7 @@ private
       Rails.logger.debug(error)
       respond_to do |format|
         format.html   { return redirect_to root_path }
+        format.mobile { return redirect_to root_path(format: :mobile)}
         format.json   { return render json:json_base_errors(error)}
       end
     end
@@ -228,20 +249,15 @@ private
   def check_current_user_can_visit_the_organization(organization_id)
     error = nil
     @organization = Organization.find_by_id(organization_id)
-    #return redirect_to root_path if @organization.nil?
     if @organization.nil?
       error = I18n.t('errors.organization.id_not_exsits')
     elsif current_user.session.zone_admin? and not @organization.zone.zone_admin == current_user
-      #return redirect_to root_path unless @organization.zone.zone_admin == current_user
       error=I18n.t('errors.organization.not_owner')
     elsif current_user.session.worker? and not current_user.organization_ids.include?(@organization.id)
-      #return redirect_to root_path unless current_user.organization_ids.include?(@organization.id)
       error=I18n.t('errors.organization.not_owner')
     elsif current_user.session.checker? and not @organization.checker == current_user
-      #return redirect_to root_path unless @organization.checker == current_user
       error=I18n.t('errors.organization.not_owner')
     elsif current_user.session.zone_supervisor? and not current_user.zone_ids.include?(@organization.zone.id)
-      #return redirect_to root_path unless current_user.zone_ids.include?(@organization.zone.id)
       error=I18n.t('errors.organization.not_owner')
     end
     if not error.nil?

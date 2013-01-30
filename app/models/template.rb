@@ -43,6 +43,11 @@ class Template < ActiveRecord::Base
   accepts_nested_attributes_for :check_value
   validates_with TemplateTypeValidator, :on => :create
 
+  def as_json(options={})
+    Rails.logger.debug(options)
+    json = super(options)
+    json
+  end
   def get_check_ponits_num
     n = 0
     self.check_categories.each do |cc|
@@ -69,7 +74,7 @@ class Template < ActiveRecord::Base
 
       return n
     else
-      Rails.logger.info("=============22222222:"+(n+1).to_s)
+      #Rails.logger.info("=============22222222:"+(n+1).to_s)
 
       return n + 1
     end
