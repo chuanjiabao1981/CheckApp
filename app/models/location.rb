@@ -4,4 +4,8 @@ class Location < ActiveRecord::Base
 
 	validates :name,  presence: true, length:{ maximum:200 }
 	validates :des,	  length:{ maximum:600}
+
+
+	JSON_OPTS = {only:[:id,:name,:zone_admin_id,:des]}
+
 end

@@ -6,8 +6,7 @@ class ReportsController < ApplicationController
   before_filter :validate_organization_visitor,           only:[:worker_report,:supervisor_report]
   before_filter :validate_report_visitor,                 only:[:check_categories,:report_detail,:pass,:reject,:destroy,:edit,:update]
   before_filter :validate_report_check_points_visitor,    only:[:check_points]
-  before_filter :validate_report_creater,                 only:[:new,:create]
-  before_filter :validate_report_template_when_create,    only:[:create]
+  before_filter :validate_report_creater,                             only:[:new,:create]
   before_filter :validate_report_edit_and_update_and_destroy,         only:[:edit,:update,:destroy,:pass,:reject]
   before_filter :check_equipment_status   
   before_filter :checkapp_client_need_update
@@ -58,11 +57,18 @@ class ReportsController < ApplicationController
     end
     @location_list  = @organization.zone.zone_admin.locations
     @report         = @organization.reports.build()
+    respond_to do |format|
+      format.mobile { render 'new',formats: [:mobile]}
+      format.json   { render json:report_new_json(@template_list,@location_list)}
+    end
   end
   def create
     @report = @organization.build_a_report(params[:report],current_user)
     if @report.save
-      redirect_to check_categories_report_path(@report)
+      respond_to do |format|
+        format.mobile { redirect_to check_categories_report_path(@report) }
+        format.json   { render json:json_add_data(:report_id,@report.id)}
+      end
     else
       if current_user.session.worker?
         @template_list = Template.where(for_worker:true,zone_admin_id:@organization.zone.zone_admin_id)
@@ -70,13 +76,12 @@ class ReportsController < ApplicationController
         @template_list = Template.where(for_supervisor:true,zone_admin_id:@organization.zone.zone_admin_id)
       end
       @location_list  = @organization.zone.zone_admin.locations
-      render 'new',formats: [:mobile] 
+      #render 'new',formats: [:mobile] 
 
-      #respond_to do |format|
-        #format.mobile { render 'new',formats: [:mobile] }
-      #  @report.errors[:ttttt]="2222222";
-      #  format.json   { return render json:{errors:@report.errors}} 
-      #end
+      respond_to do |format|
+        format.mobile { render 'new',formats: [:mobile] }
+        format.json   { return render json:@report.errors} 
+      end
     end
   end
 
@@ -178,22 +183,21 @@ private
 
     #return redirect_to root_path if @report.committer == current_user and @report.status_is_finished?
   end
-  def validate_report_template_when_create
-
-    return redirect_to root_path if params[:report][:template_id].nil?
-    @template       = Template.find_by_id(params[:report][:template_id])
-    #@organization 在validate_organization_visitor中已经计算过了
-    if current_user.session.zone_supervisor?
-      return redirect_to root_path unless @template.zone_admin == current_user.zone_admin
-      return redirect_to root_path unless @current_user.zone_ids.include?(@organization.zone.id)
-    else
-      return redirect_to root_path unless @template.zone_admin_id == current_user.zone_admin_id
-    end
-  end
   def validate_report_creater
     #只有worker 和 zone_supervisor才能访问这个 controller
     #否则无法设置 report 的committer
-    return redirect_to root_path unless current_user.session.worker? or current_user.session.zone_supervisor?
+    error = nil
+    if not current_user.session.worker? and not current_user.session.zone_supervisor?
+      error = I18n.t('errors.session.type_wrong')
+    end
+    if not error.nil?
+      Rails.logger.debug("error:#{error}")
+      respond_to do |format|
+        format.mobile {return redirect_to root_path(format: :mobile)}
+        format.html   {return redirect_to root_path}
+        format.json   {return render json:json_base_errors(error)}
+      end
+    end
     check_current_user_can_visit_the_organization(params[:organization_id])
   end
   def validate_report_check_points_visitor

@@ -2,3 +2,8 @@ cn:
   errors:
     report:
       id_not_exsits: 此报告不存在!
+      template_not_valid: 模板错误!
+      location_not_valid: 位置错误!
+      status_not_valid: 报告状态错误!
+      supervisor_report_num_exceed: "您的账户仅能创建%{max_supervisor_report_num}个督察报告!"
+      worker_report_num_exceed: "您的账户仅能创建%{max_worker_report_num}个巡查报告!"

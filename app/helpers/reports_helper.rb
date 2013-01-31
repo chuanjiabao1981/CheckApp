@@ -4,6 +4,8 @@ module ReportsHelper
 	NONE_BRANCH					= -1
 	JSON_REPORT					= :reports
 	JSON_REPORT_CATEGORIES		= :categories
+	JSON_REPORT_TEMPLATES		= :templates
+	JSON_REPORT_LOCATIONS		= :locations
 	def reports_json(collection)
 		paginate_info_json(collection)
 		json_add_data(JSON_REPORT,collection.as_json(Report::JSON_OPTS))
@@ -18,6 +20,11 @@ module ReportsHelper
         json_add_data(:check_value,report.template.check_value.as_json)
         json_add_data(:check_categories,report.template.check_categories.as_json(include:{check_points:{}}))
         json_add_data(:report_records,report_records.as_json)
+	end
+
+	def report_new_json(templates,locations)
+		json_add_data(JSON_REPORT_TEMPLATES,templates.as_json(Template::JSON_OPTS_SIMPLE))
+		json_add_data(JSON_REPORT_LOCATIONS,locations.as_json(Location::JSON_OPTS))
 	end
 
 	def find_report_in_time_range(template,start_time,end_time)

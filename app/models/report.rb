@@ -4,14 +4,23 @@ class ReportValidator < ActiveModel::Validator
     if not record.errors.empty?
       return
     end
+    if not record.location_id.nil?
+      if not record.organization.zone.zone_admin.location_ids.include?(record.location_id)
+        record.errors[:location_id]=I18n.t('errors.report.location_not_valid')
+      end
+    end
     if not record.organization.zone.zone_admin.template_ids.include?(record.template_id)
-      record.errors[:template_id]='当前机构没有此模板'
+      record.errors[:template_id]= I18n.t('errors.report.template_not_valid')
       return
     end
     if record.committer_type == 'ZoneSupervisor'
       if not record.template.for_supervisor?
         record.errors[:committer_id] = '当前人员使用的是自查模板'
         return
+      end
+      if not record.committer.zone_ids.include?(record.organization.zone.id)
+        record.errors[:base]= I18n.t('errors.session.type_wrong')
+        return 
       end
     end
     if record.committer_type == 'Worker'
@@ -20,12 +29,12 @@ class ReportValidator < ActiveModel::Validator
         return
       end
       if not record.committer.organization_ids.include?(record.organization_id)
-        record.errors[:organization_id] = '当前人员不能提交此机构的模板'
+        record.errors[:base] = I18n.t('errors.session.type_wrong')
         return
       end
     end
     if record.status != 'new' && record.status !='reject' && record.status != 'finished'
-      record.errors[:status] = 'report状态错误'
+      record.errors[:status] = I18n.t('errors.report.status_not_valid')
     end
   end
 end
@@ -36,12 +45,16 @@ class ReportNumValidator < ActiveModel::Validator
     end
     if record.supervisor_report?
       if (record.template.zone_admin.get_all_supervisor_report_num + 1) >  record.template.zone_admin.max_supervisor_report_num 
-        record.errors[:base] = "您的账户仅能创建#{record.template.zone_admin.max_supervisor_report_num}个督察报告。"
+        #record.errors[:base] = "您的账户仅能创建#{record.template.zone_admin.max_supervisor_report_num}个督察报告。"
+        record.errors[:base] = I18n.t('errors.report.supervisor_report_num_exceed',:max_supervisor_report_num =>record.template.zone_admin.max_supervisor_report_num)
+        return 
       end  
     end
     if record.worker_report?
       if (record.template.zone_admin.get_all_worker_report_num + 1) > record.template.zone_admin.max_worker_report_num
-        record.errors[:base] = "您的账户仅能创建#{record.template.zone_admin.max_worker_report_num}个巡查报告。"
+        #record.errors[:base] = "您的账户仅能创建#{record.template.zone_admin.max_worker_report_num}个巡查报告。"
+        record.errors[:base] = I18n.t('errors.report.worker_report_num_exceed',:max_worker_report_num => record.template.zone_admin.max_worker_report_num)
+        return 
       end
     end
   end
@@ -69,7 +82,13 @@ class Report < ActiveRecord::Base
 
 
   validates :organization,presence:true
-  validates :template,presence:true
+  # 这里没有使用 validates :template,presence:true
+  # 原因:
+  # 客户端需要知道提交的字段中到底是哪个出错了，需要明确的给出是 template_id。如果使用:template则只能给出report[template]='xxxxx'的错误
+  # 但是，validates template_id仅能保证template_id这个值存在，但是不能保证template是存在的。所以要单独写一个Validator 判断template_id是否合法
+  # ReportValidator 中的record.organization.zone.zone_admin.template_ids.include?(record.template_id) 等价与判断template是否合法，所以就不单独写了
+  validates :template_id,presence:true
+  #validates :template,presence:true
   validates :reporter_name,presence:true,length:{maximum:32}
   validates :status,presence:true
 
