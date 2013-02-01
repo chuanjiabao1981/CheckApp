@@ -76,11 +76,10 @@ class ReportsController < ApplicationController
         @template_list = Template.where(for_supervisor:true,zone_admin_id:@organization.zone.zone_admin_id)
       end
       @location_list  = @organization.zone.zone_admin.locations
-      #render 'new',formats: [:mobile] 
 
       respond_to do |format|
-        format.mobile { render 'new',formats: [:mobile] }
-        format.json   { return render json:@report.errors} 
+        format.mobile { return render 'new',formats: [:mobile] }
+        format.json   { return render json:json_errors(@report.errors)} 
       end
     end
   end
@@ -88,6 +87,10 @@ class ReportsController < ApplicationController
 
   def edit
     @location_list  = @organization.zone.zone_admin.locations
+    respond_to do |format|
+      format.mobile { return render 'edit',formats: [:mobile] }
+      format.json   { return render json:@report.as_json(Report::JSON_OPTS)}
+    end
   end
   def update
     if @report.update_attributes(reporter_name:params[:report][:reporter_name],location_id:params[:report][:location_id])
@@ -135,11 +138,6 @@ class ReportsController < ApplicationController
         end
       end
       format.json do
-        #report_records=ReportRecord.where(report_id:@report.id)
-        #json_add_data(:check_value,@report.template.check_value.as_json)
-        #json_add_data(:check_categories,@report.template.check_categories.as_json(include:{check_points:{}}))
-        #json_add_data(:report_records,report_records.as_json)
-        #return render json:json_response
         return render json:report_detail_json(@report)
       end
     end
