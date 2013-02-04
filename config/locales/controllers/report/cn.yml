@@ -7,3 +7,4 @@ cn:
       status_not_valid: 报告状态错误!
       supervisor_report_num_exceed: "您的账户仅能创建%{max_supervisor_report_num}个督察报告!"
       worker_report_num_exceed: "您的账户仅能创建%{max_worker_report_num}个巡查报告!"
+      not_owner: 当前用户无权限修改此报告!

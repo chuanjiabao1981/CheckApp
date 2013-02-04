@@ -6,6 +6,7 @@ module ReportsHelper
 	JSON_REPORT_CATEGORIES		= :categories
 	JSON_REPORT_TEMPLATES		= :templates
 	JSON_REPORT_LOCATIONS		= :locations
+	JSON_REPORT_ID				= :report_id
 	def reports_json(collection)
 		paginate_info_json(collection)
 		json_add_data(JSON_REPORT,collection.as_json(Report::JSON_OPTS))
@@ -27,6 +28,9 @@ module ReportsHelper
 		json_add_data(JSON_REPORT_LOCATIONS,locations.as_json(Location::JSON_OPTS))
 	end
 
+	def report_id_json(report)
+		json_add_data(:report_id,report.id)
+	end
 	def find_report_in_time_range(template,start_time,end_time)
 		return Report.where(:created_at=>start_time.to_date..end_time.to_date,:template_id =>template.id)
 	end

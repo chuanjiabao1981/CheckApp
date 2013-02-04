@@ -67,7 +67,7 @@ class ReportsController < ApplicationController
     if @report.save
       respond_to do |format|
         format.mobile { redirect_to check_categories_report_path(@report) }
-        format.json   { render json:json_add_data(:report_id,@report.id)}
+        format.json   { render json:report_id_json(@report)}
       end
     else
       if current_user.session.worker?
@@ -89,24 +89,30 @@ class ReportsController < ApplicationController
     @location_list  = @organization.zone.zone_admin.locations
     respond_to do |format|
       format.mobile { return render 'edit',formats: [:mobile] }
-      format.json   { return render json:@report.as_json(Report::JSON_OPTS)}
     end
   end
   def update
     if @report.update_attributes(reporter_name:params[:report][:reporter_name],location_id:params[:report][:location_id])
-      redirect_to check_categories_report_path(@report,format: :mobile)
+      respond_to do |format|
+        format.mobile { return redirect_to check_categories_report_path(@report,format: :mobile)}
+        format.json   { return render json:report_id_json(@report)}
+      end
     else
       @location_list  = @organization.zone.zone_admin.locations
-      render 'edit',formats: [:mobile]
+      respond_to do |format|
+        format.mobile { return render 'edit',formats: [:mobile] }
+        format.json   { return render json:json_errors(@report.errors)}
+      end
     end
   end
 
   def destroy
-    if @report.status_is_new?
-      @report.destroy
-    elsif current_user.session.site_admin? or current_user.session.checker? or current_user.session.zone_admin?
-      @report.destroy
-    end
+    #if @report.status_is_new?
+    #  @report.destroy
+    #elsif current_user.session.site_admin? or current_user.session.checker? or current_user.session.zone_admin?
+    #  @report.destroy
+    #end
+    @report.destroy
     respond_to do |format|
       format.html do
         return redirect_to worker_organization_reports_path(@report.organization) if @report.worker_report?
@@ -115,6 +121,9 @@ class ReportsController < ApplicationController
       format.mobile do
         return redirect_to worker_organization_reports_path(@report.organization,format: :mobile) if @report.worker_report?
         return redirect_to zone_supervisor_organization_reports_path(@report.organization,format: :mobile) if @report.supervisor_report?
+      end
+      format.json do |format|
+        return render json:report_id_json(@report)
       end
     end
     
@@ -171,12 +180,24 @@ private
     #if @report.worker_report?
     #  return redirect_to root_path unless @report.committer == current_user or current_user.session.checker? or current_user.session.site_admin?
     #end
-
-    return redirect_to root_path unless @report.committer == current_user or 
-                                        current_user.session.checker? or
-                                        current_user.session.site_admin? or
-                                        current_user.session.zone_supervisor? or
-                                        current_user.session.zone_admin?
+    error = nil
+    if not  @report.committer == current_user     and 
+       not current_user.session.site_admin?       and 
+       not (current_user.session.zone_admin?      and @report.organization.zone.zone_admin == current_user) and 
+       not (current_user.session.zone_supervisor? and @current_user.zone_ids.include?(@report.organization.zone.id)) and 
+       not (current_user.session.checker?         and @current_user.organization_id == @report.organization_id)
+       error = I18n.t('errors.report.not_owner')
+    end
+    #####提醒 刘宁 非owner是不能修改的别随便改
+    if not error.nil?
+      respond_to do |format|
+        format.mobile {return redirect_to root_path(format: :mobile)}
+        format.html   {return redirect_to root_path}
+        format.json   {return render json:json_base_errors(error)}
+      end
+    end
+    #                                    current_user.session.zone_supervisor? or
+    #                                    current_user.session.zone_admin?
 
 
     #return redirect_to root_path if @report.committer == current_user and @report.status_is_finished?

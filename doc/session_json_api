@@ -54,7 +54,12 @@ a_zone_supervisor创建报告
 GET
 curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"  -H "Cookie: remember_token=8643k5jVo5tn5SJJWsb0gg" -X GET http://localhost:3000/organizations/3/reports/new.json
 POST
-curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"  -H "Cookie: remember_token=8643k5jVo5tn5SJJWsb0gg" -X POST -d "{\"report\":{\"template_id\":10,\"reporter_name\":\"wwww1\",\"location_id\":\"\"}}" http://localhost:3000/organizations/3/reports.json
+curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"  -H "Cookie: remember_token=8643k5jVo5tn5SJJWsb0gg" -X POST -d "{\"report\":{\"template_id\":20,\"reporter_name\":\"wwww1\",\"location_id\":\"\"}}" http://localhost:3000/organizations/3/reports.json
+
+
+PUT
+curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"  -H "Cookie: remember_token=8643k5jVo5tn5SJJWsb0gg" -X PUT -d "{\"report\":{\"reporter_name\":\"11edit wwwwzzzzz1\",\"location_id\":\"\"}}" http://localhost:3000/reports/170.json
+
 
 
 ============================================worker================================================================================
@@ -67,6 +72,15 @@ curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.1
 
 POST
 curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"  -H "Cookie: remember_token=yt_ki6VK1L1K-IVPnA3xHw" -X POST -d "{\"report\":{\"template_id\":20,\"reporter_name\":\"wwwwzzzzz1\",\"location_id\":\"\"}}" http://localhost:3000/organizations/2/reports.json
+
+PUT
+curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"  -H "Cookie: remember_token=yt_ki6VK1L1K-IVPnA3xHw" -X PUT -d "{\"report\":{\"reporter_name\":\"11edit wwwwzzzzz1\",\"location_id\":\"\"}}" http://localhost:3000/reports/203.json
+
+DELETE
+curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"  -H "Cookie: remember_token=yt_ki6VK1L1K-IVPnA3xHw" -X DELETE  http://localhost:3000/reports/111.json
+
+
+
 
 
 
