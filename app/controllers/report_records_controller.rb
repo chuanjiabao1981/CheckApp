@@ -1,4 +1,6 @@
 class ReportRecordsController < ApplicationController
+  include ReportRecordsHelper
+
   before_filter :singed_in_user
   before_filter :validate_user_visitor,only:[:show,:edit,:update]
   before_filter :validate_user_new,only:[:new_report_record,:create_report_record]
@@ -11,21 +13,33 @@ class ReportRecordsController < ApplicationController
     @report_record.check_category_id = @check_point.check_category.id
     @report_record.date_value        = nil
     if @check_point.can_photo?
-      get_photo_num.times do 
+      get_photo_num(@check_point).times do 
         @report_record.build_photo_media 
       end
     elsif @check_point.can_video?
       @report_record.build_video_media
     end
+    respond_to do |format|
+      format.mobile 
+      format.json   {return render json:new_report_record_json(@report_record,@check_point)}
+    end
   end
   def create_report_record
+    deal_with_base64_photo_data(params)
+    Rails.logger.debug(params)
     @report_record = @report.report_records.build(params[:report_record])
     @report_record.check_point_id    = params[:check_point_id]
     @report_record.check_category_id = @check_point.check_category.id
     if @report_record.save
-      redirect_to report_record_path(@report_record,format: :mobile)
+      respond_to do |format|
+        format.mobile { return redirect_to report_record_path(@report_record,format: :mobile)}
+        format.json   { return render json:report_record_id_json(@report_record)}
+      end
     else
-      render 'new_report_record',formats: [:mobile]
+      respond_to do |format|
+        format.mobile {return render 'new_report_record',formats: [:mobile] }
+        format.json   {return render json:{aaaa:"222"}}
+      end
     end
   end
   def edit
@@ -34,17 +48,23 @@ class ReportRecordsController < ApplicationController
     end
   end
   def update
+    Rails.logger.debug(params)
+    deal_with_base64_photo_data(params)
+    Rails.logger.debug(params)
     if @report_record.update_attributes(params[:report_record]) 
-      redirect_to report_record_path(@report_record,format: :mobile)
+      respond_to do |format|
+        format.mobile {return redirect_to report_record_path(@report_record,format: :mobile)}
+        format.json   {return render json:report_record_id_json(@report_record)}
+      end
     else
-      render 'edit',formats:[:mobile]
+      respond_to do |format|
+        format.mobile {return render 'edit',formats: [:mobile] }
+        format.json   {return render json:{aaa:"22222"}}
+      end
     end
   end
 
 private
-  def get_photo_num
-    return @report.template.zone_admin.check_point_photo_num
-  end
   def validate_user_new
     return redirect_to root_path(format: :mobile) unless current_user.session.worker? or current_user.session.zone_supervisor?
     @report         = Report.find_by_id(params[:id])

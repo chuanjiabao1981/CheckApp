@@ -43,7 +43,7 @@ class MediaInfoPhotoUploader < CarrierWave::Uploader::Base
   # end
 
   # Process files as they are uploaded:
-  process :resize_to_fill => [800, 800] 
+  #####process :resize_to_fill => [1000, 1000] 
   process :date_watermark
   process :quality => 90
   #

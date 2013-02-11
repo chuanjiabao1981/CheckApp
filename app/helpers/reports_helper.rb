@@ -19,7 +19,7 @@ module ReportsHelper
 	def report_detail_json(report)
 		report_records=ReportRecord.where(report_id:report.id)
         json_add_data(:check_value,report.template.check_value.as_json)
-        json_add_data(:check_categories,report.template.check_categories.as_json(include:{check_points:{}}))
+        json_add_data(:check_categories,report.template.check_categories.as_json(include:{check_points:{media_num:true}}))
         json_add_data(:report_records,report_records.as_json)
 	end
 

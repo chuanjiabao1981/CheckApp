@@ -69,6 +69,10 @@ class CheckPoint < ActiveRecord::Base
       json[:report_record]= report_record.as_json(include:{media_infos:{}})
       json[:media_infos]  = report_record.media_infos.as_json()
     end
+    if option[:media_num] 
+      json[:video_num] = 1
+      json[:photo_num] = self.check_category.template.zone_admin.check_point_photo_num
+    end
     json
   end
 

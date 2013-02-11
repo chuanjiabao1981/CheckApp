@@ -61,6 +61,11 @@ PUT
 curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"  -H "Cookie: remember_token=8643k5jVo5tn5SJJWsb0gg" -X PUT -d "{\"report\":{\"reporter_name\":\"11edit wwwwzzzzz1\",\"location_id\":\"\"}}" http://localhost:3000/reports/170.json
 
 
+创建一个report_record
+POST 
+curl -i -H "Content-Type: application/json" -H "User-Agent:868033013385937@0@0.14@android41"  -H "Cookie: remember_token=8643k5jVo5tn5SJJWsb0gg" -X POST -d "{\"report_record\": { \"boolean_value\":\"0\",\"date_value(1i)\":\"2008\",\"date_value(2i)\":\"2\", \"date_value(3i)\":\"3\",\"int_value\":\"123\", \"float_value\":\"0.1\",\"text_value\":\"a\", \"text_with_photo_value\":\"dddddd\",\"media_infos_attributes\":{}}}" http://localhost:3000/report/213/check_point/25/records/create.json
+
+
 
 ============================================worker================================================================================
 worker登录

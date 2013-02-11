@@ -8,6 +8,10 @@ module JsonResponseHelper
 	def json_response
 		@_json_response ||= {}
 	end
+
+	def json_response=(o)
+		@_json_response = o
+	end
 	def json_errors(errors_data)
 		json_response[JsonConstants::JSON_ERRORS]=errors_data
 		return json_response
@@ -24,6 +28,11 @@ module JsonResponseHelper
 	def json_add_data(key,value)
 		json_response[key]=value
 		return json_response
+	end
+
+	def json_merge_data(data)
+		json_response.update(data)
+		json_response
 	end
 
 
