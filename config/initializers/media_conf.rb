@@ -15,4 +15,13 @@ CheckApp::Application.configure  do
 
 	config.media_store_mode 			= config.MediaStoreLocalMode
 
+	config.MediaTypeList					= [config.MediaTypeCheckPointVideo,
+		                                   config.MediaTypeCheckPointPhoto,
+		                                   config.MediaTypeTextWithPhoto,
+		                                   config.MediaTypeTextWithVideo
+		                                  ]
+    config.MediaPhotoTypeList			= [config.MediaTypeCheckPointPhoto,config.MediaTypeTextWithPhoto]
+    config.MediaVideoTypeList			= [config.MediaTypeCheckPointVideo,config.MediaTypeTextWithVideo]
+
+
 end

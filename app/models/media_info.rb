@@ -7,7 +7,7 @@ class MediaInfo < ActiveRecord::Base
 
   require 'carrierwave/orm/activerecord'
   attr_accessible :photo_path,:video_path,:media_type,:media_store_mode,:photo_caption,:video_caption,
-                  ReportRecordsHelper::JSON_BASE64_PHOTO,ReportRecordsHelper::JSON_PHOTO_ORI_NAME
+                  ReportRecordsHelper::JSON_BASE64_PHOTO,ReportRecordsHelper::JSON_UPLOAD_ORI_FILE_NAME
 
   belongs_to :report_record
   mount_uploader :photo_path,MediaInfoPhotoUploader

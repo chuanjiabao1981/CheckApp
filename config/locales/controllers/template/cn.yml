@@ -1,0 +1,12 @@
+cn:
+  errors:
+    template:
+      id_not_exsits: 不存在此模板!
+      not_match: 模板不匹配！
+    check_value:
+      id_not_exsits: check_value不存在！
+    check_point:
+      id_not_exsits: 不存在此检查点！
+      alreay_done: 此检查点记录已存在!
+    check_category:
+      id_not_exsits: 不存在此检查类型!

@@ -8,3 +8,4 @@ cn:
       supervisor_report_num_exceed: "您的账户仅能创建%{max_supervisor_report_num}个督察报告!"
       worker_report_num_exceed: "您的账户仅能创建%{max_worker_report_num}个巡查报告!"
       not_owner: 当前用户无权限修改此报告!
+      status_is_finished: 报告在完成状态下无法修改!

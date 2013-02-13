@@ -1,0 +1,4 @@
+cn:
+  errors:
+    report_record:
+      id_not_exsits: 此记录不存在!
