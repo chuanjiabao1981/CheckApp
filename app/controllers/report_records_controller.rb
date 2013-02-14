@@ -81,7 +81,7 @@ private
         error = I18n.t('errors.check_point.id_not_exsits')
       else 
         @check_category = @check_point.check_category
-        if @check_category.nil? 
+        if @check_category.nil?
           error = I18n.t('errors.check_category.id_not_exsits')
         elsif @report.template  != @check_category.template 
           error = I18n.t('errors.template.not_match')

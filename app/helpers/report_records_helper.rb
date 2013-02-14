@@ -30,11 +30,7 @@ module ReportRecordsHelper
 	def get_photo_num(check_point)
     	return check_point.check_category.template.zone_admin.check_point_photo_num
 	end
-	##TODO
-	## 如果格式错误怎么办 例如 没有media_type or something
-	## 测试视频
-	## 确认大小在手机上看怎么样
-	## lining 创建后，不能看到创建按钮 ，否则会出重复数据？？ 
+	
 	def deal_with_base64_data(params)
 		media_infos = nil
 		if not params["report_record"].nil?
