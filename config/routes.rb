@@ -92,6 +92,9 @@ CheckApp::Application.routes.draw do
   match '/contact'                        ,to:'main#contact',via: :get,as:'contact'
 
 
+  match '/statistics/:zone_admin_id/organization'    ,to:'statistics#organization',via: :get, as:'statistics_organization'
+  
+
   root  to:'main#home'
 
   resources :zone_supervisors,shallow:true,only:[] do

@@ -1,7 +1,7 @@
 #encoding:utf-8
 class StatisticsController < ApplicationController
   before_filter :correct_user,       only: [:search]
-
+  before_filter :singed_in_user,       only: [:organization]
   def search
     ##TODO:: 不能超过一个月
     if @start_date_ts != 0 and @end_date_ts != 0
@@ -19,6 +19,15 @@ class StatisticsController < ApplicationController
     end
   end
 
+  def organization
+    ##TODO :: find somewhere to figure out zone_admin
+    @zone_admin = ZoneAdmin.find_by_id(params[:zone_admin_id])
+    @zones      = @zone_admin.zones
+    params[:statistics] ||= {}
+    ##TODO if zone 为nil
+    params[:statistics][:zone_id] = 5 #@zones[0].id
+    Rails.logger.debug(params)
+  end
 private
   def correct_user
   	return redirect_to root_path unless signed_in?

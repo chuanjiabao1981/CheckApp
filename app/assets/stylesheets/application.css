@@ -12,4 +12,5 @@
  *= require fancybox
  *= require_tree ./normal/
  *= require jquery.ui.datepicker
+ *= require statistics
 */
