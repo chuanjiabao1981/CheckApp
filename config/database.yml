@@ -4,9 +4,14 @@
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem 'sqlite3'
 development:
-  adapter: sqlite3
-  database: db/development.sqlite3
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: "check_app_development" 
   pool: 5
+  username: work
+  password: "12345678"
+  socket: /opt/local/var/run/mysql5/mysqld.sock
   timeout: 5000
 
 # Warning: The database defined as "test" will be erased and

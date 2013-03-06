@@ -13,3 +13,66 @@ $ ->
   currnet_organization_chooser = $(".organization_chooser")
   $("select", currnet_organization_chooser).remove()
   $("div.templates div."+organization_chooser).children().clone().appendTo currnet_organization_chooser
+
+
+$ ->
+  chart   = undefined
+  chart_x = undefined
+  $(document).ready ->
+    chart_x       = $('div#reports-x').data('reports-x')
+    chart_series  = $('div#reports-statistics').data('reports-statistics')
+    chart_org     = $('div#reports-org').data('reports-org')
+    chart = new Highcharts.Chart(
+      chart:
+        renderTo: "container"
+        type: "line"
+        marginRight: 130
+        marginBottom: 75
+
+      title:
+        text: chart_org + "每周工作统计"
+        x: -20 #center
+
+      subtitle:
+        text: chart_x[0].split("-")[0] + "年第"+ chart_x[0].split("-")[1] + "周"  +  "--" + chart_x[chart_x.length - 1].split("-")[0] + "年第" + chart_x[chart_x.length - 1].split("-")[1] + "周"
+        x: -20
+
+      xAxis:
+        categories: chart_x
+        tickInterval:2
+        labels:{align:'right',rotation:-45},
+        showLastLabel:true
+        showFirstLabel:true
+        endOnTick: true
+
+
+      yAxis:
+        title:
+          text: "每周检查(次数)"
+
+        min: 0
+
+        plotLines: [
+          value: 0
+          width: 1
+          color: "#808080"
+        ]
+
+      tooltip:
+        formatter: ->
+          "<b>" + @series.name + "</b><br/>" + @x+ "周: " + @y + "次"
+
+      legend:
+        layout: "vertical"
+        align: "right"
+        verticalAlign: "top"
+        x: 0
+        y: 100
+        borderWidth: 0
+
+      series: chart_series
+    )
+
+
+
+

@@ -112,10 +112,10 @@ ActiveRecord::Schema.define(:version => 20121026053038) do
     t.boolean  "boolean_value",         :default => false
     t.integer  "int_value",             :default => 0
     t.float    "float_value",           :default => 0.0
-    t.date     "date_value",            :default => '2011-12-03'
-    t.text     "text_value",            :default => ""
-    t.datetime "created_at",                                      :null => false
-    t.datetime "updated_at",                                      :null => false
+    t.date     "date_value"
+    t.text     "text_value"
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
     t.string   "text_with_photo_value"
   end
 

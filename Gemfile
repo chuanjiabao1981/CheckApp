@@ -10,7 +10,7 @@ gem "fancybox-rails", "~> 0.1.4"
 gem 'will_paginate', '~> 3.0'
 gem 'voyeur'
 gem 'prawn', git: 'git://github.com/prawnpdf/prawn', branch: 'master'
-
+gem 'yaml_db'
 
 
 # Bundle edge Rails instead:
@@ -18,6 +18,7 @@ gem 'prawn', git: 'git://github.com/prawnpdf/prawn', branch: 'master'
 
 group :development,:test do
   gem 'sqlite3', '1.3.5'
+  gem 'mysql2'
   gem 'rspec-rails', '2.9.0'
   gem 'annotate', '~> 2.4.1.beta'
 end

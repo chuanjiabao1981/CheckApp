@@ -1,9 +1,9 @@
 <div class="box">
 <div class="templates">
-<% @zone_admin.zones.each do |z| %>
+<% @zones.each do |z| %>
 	<div class=<%= "organization_chooser_for_zone_#{z.id}" %> >
 		<%= select(:statistics,
-		           :id,
+		           :organization_id,
 		            z.organizations.map {|o| [o.name,o.id]}
 		        ) %>
     </div>
@@ -12,7 +12,7 @@
 <%= form_tag(statistics_organization_path(@zone_admin) ,method: :get) do %>
 	<%= select(:statistics,
 						 :zone_id,
-						 @zone_admin.zones.map {|z| [z.name,z.id,{"data-organization_chooser"=>"organization_chooser_for_zone_#{z.id}"}]},
+						 @zones.map {|z| [z.name,z.id,{"data-organization_chooser"=>"organization_chooser_for_zone_#{z.id}"}]},
 						 :selected => params[:statistics][:zone_id]
 	          )%>
 	<div class="organization_chooser">
@@ -21,12 +21,20 @@
 	<div class="scroll_checkboxes" >
 		<% @zone_admin.templates.each do |t| %>
 			<li>
-		     <%= check_box_tag 'statistics[ids][]',t.id %>
+		     <%= check_box_tag 'statistics[template_ids][]',t.id, params[:statistics][:template_ids].include?(t.id.to_s) %>
 			 <%= t.name %>
 			</li>
 		<% end %>
 	</div>
 	</div>
-	<!--%= submit_tag '统计' ,class:"btn btn-primary"%-->	
+	<%= submit_tag '统计' ,class:"btn btn-primary"%>	
+<% end %>
+
+<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+<%= content_tag "div", id: "reports-x",data:{:"reports-x" => @reports_x} do %>
+<% end %>
+<%= content_tag "div", id: "reports-statistics",data:{:"reports-statistics" => @reports_statistics} do %>
+<% end %>
+<%= content_tag "div", id: "reports-org",data:{:"reports-org" => @organization_name} do %>
 <% end %>
 <div>

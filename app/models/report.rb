@@ -96,7 +96,10 @@ class Report < ActiveRecord::Base
   validates_with ReportNumValidator, :on => :create
 
 
-
+  def self.statistics(query)
+    reports = Report.includes(:template).select("template_id,DATE_FORMAT(reports.created_at,'%X-%V') AS created_x,count(*) AS report_num_per_x").where("organization_id=? and template_id in (?)",query[:organization_id],query[:template_ids]).group('created_x,template_id')
+    reports
+  end
   def supervisor_report?
     return true if self.committer_type == 'ZoneSupervisor'
     return false

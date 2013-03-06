@@ -21,12 +21,40 @@ class StatisticsController < ApplicationController
 
   def organization
     ##TODO :: find somewhere to figure out zone_admin
+    ##TODO :: 一年以内的
     @zone_admin = ZoneAdmin.find_by_id(params[:zone_admin_id])
-    @zones      = @zone_admin.zones
-    params[:statistics] ||= {}
-    ##TODO if zone 为nil
-    params[:statistics][:zone_id] = 5 #@zones[0].id
-    Rails.logger.debug(params)
+    @zones      = Zone.includes(:organizations).where("zone_admin_id =?" ,@zone_admin.id)
+    @zones                ||= []
+    params[:statistics]   ||= {}
+    params[:statistics][:template_ids] ||=[]
+    return render 'organization' if @zones.nil? or @zones.empty?
+    params[:statistics][:zone_id] = @zones[0].id
+    @reports_x = []
+    if not params[:statistics][:organization_id].nil?
+      @organization       = Organization.find(params[:statistics][:organization_id])
+      return render 'organization' if  @organization.nil?
+      @organization_name  = @organization.name
+      @reports    = Report.statistics(params[:statistics])
+      @reports_x    = @reports.inject([]) {|result,r| result << r.created_x if not result.include?(r.created_x); result}
+
+      @reports_x  ||= 54.downto(0).map {|x| (Time.new - x * 7 * 24 * 3600).strftime("%Y-%U")}
+      #统计数据按照 模板民成hash到一个hash中
+      @reports_group_by_template = @reports.group_by{|r| r.template.name}
+      #统计数据按照 时间打散到一个hash中
+      @reports_group_by_x        = @reports_group_by_template.inject({}) {|result,r| result[r[0]]=r[1].group_by{|x| x.created_x};result}
+      @reports_statistics        = []
+      @reports_statistics_pie    = []
+      @reports_group_by_x.each do |template,report|
+        s = {}
+        s[:type] = "line"
+        s[:name] = template 
+        s[:data] = @reports_x.inject([]) {|result,r| result <<  (report.has_key?(r) ? report[r][0].report_num_per_x : 0)}
+        @reports_statistics << s
+
+      end
+    else
+      @reports = []
+    end
   end
 private
   def correct_user
