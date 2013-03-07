@@ -1,0 +1,10 @@
+cn:
+  statistics:
+    week: 按周统计
+    month: 按月统计
+    organization_statistics: 机构工作统计
+    choose_organization: 选择机构
+    choose_zone: 选择分区
+    choose_template: 选择模板
+    choose_query_time_mode: 选择方式
+    statistics_query: 统计

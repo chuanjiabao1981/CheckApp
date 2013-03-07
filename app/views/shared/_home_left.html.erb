@@ -38,7 +38,7 @@
 			<% else %>
 				<li>
 			<% end %>
-				<%= link_to '统计分析',statistics_path(current_user) %>
+				<%= link_to '统计分析',statistics_organization_path(current_user) %>
 			</li>
 			<% if controller_name == 'zones' %>
 				<li class="active">

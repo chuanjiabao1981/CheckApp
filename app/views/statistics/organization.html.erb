@@ -1,40 +1,77 @@
+<%= render partial:'statistics/nav' %>
+
 <div class="box">
-<div class="templates">
-<% @zones.each do |z| %>
-	<div class=<%= "organization_chooser_for_zone_#{z.id}" %> >
-		<%= select(:statistics,
+	<div class="templates">
+		<% @zones.each do |z| %>
+			<div class=<%= "organization_chooser_for_zone_#{z.id}" %> >
+				<%= select(:statistics,
 		           :organization_id,
 		            z.organizations.map {|o| [o.name,o.id]}
 		        ) %>
-    </div>
-<% end %>
-</div>
-<%= form_tag(statistics_organization_path(@zone_admin) ,method: :get) do %>
-	<%= select(:statistics,
+    		</div>
+		<% end %>
+	</div>
+	<div class="row">
+		<div class="span10 offset1">
+			<%= form_tag(statistics_organization_path(@zone_admin) ,method: :get,class: "form-horizontal") do %>
+			<legend><%= I18n.t('statistics.organization_statistics') %></legend>
+			<div class="control-group">
+				<%= label :name,"#{I18n.t('statistics.choose_zone')}:" ,class:"control-label"%>
+				<div class="controls">
+					<%= select(:statistics,
 						 :zone_id,
 						 @zones.map {|z| [z.name,z.id,{"data-organization_chooser"=>"organization_chooser_for_zone_#{z.id}"}]},
 						 :selected => params[:statistics][:zone_id]
-	          )%>
-	<div class="organization_chooser">
+	         	 	)%>
+	         	</div>
+	        </div>
+	        <div class="control-group">
+	        	<%= label :name,"#{I18n.t('statistics.choose_organization')}:" , class:"control-label" %>
+				<div class="organization_chooser controls"> </div>
+			</div>
+			<div class="control-group">
+				<%= label :name,"#{I18n.t('statistics.choose_template')}:", class:"control-label" %>
+				<div class="controls"> 
+					<div class="scroll">
+						<div class="scroll_checkboxes" >
+							<% @zone_admin.templates.each do |t| %>
+							<li>
+				     			<%= check_box_tag 'statistics[template_ids][]',t.id, params[:statistics][:template_ids].include?(t.id.to_s) %>
+					 			<%= t.name %>
+							</li>
+							<% end %>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="control-group">
+				<%= label :name,"#{I18n.t('statistics.choose_query_time_mode')}:", class:"control-label" %>
+				<div class="controls">
+					<%= radio_button 'statistics','groupby','month',checked: params[:statistics][:groupby] == "month" %> <%= I18n.t('statistics.month') %>
+					<%= radio_button 'statistics','groupby','week' ,checked: params[:statistics][:groupby] == "week" %> <%= I18n.t('statistics.week') %>
+				</div>
+			</div>
+			<div class="form-actions">
+				<%= submit_tag "#{I18n.t('statistics.statistics_query')}" ,class:"btn btn-primary"%>	
+			</div>
+			<% end %>
+		</div>
 	</div>
-	<div class="scroll">
-	<div class="scroll_checkboxes" >
-		<% @zone_admin.templates.each do |t| %>
-			<li>
-		     <%= check_box_tag 'statistics[template_ids][]',t.id, params[:statistics][:template_ids].include?(t.id.to_s) %>
-			 <%= t.name %>
-			</li>
-		<% end %>
+	<%= content_tag "div", id: "reports-x",data:{:"reports-x" => @reports_x} do %>
+	<% end %>
+	<%= content_tag "div", id: "reports-statistics",data:{:"reports-statistics" => @reports_statistics} do %>
+	<% end %>
+	<%= content_tag "div", id: "reports-org",data:{:"reports-org" => @organization_name} do %>
+	<% end %>
+	<%= content_tag "div", id: "reports-group-by",data:{"reports-group-by"=> params[:statistics][:groupby] == "month" ? "月" : "周"} do %>
+	<% end %>
+</div>
+<% if not @reports_statistics.nil? and not @reports_statistics.empty? %>
+<div class="box">
+	<div class="row">
+		<div class="span10 offset1">
+			<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+		</div>
 	</div>
-	</div>
-	<%= submit_tag '统计' ,class:"btn btn-primary"%>	
+</div>
 <% end %>
-
-<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
-<%= content_tag "div", id: "reports-x",data:{:"reports-x" => @reports_x} do %>
-<% end %>
-<%= content_tag "div", id: "reports-statistics",data:{:"reports-statistics" => @reports_statistics} do %>
-<% end %>
-<%= content_tag "div", id: "reports-org",data:{:"reports-org" => @organization_name} do %>
-<% end %>
-<div>

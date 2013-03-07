@@ -19,9 +19,11 @@ $ ->
   chart   = undefined
   chart_x = undefined
   $(document).ready ->
-    chart_x       = $('div#reports-x').data('reports-x')
-    chart_series  = $('div#reports-statistics').data('reports-statistics')
-    chart_org     = $('div#reports-org').data('reports-org')
+    chart_x         = $('div#reports-x').data('reports-x')
+    chart_series    = $('div#reports-statistics').data('reports-statistics')
+    chart_org       = $('div#reports-org').data('reports-org')
+    chart_group_by  = $('div#reports-group-by').data('reports-group-by')
+    return  if chart_series is `undefined`
     chart = new Highcharts.Chart(
       chart:
         renderTo: "container"
@@ -30,11 +32,11 @@ $ ->
         marginBottom: 75
 
       title:
-        text: chart_org + "每周工作统计"
+        text: chart_org + "工作统计"
         x: -20 #center
 
       subtitle:
-        text: chart_x[0].split("-")[0] + "年第"+ chart_x[0].split("-")[1] + "周"  +  "--" + chart_x[chart_x.length - 1].split("-")[0] + "年第" + chart_x[chart_x.length - 1].split("-")[1] + "周"
+        text: chart_x[0].split("-")[0] + "年"+ chart_x[0].split("-")[1] + chart_group_by  +  "--" + chart_x[chart_x.length - 1].split("-")[0] + "年" + chart_x[chart_x.length - 1].split("-")[1] + chart_group_by
         x: -20
 
       xAxis:

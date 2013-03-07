@@ -21,12 +21,12 @@ class StatisticsController < ApplicationController
 
   def organization
     ##TODO :: find somewhere to figure out zone_admin
-    ##TODO :: 一年以内的
     @zone_admin = ZoneAdmin.find_by_id(params[:zone_admin_id])
     @zones      = Zone.includes(:organizations).where("zone_admin_id =?" ,@zone_admin.id)
     @zones                ||= []
     params[:statistics]   ||= {}
     params[:statistics][:template_ids] ||=[]
+    params[:statistics][:groupby]      ||="month"
     return render 'organization' if @zones.nil? or @zones.empty?
     params[:statistics][:zone_id] = @zones[0].id
     @reports_x = []
@@ -34,7 +34,7 @@ class StatisticsController < ApplicationController
       @organization       = Organization.find(params[:statistics][:organization_id])
       return render 'organization' if  @organization.nil?
       @organization_name  = @organization.name
-      @reports    = Report.statistics(params[:statistics])
+      @reports      = Report.statistics(params[:statistics])
       @reports_x    = @reports.inject([]) {|result,r| result << r.created_x if not result.include?(r.created_x); result}
 
       @reports_x  ||= 54.downto(0).map {|x| (Time.new - x * 7 * 24 * 3600).strftime("%Y-%U")}
@@ -50,10 +50,7 @@ class StatisticsController < ApplicationController
         s[:name] = template 
         s[:data] = @reports_x.inject([]) {|result,r| result <<  (report.has_key?(r) ? report[r][0].report_num_per_x : 0)}
         @reports_statistics << s
-
       end
-    else
-      @reports = []
     end
   end
 private

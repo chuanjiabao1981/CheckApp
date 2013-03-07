@@ -97,7 +97,23 @@ class Report < ActiveRecord::Base
 
 
   def self.statistics(query)
-    reports = Report.includes(:template).select("template_id,DATE_FORMAT(reports.created_at,'%X-%V') AS created_x,count(*) AS report_num_per_x").where("organization_id=? and template_id in (?)",query[:organization_id],query[:template_ids]).group('created_x,template_id')
+    g_by = "%X-%m"
+    if query[:groupby] == 'week'
+          g_by = "%X-%V"
+    end
+    reports = Report.includes(:template)
+                    .select("template_id,
+                             DATE_FORMAT(reports.created_at,'#{g_by}') AS created_x,
+                             count(*) AS report_num_per_x")
+                    .where("organization_id = :organization_id and 
+                            template_id in (:template_ids)     and 
+                            created_at >= :start_date          and 
+                            created_at <= :end_date",{ :organization_id => query[:organization_id],
+                                                       :template_ids    => query[:template_ids],
+                                                       :end_date      => Time.now.strftime('%Y-%m-%d'),
+                                                       :start_date        => (Time.now - 54.week.to_i).strftime('%Y-%m-%d')
+                                                      })
+                    .group('created_x,template_id')
     reports
   end
   def supervisor_report?
